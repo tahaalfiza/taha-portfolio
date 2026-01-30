@@ -2331,6 +2331,8 @@ a {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain; /* Prevent scroll from bubbling to parent */
 }
 
 .notes-search {
@@ -2365,7 +2367,10 @@ a {
 .notes-items {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 4px;
+    overscroll-behavior: contain; /* Prevent scroll from bubbling to parent */
+    -webkit-overflow-scrolling: touch;
 }
 
 .notes-loading {
@@ -2513,8 +2518,11 @@ a {
     flex: 1;
     padding: 24px;
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 0; /* Important for flex child scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overscroll-behavior: contain; /* Prevent scroll from bubbling to parent */
+    scroll-behavior: smooth;
 }
 
 /* Preview Toolbar with Open Button */

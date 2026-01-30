@@ -1489,19 +1489,111 @@ function renderContactInfo(contact) {
   }
 }
 
+// Fetch site settings (favicon, title, OG image)
+async function fetchSiteSettings() {
+  const query = `*[_type == "siteSettings"][0] {
+    title,
+    description,
+    ogImage,
+    favicon,
+    appleTouchIcon
+  }`;
+
+  try {
+    const response = await fetch(sanityUrl(query));
+    const data = await response.json();
+    return data.result;
+  } catch (error) {
+    console.error('Error fetching site settings:', error);
+    return null;
+  }
+}
+
+// Apply site settings to the page
+function applySiteSettings(settings) {
+  if (!settings) return;
+
+  // Update page title
+  if (settings.title) {
+    document.title = settings.title;
+  }
+
+  // Update meta description
+  if (settings.description) {
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = settings.description;
+
+    // Also update OG description
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (!ogDesc) {
+      ogDesc = document.createElement('meta');
+      ogDesc.setAttribute('property', 'og:description');
+      document.head.appendChild(ogDesc);
+    }
+    ogDesc.content = settings.description;
+  }
+
+  // Update favicon
+  if (settings.favicon && settings.favicon.asset) {
+    const faviconUrl = sanityImageUrl(settings.favicon, 64, 100);
+    let favicon = document.querySelector('link[rel="icon"]');
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
+    favicon.href = faviconUrl;
+  }
+
+  // Update Apple touch icon
+  if (settings.appleTouchIcon && settings.appleTouchIcon.asset) {
+    const touchIconUrl = sanityImageUrl(settings.appleTouchIcon, 180, 100);
+    let touchIcon = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!touchIcon) {
+      touchIcon = document.createElement('link');
+      touchIcon.rel = 'apple-touch-icon';
+      document.head.appendChild(touchIcon);
+    }
+    touchIcon.href = touchIconUrl;
+  }
+
+  // Update OG image
+  if (settings.ogImage && settings.ogImage.asset) {
+    const ogImageUrl = sanityImageUrl(settings.ogImage, 1200, 90);
+    let ogImage = document.querySelector('meta[property="og:image"]');
+    if (!ogImage) {
+      ogImage = document.createElement('meta');
+      ogImage.setAttribute('property', 'og:image');
+      document.head.appendChild(ogImage);
+    }
+    ogImage.content = ogImageUrl;
+  }
+
+  console.log('Site settings applied:', settings.title);
+}
+
 // Initialize CMS content
 async function initSanityContent() {
   try {
     // Fetch all content in parallel
-    const [projects, experiences, education, testimonials, contactInfo, aboutInfo, blogPosts] = await Promise.all([
+    const [projects, experiences, education, testimonials, contactInfo, aboutInfo, blogPosts, siteSettings] = await Promise.all([
       fetchProjects(),
       fetchWorkExperience(),
       fetchEducation(),
       fetchTestimonials(),
       fetchContactInfo(),
       fetchAboutInfo(),
-      fetchBlogPosts()
+      fetchBlogPosts(),
+      fetchSiteSettings()
     ]);
+
+    // Apply site settings first
+    applySiteSettings(siteSettings);
 
     // Render content
     if (projects.length > 0) renderProjects(projects);

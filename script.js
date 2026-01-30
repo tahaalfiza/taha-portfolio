@@ -532,10 +532,22 @@ function initNavigation() {
     navButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const target = btn.dataset.target;
+            const listView = document.getElementById('listView');
+            const isListViewActive = listView?.classList.contains('active');
 
             navButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
+            // If in list view, scroll to list section
+            if (isListViewActive) {
+                const listSection = document.getElementById(`list-${target}`);
+                if (listSection) {
+                    listSection.scrollIntoView({ behavior: 'smooth' });
+                }
+                return;
+            }
+
+            // Otherwise navigate on canvas
             if (window.navigateToSection) {
                 window.navigateToSection(target);
             }
@@ -586,7 +598,8 @@ function initZoomControls() {
                 listView.classList.add('active');
                 canvasContainer.style.display = 'none';
                 minimap?.style.setProperty('display', 'none');
-                navbar?.style.setProperty('display', 'none');
+                // Keep navbar visible in list view
+                navbar?.style.setProperty('display', 'flex');
                 viewToggle.classList.add('active');
                 document.body.style.overflow = 'auto';
                 // Load list view content if not already loaded

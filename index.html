@@ -387,6 +387,48 @@
         <div class="cursor-ring"></div>
     </div>
 
+    <!-- Project Overlay -->
+    <div class="project-overlay" id="projectOverlay">
+        <div class="overlay-backdrop" onclick="closeProjectOverlay()"></div>
+        <div class="overlay-container">
+            <button class="overlay-close" onclick="closeProjectOverlay()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="overlay-content">
+                <div class="overlay-header">
+                    <div class="overlay-meta">
+                        <span class="overlay-client" id="overlayClient"></span>
+                        <span class="overlay-date" id="overlayDate"></span>
+                    </div>
+                    <h1 class="overlay-title" id="overlayTitle"></h1>
+                    <p class="overlay-description" id="overlayDescription"></p>
+                </div>
+
+                <div class="overlay-details">
+                    <div class="detail-item" id="detailRole">
+                        <span class="detail-label">Role</span>
+                        <span class="detail-value" id="overlayRole"></span>
+                    </div>
+                    <div class="detail-item" id="detailDuration">
+                        <span class="detail-label">Duration</span>
+                        <span class="detail-value" id="overlayDuration"></span>
+                    </div>
+                    <div class="detail-item detail-tools" id="detailTools">
+                        <span class="detail-label">Tools</span>
+                        <div class="tools-list" id="overlayTools"></div>
+                    </div>
+                </div>
+
+                <div class="overlay-gallery" id="overlayGallery">
+                    <!-- Gallery images will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="sanity-client.js"></script>
 </body>

@@ -24,6 +24,9 @@ function sanityImageUrl(imageRef, width = 400) {
   return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&fit=crop`;
 }
 
+// Store projects globally for overlay access
+let projectsData = [];
+
 // Fetch all projects
 async function fetchProjects() {
   const query = `*[_type == "project"] | order(order asc) {
@@ -31,18 +34,25 @@ async function fetchProjects() {
     title,
     slug,
     description,
+    fullDescription,
     duration,
     date,
+    client,
+    role,
+    tools,
     folderColor,
     images,
+    galleryImages,
     projectUrl,
+    hasOverlay,
     order
   }`;
 
   try {
     const response = await fetch(sanityUrl(query));
     const data = await response.json();
-    return data.result || [];
+    projectsData = data.result || [];
+    return projectsData;
   } catch (error) {
     console.error('Error fetching projects:', error);
     return [];
@@ -152,7 +162,7 @@ function renderProjects(projects) {
   const container = document.querySelector('.folders-grid');
   if (!container || projects.length === 0) return;
 
-  container.innerHTML = projects.map(project => {
+  container.innerHTML = projects.map((project, index) => {
     const colorClass = project.folderColor || 'default';
     const folderColorClass = colorClass === 'default' ? '' : colorClass;
 
@@ -163,8 +173,18 @@ function renderProjects(projects) {
       return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
     }).join('');
 
+    // Determine click behavior: overlay or external link
+    let clickHandler = '';
+    if (project.projectUrl && !project.hasOverlay) {
+      // Has external URL and overlay disabled - go to external link
+      clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
+    } else {
+      // Show overlay (either has overlay content or default behavior)
+      clickHandler = `onclick="openProjectOverlay(${index})"`;
+    }
+
     return `
-      <div class="mac-folder" ${project.projectUrl ? `onclick="window.open('${project.projectUrl}', '_blank')"` : ''}>
+      <div class="mac-folder" ${clickHandler}>
         <div class="folder-wrapper">
           <div class="popup-images">
             ${imageHtml}
@@ -183,6 +203,96 @@ function renderProjects(projects) {
     `;
   }).join('');
 }
+
+// Open project overlay
+function openProjectOverlay(projectIndex) {
+  const project = projectsData[projectIndex];
+  if (!project) return;
+
+  const overlay = document.getElementById('projectOverlay');
+
+  // Populate overlay content
+  document.getElementById('overlayTitle').textContent = project.title || '';
+  document.getElementById('overlayDescription').textContent = project.fullDescription || project.description || '';
+
+  // Client
+  const clientEl = document.getElementById('overlayClient');
+  if (project.client) {
+    clientEl.textContent = project.client;
+    clientEl.style.display = 'inline-block';
+  } else {
+    clientEl.style.display = 'none';
+  }
+
+  // Date
+  document.getElementById('overlayDate').textContent = project.date || '';
+
+  // Role
+  const roleDetail = document.getElementById('detailRole');
+  const roleValue = document.getElementById('overlayRole');
+  if (project.role) {
+    roleValue.textContent = project.role;
+    roleDetail.classList.remove('hidden');
+  } else {
+    roleDetail.classList.add('hidden');
+  }
+
+  // Duration
+  const durationDetail = document.getElementById('detailDuration');
+  const durationValue = document.getElementById('overlayDuration');
+  if (project.duration) {
+    durationValue.textContent = project.duration;
+    durationDetail.classList.remove('hidden');
+  } else {
+    durationDetail.classList.add('hidden');
+  }
+
+  // Tools
+  const toolsDetail = document.getElementById('detailTools');
+  const toolsList = document.getElementById('overlayTools');
+  if (project.tools && project.tools.length > 0) {
+    toolsList.innerHTML = project.tools.map(tool =>
+      `<span class="tool-tag">${tool}</span>`
+    ).join('');
+    toolsDetail.classList.remove('hidden');
+  } else {
+    toolsDetail.classList.add('hidden');
+  }
+
+  // Gallery
+  const gallery = document.getElementById('overlayGallery');
+  const galleryImages = project.galleryImages || project.images || [];
+  if (galleryImages.length > 0) {
+    gallery.innerHTML = galleryImages.map(img => {
+      const url = sanityImageUrl(img, 800);
+      return url ? `
+        <div class="gallery-image">
+          <img src="${url}" alt="${project.title}" loading="lazy">
+        </div>
+      ` : '';
+    }).join('');
+  } else {
+    gallery.innerHTML = '';
+  }
+
+  // Show overlay
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Close project overlay
+function closeProjectOverlay() {
+  const overlay = document.getElementById('projectOverlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close overlay on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeProjectOverlay();
+  }
+});
 
 // Render work experience
 function renderWorkExperience(experiences) {

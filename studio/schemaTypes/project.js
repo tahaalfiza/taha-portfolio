@@ -20,8 +20,15 @@ export default {
     },
     {
       name: 'description',
-      title: 'Description',
+      title: 'Short Description',
       type: 'text',
+      description: 'Brief description for the folder view',
+    },
+    {
+      name: 'fullDescription',
+      title: 'Full Description',
+      type: 'text',
+      description: 'Detailed description shown in the overlay',
     },
     {
       name: 'duration',
@@ -34,6 +41,25 @@ export default {
       title: 'Date',
       type: 'string',
       description: 'e.g., "2024"',
+    },
+    {
+      name: 'client',
+      title: 'Client',
+      type: 'string',
+      description: 'Client or company name',
+    },
+    {
+      name: 'role',
+      title: 'Your Role',
+      type: 'string',
+      description: 'e.g., "Lead Designer", "Brand Designer"',
+    },
+    {
+      name: 'tools',
+      title: 'Tools Used',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'e.g., Figma, Illustrator, Photoshop',
     },
     {
       name: 'folderColor',
@@ -55,9 +81,24 @@ export default {
       description: 'Add up to 3 images that pop out from the folder',
     },
     {
+      name: 'galleryImages',
+      title: 'Gallery Images',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Full gallery shown in the overlay',
+    },
+    {
       name: 'projectUrl',
-      title: 'Project URL',
+      title: 'External Project URL',
       type: 'url',
+      description: 'If set, clicking folder goes directly to this link instead of opening overlay',
+    },
+    {
+      name: 'hasOverlay',
+      title: 'Show Overlay',
+      type: 'boolean',
+      description: 'If true, clicking opens project overlay. If false (or has URL), goes to external link.',
+      initialValue: true,
     },
     {
       name: 'order',

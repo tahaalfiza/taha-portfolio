@@ -716,31 +716,110 @@ a {
 }
 
 /* ==========================================
-   macOS STYLE FOLDERS
+   macOS STYLE FOLDERS WITH POPUP IMAGES
    ========================================== */
 .folders-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
+    gap: 60px;
+    padding: 20px;
 }
 
 .mac-folder {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    text-align: center;
 }
 
-.mac-folder:hover {
-    transform: translateY(-8px);
+/* Folder Wrapper - contains folder and popup images */
+.folder-wrapper {
+    position: relative;
+    width: 140px;
+    height: 160px;
+    margin: 0 auto 16px;
+}
+
+/* Popup Images Container */
+.popup-images {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Individual Popup Images */
+.popup-img {
+    position: absolute;
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateY(20px) scale(0.8);
+}
+
+/* Image positions - stacked in folder initially */
+.popup-img.img-1 {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 3;
+}
+
+.popup-img.img-2 {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 2;
+}
+
+.popup-img.img-3 {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 1;
+}
+
+/* Hover state - images fan out */
+.mac-folder:hover .popup-img {
+    opacity: 1;
+}
+
+.mac-folder:hover .popup-img.img-1 {
+    transform: translate(-130%, -120%) rotate(-15deg) scale(1);
+    transition-delay: 0.05s;
+}
+
+.mac-folder:hover .popup-img.img-2 {
+    transform: translate(-50%, -140%) rotate(0deg) scale(1);
+    transition-delay: 0.1s;
+}
+
+.mac-folder:hover .popup-img.img-3 {
+    transform: translate(30%, -120%) rotate(15deg) scale(1);
+    transition-delay: 0.15s;
 }
 
 /* Folder Icon - macOS style */
 .folder-icon {
     width: 140px;
     height: 110px;
-    position: relative;
-    margin: 0 auto 16px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     transition: all 0.3s ease;
+    z-index: 5;
+}
+
+.mac-folder:hover .folder-icon {
+    transform: scale(0.95);
 }
 
 /* Folder Tab (top part) */
@@ -767,55 +846,23 @@ a {
     box-shadow:
         0 4px 12px rgba(59, 130, 246, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
 }
 
-/* Preview cards inside folder */
-.folder-preview {
-    display: flex;
-    gap: 4px;
-    transform: scale(0.8);
-    opacity: 0;
-    transition: all 0.3s ease;
+/* Folder color variations */
+.folder-icon.blue .folder-tab {
+    background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 100%);
 }
 
-.mac-folder:hover .folder-preview {
-    transform: scale(1);
-    opacity: 1;
+.folder-icon.blue .folder-body {
+    background: linear-gradient(180deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%);
 }
 
-.preview-card {
-    width: 28px;
-    height: 36px;
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
+.folder-icon.yellow .folder-tab {
+    background: linear-gradient(180deg, #FCD34D 0%, #F59E0B 100%);
 }
 
-.mac-folder:hover .preview-card:nth-child(1) {
-    transform: translateY(-4px) rotate(-5deg);
-}
-
-.mac-folder:hover .preview-card:nth-child(2) {
-    transform: translateY(-8px);
-}
-
-.mac-folder:hover .preview-card:nth-child(3) {
-    transform: translateY(-4px) rotate(5deg);
-}
-
-/* Preview card colors */
-.preview-card.color-blue {
-    background: linear-gradient(135deg, #87CEEB 0%, #4BA3E3 100%);
-}
-
-.preview-card.color-yellow {
-    background: linear-gradient(135deg, #FFF176 0%, #FFD54F 100%);
+.folder-icon.yellow .folder-body {
+    background: linear-gradient(180deg, #FCD34D 0%, #D97706 50%, #B45309 100%);
 }
 
 /* Folder Info */
@@ -840,49 +887,12 @@ a {
 
 /* Folder Name */
 .folder-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 8px;
     color: var(--text-primary);
 }
 
-/* Folder Details - shown on hover */
-.folder-details {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: all 0.4s ease;
-    text-align: center;
-}
-
-.mac-folder:hover .folder-details {
-    max-height: 150px;
-    opacity: 1;
-    margin-top: 12px;
-}
-
-.folder-desc {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 12px;
-    max-width: 220px;
-}
-
-.folder-role {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.folder-role strong {
-    color: var(--text-primary);
-}
-}
-
-.see-all-link:hover {
-    gap: 12px;
-}
 
 /* ==========================================
    EXPERIENCE SECTION

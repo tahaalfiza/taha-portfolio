@@ -113,24 +113,29 @@
 
             <!-- ==================== ABOUT SECTION ==================== -->
             <div class="canvas-section about" id="section-about" style="left: 22%; top: 45%;">
-                <div class="about-modern">
-                    <div class="about-photo-modern">
-                        <img src="taha-photo.jpg" alt="Taha Alfiza">
+                <div class="about-card" id="aboutCard">
+                    <div class="about-card-header">
+                        <div class="about-photo" id="aboutPhoto">
+                            <img src="taha-photo.jpg" alt="Taha Alfiza">
+                        </div>
+                        <div class="about-intro">
+                            <h2 class="about-name" id="aboutName">Taha Alfiza</h2>
+                            <p class="about-title" id="aboutTitle">Brand & Product Designer</p>
+                        </div>
                     </div>
-                    <div class="about-text-modern">
-                        <p class="about-headline">
-                            I'm <strong>Taha</strong>, a Brand & Product Designer from
-                            <span class="flag-inline" data-country="Iraq">
-                                <span class="flag-label">Iraq</span>
-                                <svg width="28" height="20" viewBox="0 0 640 480"><rect width="640" height="160" fill="#ce1126"/><rect y="160" width="640" height="160" fill="#fff"/><rect y="320" width="640" height="160" fill="#000"/><text x="320" y="260" font-size="80" fill="#007a3d" text-anchor="middle" font-family="serif" font-weight="bold">&#1575;&#1604;&#1604;&#1607; &#1571;&#1603;&#1576;&#1585;</text></svg>
-                            </span>
-                            <span class="flag-inline" data-country="Turkey">
-                                <span class="flag-label">Turkey</span>
-                                <svg width="28" height="20" viewBox="0 0 640 480"><rect width="640" height="480" fill="#e30a17"/><circle cx="240" cy="240" r="120" fill="#fff"/><circle cx="270" cy="240" r="96" fill="#e30a17"/><polygon fill="#fff" points="360,240 410,190 390,240 410,290"/></svg>
-                            </span>
-                            based in <strong>Istanbul</strong> with <strong>10+ years</strong> of experience, crafting brand identities and digital products across <strong>MENA & Gulf</strong> regions.
-                        </p>
+                    <p class="about-bio" id="aboutBio">
+                        I'm a Brand & Product Designer from Iraq, based in Istanbul with 10+ years of experience crafting brand identities and digital products across MENA & Gulf regions.
+                    </p>
+                    <div class="about-experience-preview" id="aboutExperiencePreview">
+                        <!-- 3 featured experiences will be inserted here -->
                     </div>
+                    <button class="about-cta" id="aboutCta" onclick="openAboutOverlay()">
+                        <span>View Full Profile</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -440,6 +445,80 @@
                     <h3 class="more-projects-title">More Projects</h3>
                     <div class="more-projects-grid" id="moreProjectsGrid">
                         <!-- Other projects will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Overlay -->
+    <div class="about-overlay" id="aboutOverlay">
+        <div class="overlay-backdrop" onclick="closeAboutOverlay()"></div>
+        <div class="about-overlay-container">
+            <button class="overlay-close" onclick="closeAboutOverlay()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <div class="about-overlay-content">
+                <!-- Timeline sidebar -->
+                <div class="timeline-sidebar" id="timelineSidebar">
+                    <div class="timeline-years" id="timelineYears">
+                        <!-- Years will be dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Main content -->
+                <div class="about-main-content" id="aboutMainContent">
+                    <!-- Profile Header -->
+                    <div class="about-profile-header" id="aboutProfileHeader">
+                        <div class="profile-photo-large" id="profilePhotoLarge">
+                            <img src="taha-photo.jpg" alt="Taha Alfiza">
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="profile-name" id="profileName">Taha Alfiza</h1>
+                            <p class="profile-title" id="profileTitle">Brand & Product Designer</p>
+                            <p class="profile-location" id="profileLocation">Istanbul, Turkey</p>
+                        </div>
+                    </div>
+
+                    <!-- Full Bio -->
+                    <div class="about-section" id="aboutFullBio">
+                        <h2 class="about-section-title">About Me</h2>
+                        <p class="about-full-bio" id="fullBioText">
+                            I'm a Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
+                        </p>
+                    </div>
+
+                    <!-- Highlights -->
+                    <div class="about-highlights" id="aboutHighlights">
+                        <!-- Highlights cards will be inserted here -->
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="about-section" id="aboutSkills">
+                        <h2 class="about-section-title">Skills</h2>
+                        <div class="skills-grid" id="skillsGrid">
+                            <!-- Skills will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Work Experience -->
+                    <div class="about-section" id="aboutWorkExperience">
+                        <h2 class="about-section-title">Work Experience</h2>
+                        <div class="experience-list" id="experienceList">
+                            <!-- Experiences will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="about-section" id="aboutEducation">
+                        <h2 class="about-section-title">Education</h2>
+                        <div class="education-list" id="educationList">
+                            <!-- Education items will be inserted here -->
+                        </div>
                     </div>
                 </div>
             </div>

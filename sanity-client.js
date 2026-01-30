@@ -73,6 +73,40 @@ async function fetchProjects() {
   }
 }
 
+// Fetch about info
+async function fetchAboutInfo() {
+  const query = `*[_type == "aboutInfo"][0] {
+    _id,
+    name,
+    title,
+    photo,
+    shortBio,
+    fullBio,
+    location,
+    yearsExperience,
+    highlights[] {
+      icon,
+      label,
+      value
+    },
+    skills,
+    ctaText
+  }`;
+
+  try {
+    const response = await fetch(sanityUrl(query));
+    const data = await response.json();
+    return data.result || null;
+  } catch (error) {
+    console.error('Error fetching about info:', error);
+    return null;
+  }
+}
+
+// Store experience and education data globally for overlay
+let experienceData = [];
+let educationData = [];
+
 // Fetch all work experiences
 async function fetchWorkExperience() {
   const query = `*[_type == "workExperience"] | order(order asc) {
@@ -80,17 +114,24 @@ async function fetchWorkExperience() {
     role,
     company,
     companyUrl,
+    companyLogo,
     location,
+    startYear,
+    endYear,
+    isCurrent,
     startDate,
     endDate,
     description,
+    achievements,
+    isFeatured,
     order
   }`;
 
   try {
     const response = await fetch(sanityUrl(query));
     const data = await response.json();
-    return data.result || [];
+    experienceData = data.result || [];
+    return experienceData;
   } catch (error) {
     console.error('Error fetching work experience:', error);
     return [];
@@ -104,16 +145,21 @@ async function fetchEducation() {
     degree,
     institution,
     institutionUrl,
+    institutionLogo,
     location,
+    startYear,
+    endYear,
     startDate,
     endDate,
+    description,
     order
   }`;
 
   try {
     const response = await fetch(sanityUrl(query));
     const data = await response.json();
-    return data.result || [];
+    educationData = data.result || [];
+    return educationData;
   } catch (error) {
     console.error('Error fetching education:', error);
     return [];
@@ -425,8 +471,336 @@ function closeProjectOverlay() {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeProjectOverlay();
+    closeAboutOverlay();
   }
 });
+
+// ==========================================
+// ABOUT SECTION & OVERLAY
+// ==========================================
+
+// Calculate duration in years
+function calculateDuration(startYear, endYear) {
+  const end = endYear || new Date().getFullYear();
+  const duration = end - startYear;
+  if (duration === 0) return '< 1 year';
+  if (duration === 1) return '1 year';
+  return `${duration} years`;
+}
+
+// Get icon SVG
+function getIconSvg(iconName) {
+  const icons = {
+    briefcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+    globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+    award: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+    users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>',
+    default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>'
+  };
+  return icons[iconName] || icons.default;
+}
+
+// Render About section on main page
+function renderAboutSection(aboutInfo, experiences) {
+  if (!aboutInfo) return;
+
+  // Update photo
+  const photoEl = document.getElementById('aboutPhoto');
+  if (photoEl && aboutInfo.photo) {
+    const photoUrl = sanityImageUrl(aboutInfo.photo, 200, 90);
+    if (photoUrl) {
+      photoEl.querySelector('img').src = photoUrl;
+    }
+  }
+
+  // Update name and title
+  const nameEl = document.getElementById('aboutName');
+  const titleEl = document.getElementById('aboutTitle');
+  if (nameEl && aboutInfo.name) nameEl.textContent = aboutInfo.name;
+  if (titleEl && aboutInfo.title) titleEl.textContent = aboutInfo.title;
+
+  // Update bio
+  const bioEl = document.getElementById('aboutBio');
+  if (bioEl && aboutInfo.shortBio) bioEl.textContent = aboutInfo.shortBio;
+
+  // Update CTA text
+  const ctaEl = document.getElementById('aboutCta');
+  if (ctaEl && aboutInfo.ctaText) {
+    ctaEl.querySelector('span').textContent = aboutInfo.ctaText;
+  }
+
+  // Render experience preview (featured or first 3)
+  const previewContainer = document.getElementById('aboutExperiencePreview');
+  if (previewContainer && experiences.length > 0) {
+    // Get featured experiences or first 3
+    let previewExperiences = experiences.filter(exp => exp.isFeatured);
+    if (previewExperiences.length === 0) {
+      previewExperiences = experiences.slice(0, 3);
+    } else {
+      previewExperiences = previewExperiences.slice(0, 3);
+    }
+
+    previewContainer.innerHTML = previewExperiences.map(exp => {
+      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 100, 90) : '';
+      const years = exp.isCurrent || !exp.endYear
+        ? `${exp.startYear} — Now`
+        : `${exp.startYear} — ${exp.endYear}`;
+
+      return `
+        <div class="experience-preview-item" onclick="openAboutOverlay()">
+          <div class="experience-preview-logo">
+            ${logoUrl ? `<img src="${logoUrl}" alt="${exp.company}">` : getIconSvg('building')}
+          </div>
+          <div class="experience-preview-info">
+            <div class="experience-preview-role">${exp.role}</div>
+            <div class="experience-preview-company">${exp.company}</div>
+          </div>
+          <div class="experience-preview-years">${years}</div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+// Render About overlay content
+function renderAboutOverlay(aboutInfo, experiences, education) {
+  // Update profile header
+  const profilePhotoEl = document.getElementById('profilePhotoLarge');
+  if (profilePhotoEl && aboutInfo?.photo) {
+    const photoUrl = sanityImageUrl(aboutInfo.photo, 400, 90);
+    if (photoUrl) {
+      profilePhotoEl.querySelector('img').src = photoUrl;
+    }
+  }
+
+  const profileNameEl = document.getElementById('profileName');
+  const profileTitleEl = document.getElementById('profileTitle');
+  const profileLocationEl = document.getElementById('profileLocation');
+
+  if (profileNameEl && aboutInfo?.name) profileNameEl.textContent = aboutInfo.name;
+  if (profileTitleEl && aboutInfo?.title) profileTitleEl.textContent = aboutInfo.title;
+  if (profileLocationEl && aboutInfo?.location) profileLocationEl.textContent = aboutInfo.location;
+
+  // Update full bio
+  const fullBioEl = document.getElementById('fullBioText');
+  if (fullBioEl && aboutInfo?.fullBio) fullBioEl.textContent = aboutInfo.fullBio;
+
+  // Render highlights
+  const highlightsContainer = document.getElementById('aboutHighlights');
+  if (highlightsContainer && aboutInfo?.highlights && aboutInfo.highlights.length > 0) {
+    highlightsContainer.innerHTML = aboutInfo.highlights.map(h => `
+      <div class="highlight-card">
+        <div class="highlight-icon">${getIconSvg(h.icon)}</div>
+        <div class="highlight-content">
+          <div class="highlight-value">${h.value}</div>
+          <div class="highlight-label">${h.label}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Render skills
+  const skillsContainer = document.getElementById('skillsGrid');
+  if (skillsContainer && aboutInfo?.skills && aboutInfo.skills.length > 0) {
+    skillsContainer.innerHTML = aboutInfo.skills.map(skill =>
+      `<span class="skill-tag">${skill}</span>`
+    ).join('');
+    document.getElementById('aboutSkills').style.display = 'block';
+  } else if (skillsContainer) {
+    document.getElementById('aboutSkills').style.display = 'none';
+  }
+
+  // Render experiences
+  const experienceContainer = document.getElementById('experienceList');
+  if (experienceContainer && experiences.length > 0) {
+    experienceContainer.innerHTML = experiences.map(exp => {
+      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 150, 90) : '';
+      const years = exp.isCurrent || !exp.endYear
+        ? `${exp.startYear} — Present`
+        : `${exp.startYear} — ${exp.endYear}`;
+      const duration = calculateDuration(exp.startYear, exp.isCurrent ? null : exp.endYear);
+
+      const companyLink = exp.companyUrl
+        ? `<a href="${exp.companyUrl}" target="_blank">${exp.company}</a>`
+        : exp.company;
+
+      const achievementsHtml = exp.achievements && exp.achievements.length > 0
+        ? `<ul class="experience-achievements">${exp.achievements.map(a => `<li>${a}</li>`).join('')}</ul>`
+        : '';
+
+      return `
+        <div class="experience-item" data-year="${exp.startYear}">
+          <div class="experience-logo">
+            ${logoUrl ? `<img src="${logoUrl}" alt="${exp.company}">` : getIconSvg('building')}
+          </div>
+          <div class="experience-details">
+            <div class="experience-header">
+              <div class="experience-role">${exp.role}</div>
+              <div class="experience-duration">${duration}</div>
+            </div>
+            <div class="experience-company">${companyLink}</div>
+            ${exp.location ? `<div class="experience-location">${exp.location}</div>` : ''}
+            ${exp.description ? `<p class="experience-description">${exp.description}</p>` : ''}
+            ${achievementsHtml}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Render education
+  const educationContainer = document.getElementById('educationList');
+  if (educationContainer && education.length > 0) {
+    educationContainer.innerHTML = education.map(edu => {
+      const logoUrl = edu.institutionLogo ? sanityImageUrl(edu.institutionLogo, 150, 90) : '';
+      const years = edu.startDate && edu.endDate
+        ? `${edu.startDate} — ${edu.endDate}`
+        : edu.startDate || edu.endDate || '';
+
+      const institutionLink = edu.institutionUrl
+        ? `<a href="${edu.institutionUrl}" target="_blank">${edu.institution}</a>`
+        : edu.institution;
+
+      return `
+        <div class="education-item" data-year="${edu.startYear || ''}">
+          <div class="education-logo">
+            ${logoUrl ? `<img src="${logoUrl}" alt="${edu.institution}">` : getIconSvg('award')}
+          </div>
+          <div class="education-details">
+            <div class="education-degree">${edu.degree}</div>
+            <div class="education-institution">${institutionLink}</div>
+            <div class="education-meta">
+              ${years ? `<span>${years}</span>` : ''}
+              ${edu.location ? `<span>${edu.location}</span>` : ''}
+            </div>
+            ${edu.description ? `<p class="education-description">${edu.description}</p>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Build timeline years
+  buildTimeline(experiences, education);
+}
+
+// Build timeline sidebar
+function buildTimeline(experiences, education) {
+  const timelineContainer = document.getElementById('timelineYears');
+  if (!timelineContainer) return;
+
+  // Collect all years from experiences and education
+  const years = new Set();
+
+  experiences.forEach(exp => {
+    if (exp.startYear) years.add(exp.startYear);
+    if (exp.endYear) years.add(exp.endYear);
+  });
+
+  education.forEach(edu => {
+    if (edu.startYear) years.add(edu.startYear);
+    if (edu.endYear) years.add(edu.endYear);
+  });
+
+  // Sort years descending (newest first)
+  const sortedYears = Array.from(years).sort((a, b) => b - a);
+
+  if (sortedYears.length === 0) {
+    timelineContainer.innerHTML = '';
+    return;
+  }
+
+  timelineContainer.innerHTML = sortedYears.map(year => `
+    <div class="timeline-year" data-year="${year}">${year}</div>
+  `).join('');
+
+  // Set up scroll-based highlighting
+  setupTimelineScrolling();
+}
+
+// Setup timeline scroll highlighting
+function setupTimelineScrolling() {
+  const mainContent = document.getElementById('aboutMainContent');
+  const timelineYears = document.querySelectorAll('.timeline-year');
+
+  if (!mainContent || timelineYears.length === 0) return;
+
+  mainContent.addEventListener('scroll', () => {
+    const experienceItems = mainContent.querySelectorAll('[data-year]');
+    let activeYear = null;
+
+    experienceItems.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const containerRect = mainContent.getBoundingClientRect();
+
+      // Check if item is in the visible area
+      if (rect.top >= containerRect.top && rect.top <= containerRect.top + containerRect.height / 2) {
+        activeYear = item.dataset.year;
+      }
+    });
+
+    // Update active state
+    timelineYears.forEach(yearEl => {
+      if (yearEl.dataset.year === activeYear) {
+        yearEl.classList.add('active');
+      } else {
+        yearEl.classList.remove('active');
+      }
+    });
+  });
+
+  // Click to scroll to year
+  timelineYears.forEach(yearEl => {
+    yearEl.addEventListener('click', () => {
+      const year = yearEl.dataset.year;
+      const targetItem = mainContent.querySelector(`[data-year="${year}"]`);
+      if (targetItem) {
+        targetItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
+// Open About overlay
+function openAboutOverlay() {
+  const overlay = document.getElementById('aboutOverlay');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Update URL for deep linking
+  history.pushState({ overlay: 'about' }, '', '?about');
+}
+
+// Close About overlay
+function closeAboutOverlay() {
+  const overlay = document.getElementById('aboutOverlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+
+  // Update URL
+  if (window.location.search.includes('about')) {
+    history.pushState({}, '', window.location.pathname);
+  }
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+  if (e.state?.overlay === 'about' || window.location.search.includes('about')) {
+    openAboutOverlay();
+  } else {
+    closeAboutOverlay();
+  }
+});
+
+// Check URL on load for deep linking
+function checkAboutDeepLink() {
+  if (window.location.search.includes('about')) {
+    // Small delay to ensure overlay content is rendered
+    setTimeout(() => openAboutOverlay(), 100);
+  }
+}
 
 // Render work experience
 function renderWorkExperience(experiences) {
@@ -660,12 +1034,13 @@ function renderContactInfo(contact) {
 async function initSanityContent() {
   try {
     // Fetch all content in parallel
-    const [projects, experiences, education, testimonials, contactInfo] = await Promise.all([
+    const [projects, experiences, education, testimonials, contactInfo, aboutInfo] = await Promise.all([
       fetchProjects(),
       fetchWorkExperience(),
       fetchEducation(),
       fetchTestimonials(),
-      fetchContactInfo()
+      fetchContactInfo(),
+      fetchAboutInfo()
     ]);
 
     // Render content
@@ -675,12 +1050,20 @@ async function initSanityContent() {
     if (testimonials.length > 0) renderTestimonials(testimonials);
     if (contactInfo) renderContactInfo(contactInfo);
 
+    // Render About section and overlay
+    renderAboutSection(aboutInfo, experiences);
+    renderAboutOverlay(aboutInfo, experiences, education);
+
+    // Check for deep link after content is loaded
+    checkAboutDeepLink();
+
     console.log('Sanity content loaded:', {
       projects: projects.length,
       experiences: experiences.length,
       education: education.length,
       testimonials: testimonials.length,
-      contactInfo: contactInfo ? 'loaded' : 'not found'
+      contactInfo: contactInfo ? 'loaded' : 'not found',
+      aboutInfo: aboutInfo ? 'loaded' : 'not found'
     });
   } catch (error) {
     console.error('Error initializing Sanity content:', error);

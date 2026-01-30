@@ -23,22 +23,47 @@ export default {
       type: 'url',
     },
     {
+      name: 'institutionLogo',
+      title: 'Institution Logo',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Optional logo to display',
+    },
+    {
       name: 'location',
       title: 'Location',
       type: 'string',
       description: 'e.g., "Istanbul, Türkiye"',
     },
     {
+      name: 'startYear',
+      title: 'Start Year',
+      type: 'number',
+      description: 'e.g., 2018',
+    },
+    {
+      name: 'endYear',
+      title: 'End Year',
+      type: 'number',
+      description: 'e.g., 2022',
+    },
+    {
       name: 'startDate',
-      title: 'Start Date',
+      title: 'Start Date (Display)',
       type: 'string',
-      description: 'e.g., "2018"',
+      description: 'e.g., "2018" - for display purposes',
     },
     {
       name: 'endDate',
-      title: 'End Date',
+      title: 'End Date (Display)',
       type: 'string',
-      description: 'e.g., "2022"',
+      description: 'e.g., "2022" - for display purposes',
+    },
+    {
+      name: 'description',
+      title: 'Description / Notes',
+      type: 'text',
+      description: 'Additional details about the program',
     },
     {
       name: 'order',
@@ -54,4 +79,11 @@ export default {
       by: [{ field: 'order', direction: 'asc' }],
     },
   ],
+  preview: {
+    select: {
+      title: 'degree',
+      subtitle: 'institution',
+      media: 'institutionLogo',
+    },
+  },
 }

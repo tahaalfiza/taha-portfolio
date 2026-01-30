@@ -339,8 +339,8 @@
                 return;
             }
 
-            // Query by slug or by generated slug from title
-            const query = `*[_type == "project" && (slug.current == "${slug}" || lower(title) match "*${slug.replace(/-/g, '*')}*")][0] {
+            // First try to query by slug.current
+            let query = `*[_type == "project" && slug.current == "${slug}"][0] {
                 _id,
                 title,
                 slug,
@@ -368,9 +368,49 @@
             }`;
 
             try {
-                const response = await fetch(sanityUrl(query));
-                const data = await response.json();
-                const project = data.result;
+                let response = await fetch(sanityUrl(query));
+                let data = await response.json();
+                let project = data.result;
+
+                // If not found by slug.current, try fetching all projects and matching
+                if (!project) {
+                    const allProjectsQuery = `*[_type == "project"] {
+                        _id,
+                        title,
+                        slug,
+                        description,
+                        fullDescription,
+                        duration,
+                        date,
+                        client,
+                        role,
+                        tools,
+                        overlayBgColor,
+                        images,
+                        contentBlocks[] {
+                            _type,
+                            _key,
+                            image,
+                            embedCode,
+                            heading,
+                            text,
+                            textAlign,
+                            caption,
+                            fullWidth
+                        },
+                        galleryImages
+                    }`;
+
+                    response = await fetch(sanityUrl(allProjectsQuery));
+                    data = await response.json();
+                    const projects = data.result || [];
+
+                    // Find project by matching generated slug
+                    project = projects.find(p => {
+                        const projectSlug = p.slug?.current || generateSlug(p.title);
+                        return projectSlug === slug;
+                    });
+                }
 
                 if (!project) {
                     showNotFound();

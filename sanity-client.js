@@ -1235,14 +1235,14 @@ function renderTestimonials(testimonials) {
   const canvas = document.getElementById('canvas');
   if (!canvas) return;
 
-  // Positions for 6 testimonials (around and under About section at 22%, 45%)
+  // Positions for 6 testimonials (spread around canvas)
   const positions = [
-    { left: '8%', top: '42%' },    // Left of About
-    { left: '8%', top: '58%' },    // Below left
-    { left: '36%', top: '48%' },   // Right of About
-    { left: '36%', top: '64%' },   // Below right
-    { left: '15%', top: '74%' },   // Under About left
-    { left: '29%', top: '74%' }    // Under About right
+    { left: '12%', top: '32%' },   // Top left (Azad Hassan - yellow)
+    { left: '10%', top: '52%' },   // Left side below (Ibrahim Sherkhan - white)
+    { left: '28%', top: '72%' },   // Bottom center-left (Mohammed Al-Hamaoy - yellow)
+    { left: '48%', top: '72%' },   // Bottom center-right (Mujahed Alwasi - blue)
+    { left: '52%', top: '48%' },   // Center near home (Muhanned Munjed - blue)
+    { left: '68%', top: '52%' }    // Right side (Mukhtar Talip - white)
   ];
 
   testimonials.forEach((testimonial, i) => {

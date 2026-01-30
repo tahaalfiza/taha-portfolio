@@ -6,35 +6,35 @@
   "rewrites": [
     {
       "source": "/view_1",
-      "destination": "/view_1/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/view_1/",
-      "destination": "/view_1/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/view_2",
-      "destination": "/view_2/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/view_2/",
-      "destination": "/view_2/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/blogs/:slug",
-      "destination": "/blogs/index.html"
+      "destination": "/blog-page.html"
     },
     {
       "source": "/blogs/:slug/",
-      "destination": "/blogs/index.html"
+      "destination": "/blog-page.html"
     },
     {
       "source": "/projects/:slug",
-      "destination": "/projects/index.html"
+      "destination": "/project-page.html"
     },
     {
       "source": "/projects/:slug/",
-      "destination": "/projects/index.html"
+      "destination": "/project-page.html"
     }
   ],
   "trailingSlash": false

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Project - Taha Alfiza</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Override main styles for project page */
+        html, body {
+            overflow: auto !important;
+            height: auto !important;
+            cursor: auto !important;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: #fff;
+        }
+
+        [data-theme="dark"] body {
+            background: #0a0a0a;
+        }
+
+        /* Hide canvas-specific elements */
+        .custom-cursor,
+        .loading-screen,
+        #canvasContainer,
+        #canvas {
+            display: none !important;
+        }
+
+        /* Project Page Container */
+        .project-page {
+            min-height: 100vh;
+            background: inherit;
+        }
+
+        /* Top Navigation */
+        .project-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .project-nav {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .project-nav.scrolled {
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        /* Project Content Container */
+        .project-page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 24px 120px;
+        }
+
+        /* Project Header */
+        .project-header {
+            margin-bottom: 48px;
+        }
+
+        .project-category {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent-primary);
+            margin-bottom: 16px;
+            text-transform: capitalize;
+        }
+
+        .project-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+        }
+
+        .project-description {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            max-width: 800px;
+        }
+
+        /* Project Meta */
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 48px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .meta-value a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .meta-value a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tools */
+        .project-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tool-tag {
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: var(--bg-hover);
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        /* Project Gallery */
+        .project-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .content-block {
+            width: 100%;
+        }
+
+        .content-block.full-width {
+            width: calc(100% + 100px);
+            margin-left: -50px;
+        }
+
+        .content-block img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .block-caption {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        .text-block {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 0;
+        }
+
+        .text-block-heading {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .text-block-content {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .video-block {
+            max-width: 100%;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* More Projects Section */
+        .more-projects {
+            margin-top: 80px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .more-projects h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+        }
+
+        .more-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .more-project-card {
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .more-project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .more-project-image {
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: var(--bg-hover);
+        }
+
+        .more-project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .more-project-info {
+            padding: 16px;
+        }
+
+        .more-project-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .more-project-date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Loading State */
+        .project-loading {
+            text-align: center;
+            padding: 120px 24px;
+            color: var(--text-muted);
+        }
+
+        .project-loading h2 {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .project-loading p {
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .project-page-content {
+                padding: 80px 20px 80px;
+            }
+
+            .project-title {
+                font-size: 32px;
+            }
+
+            .project-description {
+                font-size: 18px;
+            }
+
+            .project-meta {
+                gap: 24px;
+            }
+
+            .content-block.full-width {
+                width: calc(100% + 40px);
+                margin-left: -20px;
+            }
+
+            .nav-logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="project-page">
+        <!-- Top Navigation -->
+        <nav class="project-nav" id="projectNav">
+            <div class="nav-left">
+                <button class="back-btn" onclick="goBack()" title="Go back">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <a href="/" class="nav-logo">Taha Alfiza</a>
+            </div>
+        </nav>
+
+        <!-- Project Content -->
+        <div class="project-page-content" id="projectContent">
+            <div class="project-loading">Loading project...</div>
+        </div>
+    </div>
+
+    <script>
+        // Sanity configuration
+        const SANITY_PROJECT_ID = 'hsbvy0xe';
+        const SANITY_DATASET = 'production';
+        const SANITY_API_VERSION = '2024-01-01';
+
+        let currentProject = null;
+        let allProjects = [];
+
+        // Get slug from URL path (clean URL format: /projects/slug-name)
+        function getSlugFromUrl() {
+            const path = window.location.pathname;
+            console.log('Full pathname:', path);
+
+            // Remove trailing slash if present
+            const cleanPath = path.replace(/\/$/, '');
+            const parts = cleanPath.split('/').filter(Boolean);
+            console.log('Path parts:', parts);
+
+            // URL format: /projects/slug-name
+            if (parts.length >= 2 && parts[0] === 'projects') {
+                const slug = decodeURIComponent(parts[1]);
+                console.log('Extracted slug:', slug);
+                return slug;
+            }
+
+            // Fallback to query parameter
+            const params = new URLSearchParams(window.location.search);
+            const querySlug = params.get('slug');
+            console.log('Query slug fallback:', querySlug);
+            return querySlug;
+        }
+
+        // Build Sanity URL
+        function sanityUrl(query) {
+            const encodedQuery = encodeURIComponent(query);
+            return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
+        }
+
+        // Build Sanity image URL
+        function sanityImageUrl(image, width = 1200, quality = 90) {
+            if (!image || !image.asset) return null;
+            const ref = image.asset._ref;
+            const [, id, dimensions, format] = ref.split('-');
+            return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&q=${quality}&auto=format`;
+        }
+
+        // Fetch project by slug
+        async function fetchProject(slug) {
+            const decodedSlug = decodeURIComponent(slug);
+            console.log('Fetching project with slug:', decodedSlug);
+
+            const query = `*[_type == "project" && slug.current == "${decodedSlug}"][0] {
+                _id,
+                title,
+                slug,
+                description,
+                fullDescription,
+                duration,
+                date,
+                client,
+                role,
+                tools,
+                "category": category->title,
+                images,
+                contentBlocks[] {
+                    _type,
+                    _key,
+                    image,
+                    embedCode,
+                    heading,
+                    text,
+                    textAlign,
+                    caption,
+                    fullWidth
+                },
+                galleryImages,
+                projectUrl
+            }`;
+
+            const url = sanityUrl(query);
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                console.log('Sanity response:', data);
+                return data.result;
+            } catch (error) {
+                console.error('Error fetching project:', error);
+                return null;
+            }
+        }
+
+        // Fetch all projects for "More Projects" section
+        async function fetchAllProjects() {
+            const query = `*[_type == "project"] | order(order asc) {
+                _id,
+                title,
+                slug,
+                date,
+                images
+            }`;
+
+            try {
+                const response = await fetch(sanityUrl(query));
+                const data = await response.json();
+                allProjects = data.result || [];
+                return allProjects;
+            } catch (error) {
+                console.error('Error fetching all projects:', error);
+                return [];
+            }
+        }
+
+        // Render project
+        function renderProject(project) {
+            const contentEl = document.getElementById('projectContent');
+
+            // Build meta section
+            let metaHtml = '';
+            if (project.client) {
+                metaHtml += `<div class="meta-item"><span class="meta-label">Client</span><span class="meta-value">${project.client}</span></div>`;
+            }
+            if (project.date) {
+                metaHtml += `<div class="meta-item"><span class="meta-label">Date</span><span class="meta-value">${project.date}</span></div>`;
+            }
+            if (project.role) {
+                metaHtml += `<div class="meta-item"><span class="meta-label">Role</span><span class="meta-value">${project.role}</span></div>`;
+            }
+            if (project.duration) {
+                metaHtml += `<div class="meta-item"><span class="meta-label">Duration</span><span class="meta-value">${project.duration}</span></div>`;
+            }
+            if (project.projectUrl) {
+                metaHtml += `<div class="meta-item"><span class="meta-label">Website</span><span class="meta-value"><a href="${project.projectUrl}" target="_blank">Visit Site</a></span></div>`;
+            }
+
+            // Build tools section
+            let toolsHtml = '';
+            if (project.tools && project.tools.length > 0) {
+                toolsHtml = `
+                    <div class="meta-item">
+                        <span class="meta-label">Tools</span>
+                        <div class="project-tools">
+                            ${project.tools.map(tool => `<span class="tool-tag">${tool}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Build gallery
+            let galleryHtml = '';
+            if (project.contentBlocks && project.contentBlocks.length > 0) {
+                galleryHtml = renderContentBlocks(project.contentBlocks, project.title);
+            } else {
+                const galleryImages = project.galleryImages || project.images || [];
+                if (galleryImages.length > 0) {
+                    galleryHtml = galleryImages.map(img => {
+                        const url = sanityImageUrl(img, 1600, 90);
+                        return url ? `
+                            <div class="content-block image-block">
+                                <img src="${url}" alt="${project.title}" loading="lazy">
+                            </div>
+                        ` : '';
+                    }).join('');
+                }
+            }
+
+            // Build more projects section
+            const otherProjects = allProjects.filter(p => p._id !== project._id).slice(0, 3);
+            let moreProjectsHtml = '';
+            if (otherProjects.length > 0) {
+                moreProjectsHtml = `
+                    <div class="more-projects">
+                        <h2>More Projects</h2>
+                        <div class="more-projects-grid">
+                            ${otherProjects.map(p => {
+                                const previewImage = p.images && p.images[0] ? sanityImageUrl(p.images[0], 400, 85) : '';
+                                const projectUrl = p.slug?.current ? `/projects/${p.slug.current}` : '#';
+                                return `
+                                    <a href="${projectUrl}" class="more-project-card">
+                                        <div class="more-project-image">
+                                            ${previewImage ? `<img src="${previewImage}" alt="${p.title}" loading="lazy">` : ''}
+                                        </div>
+                                        <div class="more-project-info">
+                                            <h4 class="more-project-title">${p.title}</h4>
+                                            <span class="more-project-date">${p.date || ''}</span>
+                                        </div>
+                                    </a>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            contentEl.innerHTML = `
+                <header class="project-header">
+                    ${project.category ? `<span class="project-category">${project.category}</span>` : ''}
+                    <h1 class="project-title">${project.title}</h1>
+                    ${project.fullDescription || project.description ? `<p class="project-description">${project.fullDescription || project.description}</p>` : ''}
+                </header>
+
+                ${metaHtml || toolsHtml ? `
+                <div class="project-meta">
+                    ${metaHtml}
+                    ${toolsHtml}
+                </div>
+                ` : ''}
+
+                <div class="project-gallery">
+                    ${galleryHtml}
+                </div>
+
+                ${moreProjectsHtml}
+            `;
+
+            // Update page title
+            document.title = `${project.title} - Taha Alfiza`;
+
+            // Initialize scroll effect
+            initScrollEffect();
+        }
+
+        // Render content blocks (images, videos, text)
+        function renderContentBlocks(contentBlocks, projectTitle) {
+            if (!contentBlocks || contentBlocks.length === 0) return '';
+
+            return contentBlocks.map(block => {
+                if (block._type === 'imageBlock' && block.image) {
+                    const url = sanityImageUrl(block.image, 1600, 90);
+                    if (!url) return '';
+                    const widthClass = block.fullWidth !== false ? 'full-width' : '';
+                    return `
+                        <div class="content-block image-block ${widthClass}">
+                            <img src="${url}" alt="${block.caption || projectTitle}" loading="lazy">
+                            ${block.caption ? `<p class="block-caption">${block.caption}</p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (block._type === 'videoBlock' && block.embedCode) {
+                    return `
+                        <div class="content-block video-block">
+                            <div class="video-wrapper">
+                                ${block.embedCode}
+                            </div>
+                            ${block.caption ? `<p class="block-caption">${block.caption}</p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (block._type === 'textBlock' && block.text) {
+                    const align = block.textAlign || 'left';
+                    return `
+                        <div class="content-block text-block" style="text-align: ${align}">
+                            ${block.heading ? `<h3 class="text-block-heading">${block.heading}</h3>` : ''}
+                            <p class="text-block-content">${block.text}</p>
+                        </div>
+                    `;
+                }
+
+                return '';
+            }).join('');
+        }
+
+        // Scroll effect for nav
+        function initScrollEffect() {
+            const nav = document.getElementById('projectNav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // Go back
+        function goBack() {
+            if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        // Initialize
+        async function init() {
+            const slug = getSlugFromUrl();
+            console.log('Project slug from URL:', slug);
+
+            if (!slug) {
+                document.getElementById('projectContent').innerHTML = `
+                    <div class="project-loading">
+                        <h2>Project not found</h2>
+                        <p>Please check the URL and try again.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // Fetch project and all projects in parallel
+                const [project, _] = await Promise.all([
+                    fetchProject(slug),
+                    fetchAllProjects()
+                ]);
+
+                console.log('Fetched project:', project);
+
+                if (!project) {
+                    document.getElementById('projectContent').innerHTML = `
+                        <div class="project-loading">
+                            <h2>Project not found</h2>
+                            <p>The requested project could not be found.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                currentProject = project;
+                renderProject(project);
+            } catch (error) {
+                console.error('Error loading project:', error);
+                document.getElementById('projectContent').innerHTML = `
+                    <div class="project-loading">
+                        <h2>Error loading project</h2>
+                        <p>There was an error loading this project. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Run on page load
+        init();
+    </script>
+</body>
+</html>

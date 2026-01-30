@@ -59,6 +59,10 @@
             transform: translateX(-2px);
         }
 
+        .back-link:active {
+            transform: translateX(-4px) scale(0.95);
+        }
+
         .back-link svg {
             width: 20px;
             height: 20px;
@@ -160,6 +164,8 @@
             background: var(--bg-hover);
             border: 1px solid var(--border-light);
             border-radius: 8px;
+            cursor: default;
+            pointer-events: none;
         }
 
         .project-gallery {
@@ -224,12 +230,23 @@
 </head>
 <body class="project-page">
     <!-- Back Button -->
-    <a href="#" onclick="history.back(); return false;" class="back-link">
+    <a href="/" onclick="goBack(event)" class="back-link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
     </a>
+
+    <script>
+        function goBack(e) {
+            e.preventDefault();
+            if (window.history.length > 1 && document.referrer) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+    </script>
 
     <!-- Project Content -->
     <main class="project-page-content" id="projectContent">

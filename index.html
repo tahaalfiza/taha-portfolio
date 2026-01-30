@@ -375,12 +375,12 @@
         </div>
     </div>
 
-    <!-- List View Mode - Block Layout (Same design as canvas) -->
+    <!-- List View Mode - Simple Block Layout -->
     <div class="list-view" id="listView">
         <div class="block-container">
-            <!-- Row 1: Home Card (full width) - Same as canvas hero -->
-            <div class="block-row">
-                <div class="block block-home section-content hero-section" id="list-home">
+            <!-- Block 1: Home -->
+            <div class="block-item" id="list-home">
+                <div class="section-content hero-section">
                     <div class="hero-logo">
                         <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
@@ -417,23 +417,24 @@
                 </div>
             </div>
 
-            <!-- Row 2: About + Projects (side by side) -->
-            <div class="block-row block-row-2col">
-                <!-- About Block -->
-                <div class="block block-about about-card-modern" id="list-about" onclick="openAboutOverlay()" style="cursor: pointer;">
-                    <div class="about-photo-topleft" id="listAboutPhoto">
+            <!-- Block 2: About -->
+            <div class="block-item" id="list-about">
+                <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
+                    <div class="about-photo-topleft">
                         <img src="taha-photo.jpg" alt="Taha Alfiza">
                     </div>
-                    <p class="about-bio-text" id="listAboutBio">I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.</p>
+                    <p class="about-bio-text">I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.</p>
                     <p class="about-bio-text">Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.</p>
                     <div class="experience-preview" id="listExperiencePreview"></div>
                     <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
                         <span>See More</span>
                     </button>
                 </div>
+            </div>
 
-                <!-- Projects Block -->
-                <div class="block block-projects finder-window" id="list-projects">
+            <!-- Block 3: Projects -->
+            <div class="block-item" id="list-projects">
+                <div class="finder-window">
                     <div class="finder-titlebar">
                         <div class="finder-buttons">
                             <span class="finder-btn red"></span>
@@ -480,9 +481,9 @@
                 </div>
             </div>
 
-            <!-- Row 3: Blogs (full width) - Same as canvas notes-app-window -->
-            <div class="block-row">
-                <div class="block block-blogs notes-app-window" id="list-blog">
+            <!-- Block 4: Blog -->
+            <div class="block-item" id="list-blog">
+                <div class="notes-app-window">
                     <div class="notes-titlebar">
                         <div class="notes-buttons">
                             <span class="notes-btn red"></span>
@@ -523,19 +524,16 @@
                 </div>
             </div>
 
-            <!-- Row 4: Testimonials (3x2 grid) - Same sticky note style -->
-            <div class="block-row">
-                <div class="block-testimonials-wrapper" id="list-testimonials">
-                    <div class="block-testimonials-grid" id="listTestimonialsGrid">
-                        <!-- Testimonials will be loaded dynamically -->
-                    </div>
+            <!-- Block 5: Testimonials -->
+            <div class="block-item" id="list-testimonials">
+                <div class="testimonials-grid-block" id="listTestimonialsGrid">
+                    <!-- Testimonials will be loaded dynamically -->
                 </div>
             </div>
 
-            <!-- Row 5: Contact + Form (side by side) -->
-            <div class="block-row block-row-2col">
-                <!-- Contact Block - Same as canvas contact-section -->
-                <div class="block section-content contact-section" id="list-contact">
+            <!-- Block 6: Contact -->
+            <div class="block-item" id="list-contact">
+                <div class="section-content contact-section">
                     <div class="contact-card">
                         <h2>Let's Create Something Amazing</h2>
                         <p>I'm always open to discussing new projects and opportunities.</p>
@@ -564,9 +562,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Form Block - Same as canvas hire-form-window -->
-                <div class="block hire-form-window" id="list-hire">
+            <!-- Block 7: Hire Form -->
+            <div class="block-item" id="list-hire">
+                <div class="hire-form-window">
                     <div class="hire-titlebar">
                         <div class="hire-buttons">
                             <span class="hire-btn red"></span>

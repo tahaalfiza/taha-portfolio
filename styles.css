@@ -399,10 +399,7 @@ a {
 }
 
 /* ==========================================
-   LIST VIEW - Block Layout
-   ========================================== */
-/* ==========================================
-   LIST VIEW - Block Layout (Same design as canvas)
+   LIST VIEW - Simple Block Layout
    ========================================== */
 .list-view {
     position: fixed;
@@ -419,154 +416,93 @@ a {
     display: block;
 }
 
-/* Block Container - Full width */
+/* Block Container - Centered with max width */
 .block-container {
     width: 100%;
-    max-width: 100%;
-    margin: 0;
+    max-width: 900px;
+    margin: 0 auto;
     padding: 100px 40px 60px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 40px;
 }
 
-/* Block Rows - Full width */
-.block-row {
-    display: flex;
-    gap: 24px;
+/* Block Items - Full width stacked */
+.block-item {
     width: 100%;
 }
 
-.block-row-2col > .block {
-    flex: 1;
-}
-
-/* About + Projects row - About smaller, Projects larger */
-.block-row-2col > .block-about {
-    flex: 0 0 35%;
-    max-width: 35%;
-}
-
-.block-row-2col > .block-projects {
-    flex: 0 0 calc(65% - 24px);
-    max-width: calc(65% - 24px);
-}
-
-/* ===== HOME BLOCK - Uses canvas hero-section styles ===== */
-.list-view .block-home {
-    width: 100%;
+/* Hero Section in block view */
+.list-view .hero-section {
+    min-width: auto;
     max-width: 600px;
     margin: 0 auto;
 }
 
-/* ===== ABOUT BLOCK - Uses canvas about-card-modern styles ===== */
-.list-view .block-about.about-card-modern {
-    max-width: none;
+/* About Card in block view */
+.list-view .about-card-modern {
+    max-width: 100%;
     width: 100%;
 }
 
-/* ===== PROJECTS BLOCK - Uses canvas finder-window styles ===== */
-.list-view .block-projects.finder-window {
+/* Finder Window in block view */
+.list-view .finder-window {
     width: 100%;
 }
 
-/* ===== BLOG BLOCK - Uses canvas notes-app-window styles ===== */
-.list-view .block-blogs.notes-app-window {
+/* Notes App Window in block view */
+.list-view .notes-app-window {
     width: 100%;
 }
 
-.list-view .block-blogs .notes-body {
+.list-view .notes-body {
     min-height: 350px;
 }
 
-/* ===== TESTIMONIALS - Uses sticky-note styling ===== */
-.list-view .block-testimonials-wrapper {
-    width: 100%;
-}
-
-.list-view .block-testimonials-grid {
+/* Testimonials Grid in block view */
+.testimonials-grid-block {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    width: 100%;
 }
 
-.list-view .block-testimonial {
-    padding: 24px;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.testimonials-grid-block .sticky-note {
     transform: rotate(-1deg);
     transition: transform 0.3s ease;
 }
 
-.list-view .block-testimonial:nth-child(2) {
+.testimonials-grid-block .sticky-note:nth-child(2) {
     transform: rotate(1deg);
 }
 
-.list-view .block-testimonial:nth-child(3) {
+.testimonials-grid-block .sticky-note:nth-child(3) {
     transform: rotate(-0.5deg);
 }
 
-.list-view .block-testimonial:nth-child(4) {
+.testimonials-grid-block .sticky-note:nth-child(4) {
     transform: rotate(0.5deg);
 }
 
-.list-view .block-testimonial:nth-child(5) {
+.testimonials-grid-block .sticky-note:nth-child(5) {
     transform: rotate(-1.5deg);
 }
 
-.list-view .block-testimonial:nth-child(6) {
+.testimonials-grid-block .sticky-note:nth-child(6) {
     transform: rotate(1.5deg);
 }
 
-.list-view .block-testimonial:hover {
+.testimonials-grid-block .sticky-note:hover {
     transform: rotate(0deg) scale(1.02);
 }
 
-.list-view .block-testimonial.yellow {
-    background: #fff9c4;
-}
-
-.list-view .block-testimonial.pink {
-    background: #fce4ec;
-}
-
-.list-view .block-testimonial.blue {
-    background: #e3f2fd;
-}
-
-.list-view .block-testimonial.green {
-    background: #e8f5e9;
-}
-
-.list-view .block-testimonial.orange {
-    background: #fff3e0;
-}
-
-.list-view .block-testimonial.purple {
-    background: #f3e5f5;
-}
-
-.list-view .block-testimonial p {
-    font-size: 14px;
-    font-style: italic;
-    color: rgba(0,0,0,0.7);
-    margin-bottom: 12px;
-    line-height: 1.5;
-}
-
-.list-view .block-testimonial .note-author {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(0,0,0,0.5);
-}
-
-/* ===== CONTACT BLOCK - Uses canvas contact-section styles ===== */
+/* Contact Section in block view */
 .list-view .contact-section {
     min-width: auto;
     width: 100%;
 }
 
-/* ===== FORM BLOCK - Uses canvas hire-form-window styles ===== */
+/* Hire Form in block view */
 .list-view .hire-form-window {
     width: 100%;
 }
@@ -583,46 +519,25 @@ a {
 @media (max-width: 768px) {
     .block-container {
         padding: 80px 16px 60px;
-        gap: 16px;
+        gap: 24px;
     }
 
-    .block-row {
-        gap: 16px;
-    }
-
-    .block-row-2col {
-        flex-direction: column;
-    }
-
-    .list-view .block-home {
+    .list-view .hero-section {
         padding: 40px 24px;
     }
 
-    .list-view .block-home .title-line {
+    .list-view .hero-section .title-line {
         font-size: 40px;
     }
 
-    .list-view .block-testimonials-grid {
+    .testimonials-grid-block {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
-    }
-
-    .list-view .block-blogs .blog-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .list-view .block-projects .projects-grid {
-        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 480px) {
-    .list-view .block-testimonials-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .list-view .block-blogs .blog-grid {
+    .testimonials-grid-block {
         grid-template-columns: 1fr;
     }
 }

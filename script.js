@@ -713,7 +713,7 @@ function populateListView() {
         }
     }
 
-    // Populate testimonials (show first 6 with sticky note colors)
+    // Populate testimonials (show first 6 with sticky note colors - same style as canvas)
     if (window.testimonialsData && window.testimonialsData.length > 0) {
         const testimonialsGrid = document.getElementById('listTestimonialsGrid');
         if (testimonialsGrid) {
@@ -722,7 +722,7 @@ function populateListView() {
             testimonialsGrid.innerHTML = displayTestimonials.map((testimonial, index) => {
                 const color = colors[index % colors.length];
                 return `
-                    <div class="block-testimonial ${color}">
+                    <div class="sticky-note ${color}">
                         <p>"${testimonial.quote || ''}"</p>
                         <span class="note-author">- ${testimonial.name || ''}${testimonial.role ? ', ' + testimonial.role : ''}</span>
                     </div>

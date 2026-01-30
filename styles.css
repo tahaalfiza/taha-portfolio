@@ -599,27 +599,171 @@ a {
 
 @media (max-width: 768px) {
     .block-container {
-        padding: 80px 16px 60px;
+        padding: 80px 16px 100px;
         gap: 16px;
     }
 
     .list-view .hero-section {
-        padding: 40px 24px;
+        padding: 32px 20px;
+        min-height: auto;
+    }
+
+    .list-view .hero-section .hero-logo svg {
+        width: 60px;
+        height: 60px;
     }
 
     .list-view .hero-section .title-line {
-        font-size: 40px;
+        font-size: 36px;
     }
 
+    .list-view .hero-section .hero-subtitle {
+        font-size: 13px;
+    }
+
+    .list-view .hero-section .hero-cta .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+
+    /* Finder window mobile */
+    .list-view .finder-window {
+        min-height: auto;
+    }
+
+    .list-view .finder-body {
+        flex-direction: column;
+    }
+
+    .list-view .finder-sidebar {
+        display: none;
+    }
+
+    .list-view .finder-content {
+        width: 100%;
+    }
+
+    .list-view .folders-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .list-view .mac-folder .folder-name {
+        font-size: 10px;
+    }
+
+    .list-view .mac-folder .folder-info {
+        display: none;
+    }
+
+    /* Notes app mobile */
+    .list-view .notes-app-window {
+        width: 100%;
+    }
+
+    .list-view .notes-body {
+        flex-direction: column;
+        height: auto;
+        min-height: 300px;
+    }
+
+    .list-view .notes-list {
+        width: 100%;
+        max-height: 150px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .list-view .notes-preview {
+        min-height: 200px;
+    }
+
+    /* About card mobile */
+    .list-view .about-card-modern {
+        padding: 24px;
+    }
+
+    .list-view .about-card-modern .about-photo-topleft {
+        width: 80px;
+        height: 80px;
+    }
+
+    .list-view .about-bio-text {
+        font-size: 14px;
+    }
+
+    /* Testimonials mobile */
     .testimonials-grid-block {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .testimonials-grid-block .sticky-note {
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .testimonials-grid-block .sticky-note p {
+        font-size: 12px;
+    }
+
+    .testimonials-grid-block .note-author {
+        font-size: 10px;
+    }
+
+    /* Hire form mobile */
+    .list-view .hire-form-window {
+        max-width: 100%;
+    }
+
+    .list-view .hire-form-content {
+        padding: 20px;
+    }
+
+    .list-view .hire-header h2 {
+        font-size: 20px;
+    }
+
+    /* Contact section mobile */
+    .list-view .contact-section {
+        padding: 24px;
+    }
+
+    .list-view .contact-card h2 {
+        font-size: 20px;
+    }
+
+    .list-view .contact-links {
+        flex-direction: column;
         gap: 12px;
     }
 }
 
 @media (max-width: 480px) {
+    .block-container {
+        padding: 70px 12px 100px;
+    }
+
+    .list-view .hero-section .title-line {
+        font-size: 28px;
+    }
+
+    .list-view .folders-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
     .testimonials-grid-block {
         grid-template-columns: 1fr;
+    }
+
+    .list-view .notes-body {
+        min-height: 250px;
+    }
+
+    .list-view .notes-list {
+        max-height: 120px;
     }
 }
 
@@ -3615,6 +3759,115 @@ a {
 
     .note-author {
         font-size: 10px;
+    }
+
+    /* Finder Window - Canvas Mobile */
+    .finder-window {
+        min-width: 320px;
+        max-width: 360px;
+    }
+
+    .finder-sidebar {
+        display: none;
+    }
+
+    .finder-content {
+        width: 100%;
+    }
+
+    .finder-toolbar {
+        padding: 8px 12px;
+    }
+
+    /* Notes App Window - Canvas Mobile */
+    .notes-app-window {
+        width: 320px;
+        height: auto;
+        min-height: 300px;
+    }
+
+    .notes-body {
+        flex-direction: column;
+        min-height: 250px;
+    }
+
+    .notes-list {
+        width: 100%;
+        max-height: 120px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .notes-preview {
+        min-height: 180px;
+    }
+
+    .notes-preview-content {
+        padding: 12px;
+    }
+
+    .notes-preview-title {
+        font-size: 16px;
+    }
+
+    /* Hire Form - Canvas Mobile */
+    .hire-form-window {
+        min-width: 300px;
+        max-width: 320px;
+    }
+
+    .hire-form-content {
+        padding: 20px;
+    }
+
+    .hire-header h2 {
+        font-size: 20px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    /* About Card - Canvas Mobile */
+    .about-card-modern {
+        max-width: 300px;
+        padding: 24px;
+    }
+
+    .about-photo-topleft {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+    }
+
+    .about-bio-text {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .about-flags {
+        top: 24px;
+        right: 24px;
+    }
+
+    .flag-item {
+        font-size: 18px;
+    }
+
+    .experience-preview {
+        margin: 16px 0;
+    }
+
+    .about-cta-outline {
+        padding: 10px 20px;
+        font-size: 13px;
     }
 
     /* Contact Section - Mobile */

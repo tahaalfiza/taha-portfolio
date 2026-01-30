@@ -942,88 +942,87 @@ function renderTestimonials(testimonials) {
 // Make a testimonial note draggable
 function makeNoteDraggable(note) {
   let isDragging = false;
-  let startX, startY;
-  let initialLeft, initialTop;
+  let offsetX = 0;
+  let offsetY = 0;
 
-  note.addEventListener('mousedown', (e) => {
-    // Prevent dragging if clicking on a link
+  const onMouseDown = (e) => {
     if (e.target.tagName === 'A') return;
-
-    isDragging = true;
-    note.classList.add('dragging');
-
-    // Get initial position
-    const rect = note.getBoundingClientRect();
-    const canvasRect = note.parentElement.getBoundingClientRect();
-
-    startX = e.clientX;
-    startY = e.clientY;
-
-    // Convert percentage to pixels for smooth dragging
-    initialLeft = rect.left - canvasRect.left;
-    initialTop = rect.top - canvasRect.top;
-
-    // Set position in pixels
-    note.style.left = initialLeft + 'px';
-    note.style.top = initialTop + 'px';
-
     e.preventDefault();
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-
-    note.style.left = (initialLeft + dx) + 'px';
-    note.style.top = (initialTop + dy) + 'px';
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (isDragging) {
-      isDragging = false;
-      note.classList.remove('dragging');
-    }
-  });
-
-  // Touch support for mobile
-  note.addEventListener('touchstart', (e) => {
-    if (e.target.tagName === 'A') return;
 
     isDragging = true;
     note.classList.add('dragging');
 
-    const touch = e.touches[0];
+    // Calculate offset from mouse to note's top-left corner
     const rect = note.getBoundingClientRect();
-    const canvasRect = note.parentElement.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+  };
 
-    startX = touch.clientX;
-    startY = touch.clientY;
-    initialLeft = rect.left - canvasRect.left;
-    initialTop = rect.top - canvasRect.top;
-
-    note.style.left = initialLeft + 'px';
-    note.style.top = initialTop + 'px';
-  }, { passive: true });
-
-  document.addEventListener('touchmove', (e) => {
+  const onMouseMove = (e) => {
     if (!isDragging) return;
 
-    const touch = e.touches[0];
-    const dx = touch.clientX - startX;
-    const dy = touch.clientY - startY;
+    // Get canvas for bounds
+    const canvas = document.getElementById('canvas');
+    const canvasRect = canvas.getBoundingClientRect();
 
-    note.style.left = (initialLeft + dx) + 'px';
-    note.style.top = (initialTop + dy) + 'px';
-  }, { passive: true });
+    // Calculate new position relative to canvas
+    const newLeft = e.clientX - canvasRect.left - offsetX;
+    const newTop = e.clientY - canvasRect.top - offsetY;
 
-  document.addEventListener('touchend', () => {
+    note.style.left = newLeft + 'px';
+    note.style.top = newTop + 'px';
+  };
+
+  const onMouseUp = () => {
     if (isDragging) {
       isDragging = false;
       note.classList.remove('dragging');
     }
-  });
+  };
+
+  // Touch handlers
+  const onTouchStart = (e) => {
+    if (e.target.tagName === 'A') return;
+
+    const touch = e.touches[0];
+    isDragging = true;
+    note.classList.add('dragging');
+
+    const rect = note.getBoundingClientRect();
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
+  };
+
+  const onTouchMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const canvas = document.getElementById('canvas');
+    const canvasRect = canvas.getBoundingClientRect();
+
+    const newLeft = touch.clientX - canvasRect.left - offsetX;
+    const newTop = touch.clientY - canvasRect.top - offsetY;
+
+    note.style.left = newLeft + 'px';
+    note.style.top = newTop + 'px';
+  };
+
+  const onTouchEnd = () => {
+    if (isDragging) {
+      isDragging = false;
+      note.classList.remove('dragging');
+    }
+  };
+
+  // Add event listeners
+  note.addEventListener('mousedown', onMouseDown);
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+  note.addEventListener('touchstart', onTouchStart, { passive: false });
+  document.addEventListener('touchmove', onTouchMove, { passive: false });
+  document.addEventListener('touchend', onTouchEnd);
 }
 
 // Render contact info

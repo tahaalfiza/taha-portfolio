@@ -1113,7 +1113,15 @@ a {
 }
 
 .contact-icon {
-    font-size: 20px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+
+.contact-link:hover .contact-icon {
+    color: var(--accent-primary);
 }
 
 /* ==========================================

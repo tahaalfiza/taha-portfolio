@@ -41,7 +41,9 @@ async function fetchProjects() {
     client,
     role,
     tools,
-    category,
+    "category": category->title,
+    "categoryIcon": category->icon,
+    "categoryOrder": category->order,
     folderTabColor,
     folderBodyColor,
     overlayBgColor,
@@ -303,17 +305,33 @@ function buildCategoriesSidebar(projects) {
   const container = document.getElementById('categoriesList');
   if (!container) return;
 
-  // Get unique categories from projects
-  const categories = [...new Set(projects.map(p => p.category).filter(Boolean))];
+  // Get unique categories with their icons and order from projects
+  const categoryMap = new Map();
+  projects.forEach(p => {
+    if (p.category && !categoryMap.has(p.category)) {
+      categoryMap.set(p.category, {
+        name: p.category,
+        icon: p.categoryIcon || 'folder',
+        order: p.categoryOrder || 999
+      });
+    }
+  });
 
-  // Category icons mapping
+  // Sort categories by order
+  const categories = Array.from(categoryMap.values()).sort((a, b) => a.order - b.order);
+
+  // Category icons mapping (using icon identifier from CMS)
   const categoryIcons = {
     'branding': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
     'product': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>`,
-    'ui/ux': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>`,
+    'ui-ux': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>`,
     'web': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
     'mobile': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>`,
-    'default': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`
+    'app': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`,
+    'graphic': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>`,
+    'motion': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`,
+    '3d': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+    'folder': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`
   };
 
   // Build sidebar HTML
@@ -329,13 +347,13 @@ function buildCategoriesSidebar(projects) {
     </li>
   `;
 
-  categories.forEach(category => {
-    const icon = categoryIcons[category.toLowerCase()] || categoryIcons['default'];
-    const isActive = activeCategory.toLowerCase() === category.toLowerCase();
+  categories.forEach(cat => {
+    const icon = categoryIcons[cat.icon] || categoryIcons['folder'];
+    const isActive = activeCategory.toLowerCase() === cat.name.toLowerCase();
     html += `
-      <li class="sidebar-item ${isActive ? 'active' : ''}" data-category="${category}" onclick="filterByCategory('${category}')">
+      <li class="sidebar-item ${isActive ? 'active' : ''}" data-category="${cat.name}" onclick="filterByCategory('${cat.name}')">
         ${icon}
-        <span>${category}</span>
+        <span>${cat.name}</span>
       </li>
     `;
   });

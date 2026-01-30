@@ -62,6 +62,13 @@ export default {
       description: 'e.g., Figma, Illustrator, Photoshop',
     },
     {
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'projectCategory' }],
+      description: 'Select a category for this project (shown in Finder sidebar)',
+    },
+    {
       name: 'folderTabColor',
       title: 'Folder Tab Color',
       type: 'string',

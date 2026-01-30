@@ -301,14 +301,36 @@ function initCanvas() {
     }
 
     window.zoomIn = function () {
-        state.scale = Math.min(state.maxScale, state.scale + 0.1);
+        const oldScale = state.scale;
+        const newScale = Math.min(state.maxScale, state.scale + 0.1);
+
+        // Zoom toward center of screen
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        const scaleChange = newScale - oldScale;
+        state.panX -= centerX * scaleChange / oldScale;
+        state.panY -= centerY * scaleChange / oldScale;
+
+        state.scale = newScale;
         updateTransform();
         updateZoomLevel();
         updateMinimap();
     };
 
     window.zoomOut = function () {
-        state.scale = Math.max(state.minScale, state.scale - 0.1);
+        const oldScale = state.scale;
+        const newScale = Math.max(state.minScale, state.scale - 0.1);
+
+        // Zoom toward center of screen
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        const scaleChange = newScale - oldScale;
+        state.panX -= centerX * scaleChange / oldScale;
+        state.panY -= centerY * scaleChange / oldScale;
+
+        state.scale = newScale;
         updateTransform();
         updateZoomLevel();
         updateMinimap();

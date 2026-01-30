@@ -43,7 +43,19 @@ async function fetchProjects() {
     tools,
     folderTabColor,
     folderBodyColor,
+    overlayBgColor,
     images,
+    contentBlocks[] {
+      _type,
+      _key,
+      image,
+      embedCode,
+      heading,
+      text,
+      textAlign,
+      caption,
+      fullWidth
+    },
     galleryImages,
     projectUrl,
     hasOverlay,
@@ -182,17 +194,6 @@ function renderProjects(projects) {
       clickHandler = `onclick="openProjectOverlay(${index})"`;
     }
 
-    // Helper function to format color (adds # for hex codes if missing)
-    const formatColor = (color) => {
-      if (!color) return null;
-      // If it's a gradient or already has #, use as-is
-      if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) {
-        return color;
-      }
-      // Otherwise, assume it's a hex code and add #
-      return `#${color}`;
-    };
-
     // Custom folder colors - inline styles if provided
     const tabColor = formatColor(project.folderTabColor);
     const bodyColor = formatColor(project.folderBodyColor);
@@ -220,12 +221,76 @@ function renderProjects(projects) {
   }).join('');
 }
 
+// Helper function to format color (adds # for hex codes if missing)
+function formatColor(color) {
+  if (!color) return null;
+  // If it's a gradient or already has #, use as-is
+  if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) {
+    return color;
+  }
+  // Otherwise, assume it's a hex code and add #
+  return `#${color}`;
+}
+
+// Render content blocks (images, videos, text)
+function renderContentBlocks(contentBlocks, projectTitle) {
+  if (!contentBlocks || contentBlocks.length === 0) return '';
+
+  return contentBlocks.map(block => {
+    if (block._type === 'imageBlock' && block.image) {
+      const url = sanityImageUrl(block.image, 1600, 90);
+      if (!url) return '';
+      const widthClass = block.fullWidth !== false ? 'full-width' : 'contained-width';
+      return `
+        <div class="content-block image-block ${widthClass}">
+          <div class="gallery-image">
+            <img src="${url}" alt="${block.caption || projectTitle}" loading="lazy">
+          </div>
+          ${block.caption ? `<p class="block-caption">${block.caption}</p>` : ''}
+        </div>
+      `;
+    }
+
+    if (block._type === 'videoBlock' && block.embedCode) {
+      return `
+        <div class="content-block video-block">
+          <div class="video-wrapper">
+            ${block.embedCode}
+          </div>
+          ${block.caption ? `<p class="block-caption">${block.caption}</p>` : ''}
+        </div>
+      `;
+    }
+
+    if (block._type === 'textBlock' && block.text) {
+      const align = block.textAlign || 'left';
+      return `
+        <div class="content-block text-block" style="text-align: ${align}">
+          ${block.heading ? `<h3 class="text-block-heading">${block.heading}</h3>` : ''}
+          <p class="text-block-content">${block.text}</p>
+        </div>
+      `;
+    }
+
+    return '';
+  }).join('');
+}
+
 // Open project overlay
 function openProjectOverlay(projectIndex) {
   const project = projectsData[projectIndex];
   if (!project) return;
 
   const overlay = document.getElementById('projectOverlay');
+  const overlayContainer = overlay.querySelector('.overlay-container');
+
+  // Apply custom background color if set
+  const bgColor = formatColor(project.overlayBgColor);
+  if (bgColor) {
+    overlayContainer.style.background = bgColor;
+  } else {
+    overlayContainer.style.background = ''; // Reset to default CSS
+  }
 
   // Populate overlay content
   document.getElementById('overlayTitle').textContent = project.title || '';
@@ -275,20 +340,29 @@ function openProjectOverlay(projectIndex) {
     toolsDetail.classList.add('hidden');
   }
 
-  // Gallery - high quality images for overlay
+  // Content Blocks - new flexible content system
   const gallery = document.getElementById('overlayGallery');
-  const galleryImages = project.galleryImages || project.images || [];
-  if (galleryImages.length > 0) {
-    gallery.innerHTML = galleryImages.map(img => {
-      const url = sanityImageUrl(img, 1600, 90);
-      return url ? `
-        <div class="gallery-image">
-          <img src="${url}" alt="${project.title}" loading="lazy">
-        </div>
-      ` : '';
-    }).join('');
+
+  // Use new contentBlocks if available, fallback to legacy galleryImages
+  if (project.contentBlocks && project.contentBlocks.length > 0) {
+    gallery.innerHTML = renderContentBlocks(project.contentBlocks, project.title);
   } else {
-    gallery.innerHTML = '';
+    // Fallback to legacy gallery images
+    const galleryImages = project.galleryImages || project.images || [];
+    if (galleryImages.length > 0) {
+      gallery.innerHTML = galleryImages.map(img => {
+        const url = sanityImageUrl(img, 1600, 90);
+        return url ? `
+          <div class="content-block image-block full-width">
+            <div class="gallery-image">
+              <img src="${url}" alt="${project.title}" loading="lazy">
+            </div>
+          </div>
+        ` : '';
+      }).join('');
+    } else {
+      gallery.innerHTML = '';
+    }
   }
 
   // More Projects - show other projects (excluding current one)

@@ -28,7 +28,7 @@ export default {
       name: 'fullDescription',
       title: 'Full Description',
       type: 'text',
-      description: 'Detailed description shown in the overlay',
+      description: 'Detailed description shown in the overlay header',
     },
     {
       name: 'duration',
@@ -74,6 +74,12 @@ export default {
       description: 'CSS color or gradient for the body. e.g., "#4BA3E3" or "linear-gradient(180deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%)"',
     },
     {
+      name: 'overlayBgColor',
+      title: 'Overlay Background Color',
+      type: 'string',
+      description: 'Background color for the project overlay. e.g., "#1a1a2e", "#0f0f23", or a gradient',
+    },
+    {
       name: 'images',
       title: 'Project Images',
       type: 'array',
@@ -81,11 +87,130 @@ export default {
       description: 'Add up to 3 images that pop out from the folder',
     },
     {
+      name: 'contentBlocks',
+      title: 'Project Content',
+      type: 'array',
+      description: 'Add images, videos, and text in any order you want',
+      of: [
+        {
+          type: 'object',
+          name: 'imageBlock',
+          title: 'Image',
+          fields: [
+            {
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: { hotspot: true },
+            },
+            {
+              name: 'caption',
+              title: 'Caption (optional)',
+              type: 'string',
+            },
+            {
+              name: 'fullWidth',
+              title: 'Full Width',
+              type: 'boolean',
+              initialValue: true,
+              description: 'If unchecked, image will be displayed at a smaller size',
+            },
+          ],
+          preview: {
+            select: {
+              media: 'image',
+              caption: 'caption',
+            },
+            prepare({ media, caption }) {
+              return {
+                title: caption || 'Image',
+                subtitle: 'Image Block',
+                media: media,
+              }
+            },
+          },
+        },
+        {
+          type: 'object',
+          name: 'videoBlock',
+          title: 'Video Embed',
+          fields: [
+            {
+              name: 'embedCode',
+              title: 'Embed Code',
+              type: 'text',
+              description: 'Paste the full embed code from Vimeo, YouTube, or any video platform',
+            },
+            {
+              name: 'caption',
+              title: 'Caption (optional)',
+              type: 'string',
+            },
+          ],
+          preview: {
+            select: {
+              caption: 'caption',
+            },
+            prepare({ caption }) {
+              return {
+                title: caption || 'Video',
+                subtitle: 'Video Embed Block',
+              }
+            },
+          },
+        },
+        {
+          type: 'object',
+          name: 'textBlock',
+          title: 'Text Block',
+          fields: [
+            {
+              name: 'heading',
+              title: 'Heading (optional)',
+              type: 'string',
+            },
+            {
+              name: 'text',
+              title: 'Text Content',
+              type: 'text',
+              description: 'Add a paragraph of text to describe your work',
+            },
+            {
+              name: 'textAlign',
+              title: 'Text Alignment',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Left', value: 'left' },
+                  { title: 'Center', value: 'center' },
+                  { title: 'Right', value: 'right' },
+                ],
+              },
+              initialValue: 'left',
+            },
+          ],
+          preview: {
+            select: {
+              heading: 'heading',
+              text: 'text',
+            },
+            prepare({ heading, text }) {
+              return {
+                title: heading || (text ? text.substring(0, 50) + '...' : 'Text Block'),
+                subtitle: 'Text Block',
+              }
+            },
+          },
+        },
+      ],
+    },
+    {
       name: 'galleryImages',
-      title: 'Gallery Images',
+      title: 'Gallery Images (Legacy)',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      description: 'Full gallery shown in the overlay',
+      description: 'Old gallery field - use "Project Content" above instead for more flexibility',
+      hidden: true,
     },
     {
       name: 'projectUrl',

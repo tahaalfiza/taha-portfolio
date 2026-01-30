@@ -1830,8 +1830,8 @@ a {
     border-radius: 12px;
     border: 1px solid #d1d1d6;
     overflow: visible;
-    min-width: 850px;
-    max-width: 950px;
+    min-width: 1000px;
+    max-width: 1100px;
 }
 
 /* Finder Title Bar */
@@ -1891,8 +1891,8 @@ a {
 /* Finder Body */
 .finder-body {
     display: flex;
-    min-height: 480px;
-    max-height: 600px;
+    min-height: 520px;
+    max-height: 680px;
     overflow: visible;
 }
 
@@ -2003,8 +2003,8 @@ a {
 .folders-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 50px 40px;
-    padding: 40px 30px 60px;
+    gap: 60px 50px;
+    padding: 60px 50px 80px;
     overflow: visible;
     flex: 1;
     align-content: start;

@@ -221,6 +221,215 @@ async function fetchContactInfo() {
   }
 }
 
+// Store blog posts globally
+let blogPostsData = [];
+let activeBlogPost = null;
+
+// Fetch all blog posts
+async function fetchBlogPosts() {
+  const query = `*[_type == "blogPost"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    publishedAt,
+    excerpt,
+    content,
+    category,
+    featured,
+    order
+  }`;
+
+  try {
+    const response = await fetch(sanityUrl(query));
+    const data = await response.json();
+    blogPostsData = data.result || [];
+    return blogPostsData;
+  } catch (error) {
+    console.error('Error fetching blog posts:', error);
+    return [];
+  }
+}
+
+// Render blog posts into the Notes app
+function renderBlogPosts(posts) {
+  const countEl = document.getElementById('blogCount');
+  const listEl = document.getElementById('blogNotesList');
+  const previewEl = document.getElementById('blogPreview');
+
+  if (countEl) {
+    countEl.textContent = posts.length;
+  }
+
+  if (!listEl) return;
+
+  if (posts.length === 0) {
+    listEl.innerHTML = '<div class="notes-loading">No posts yet</div>';
+    return;
+  }
+
+  listEl.innerHTML = posts.map((post, index) => {
+    const date = post.publishedAt
+      ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        })
+      : '';
+
+    const preview = post.excerpt || 'No preview available...';
+
+    return `
+      <div class="note-item ${index === 0 ? 'active' : ''}" data-post-id="${post._id}" onclick="selectBlogPost('${post._id}')">
+        <div class="note-item-title">${post.title}</div>
+        <div class="note-item-date">${date}</div>
+        <div class="note-item-preview">${preview}</div>
+      </div>
+    `;
+  }).join('');
+
+  // Auto-select first post
+  if (posts.length > 0) {
+    selectBlogPost(posts[0]._id);
+  }
+}
+
+// Select and display a blog post
+function selectBlogPost(postId) {
+  const post = blogPostsData.find(p => p._id === postId);
+  if (!post) return;
+
+  activeBlogPost = post;
+
+  // Update active state in list
+  document.querySelectorAll('.note-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.postId === postId) {
+      item.classList.add('active');
+    }
+  });
+
+  // Render preview
+  const previewEl = document.getElementById('blogPreview');
+  if (!previewEl) return;
+
+  const date = post.publishedAt
+    ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    : '';
+
+  // Convert Sanity block content to HTML
+  const contentHtml = renderBlockContent(post.content);
+
+  previewEl.innerHTML = `
+    <div class="notes-preview-content">
+      <div class="notes-preview-header">
+        <h1 class="notes-preview-title">${post.title}</h1>
+        <div class="notes-preview-meta">${date}${post.category ? ` • ${post.category}` : ''}</div>
+      </div>
+      <div class="notes-preview-body">
+        ${contentHtml}
+      </div>
+    </div>
+  `;
+}
+
+// Convert Sanity block content to HTML
+function renderBlockContent(content) {
+  if (!content || !Array.isArray(content)) {
+    return '<p>No content available.</p>';
+  }
+
+  return content.map(block => {
+    // Handle different block types
+    if (block._type === 'block') {
+      const style = block.style || 'normal';
+      const text = renderBlockText(block.children);
+
+      switch (style) {
+        case 'h2':
+          return `<h2>${text}</h2>`;
+        case 'h3':
+          return `<h3>${text}</h3>`;
+        case 'blockquote':
+          return `<blockquote>${text}</blockquote>`;
+        default:
+          return `<p>${text}</p>`;
+      }
+    }
+
+    if (block._type === 'image') {
+      const url = sanityImageUrl(block, 800, 90);
+      const caption = block.caption || '';
+      return url
+        ? `<figure><img src="${url}" alt="${caption}"><figcaption>${caption}</figcaption></figure>`
+        : '';
+    }
+
+    if (block._type === 'code' || block._type === 'codeBlock') {
+      return `<pre><code class="language-${block.language || 'javascript'}">${escapeHtml(block.code || '')}</code></pre>`;
+    }
+
+    return '';
+  }).join('');
+}
+
+// Render block text with marks (bold, italic, links)
+function renderBlockText(children) {
+  if (!children || !Array.isArray(children)) return '';
+
+  return children.map(child => {
+    let text = child.text || '';
+
+    if (child.marks && child.marks.length > 0) {
+      child.marks.forEach(mark => {
+        if (mark === 'strong') {
+          text = `<strong>${text}</strong>`;
+        } else if (mark === 'em') {
+          text = `<em>${text}</em>`;
+        } else if (mark === 'code') {
+          text = `<code>${text}</code>`;
+        }
+      });
+    }
+
+    return text;
+  }).join('');
+}
+
+// Escape HTML for code blocks
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Blog search functionality
+function initBlogSearch() {
+  const searchInput = document.getElementById('blogSearch');
+  if (!searchInput) return;
+
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+
+    if (query === '') {
+      renderBlogPosts(blogPostsData);
+      return;
+    }
+
+    const filtered = blogPostsData.filter(post =>
+      post.title.toLowerCase().includes(query) ||
+      (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
+      (post.category && post.category.toLowerCase().includes(query))
+    );
+
+    renderBlogPosts(filtered);
+  });
+}
+
 // Current active category filter
 let activeCategory = 'all';
 
@@ -1259,13 +1468,14 @@ function renderContactInfo(contact) {
 async function initSanityContent() {
   try {
     // Fetch all content in parallel
-    const [projects, experiences, education, testimonials, contactInfo, aboutInfo] = await Promise.all([
+    const [projects, experiences, education, testimonials, contactInfo, aboutInfo, blogPosts] = await Promise.all([
       fetchProjects(),
       fetchWorkExperience(),
       fetchEducation(),
       fetchTestimonials(),
       fetchContactInfo(),
-      fetchAboutInfo()
+      fetchAboutInfo(),
+      fetchBlogPosts()
     ]);
 
     // Render content
@@ -1279,6 +1489,10 @@ async function initSanityContent() {
     renderAboutSection(aboutInfo, experiences);
     renderAboutOverlay(aboutInfo, experiences, education);
 
+    // Render Blog posts
+    renderBlogPosts(blogPosts);
+    initBlogSearch();
+
     // Check for deep link after content is loaded
     checkAboutDeepLink();
 
@@ -1288,7 +1502,8 @@ async function initSanityContent() {
       education: education.length,
       testimonials: testimonials.length,
       contactInfo: contactInfo ? 'loaded' : 'not found',
-      aboutInfo: aboutInfo ? 'loaded' : 'not found'
+      aboutInfo: aboutInfo ? 'loaded' : 'not found',
+      blogPosts: blogPosts.length
     });
   } catch (error) {
     console.error('Error initializing Sanity content:', error);

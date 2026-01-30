@@ -366,13 +366,21 @@ function initCanvas() {
         const section = document.getElementById(`section-${sectionId}`);
         if (!section) return;
 
-        // Get section position in canvas coordinates
+        // Get section position in canvas coordinates (top-left corner)
         const sectionX = parseFloat(section.style.left) / 100 * 2800;
         const sectionY = parseFloat(section.style.top) / 100 * 2000;
 
+        // Get section dimensions to find center
+        const sectionWidth = section.offsetWidth;
+        const sectionHeight = section.offsetHeight;
+
+        // Calculate the center of the section in canvas coordinates
+        const centerX = sectionX + sectionWidth / 2;
+        const centerY = sectionY + sectionHeight / 2;
+
         // Calculate pan to center section on screen (accounting for scale)
-        const targetX = -sectionX * state.scale + window.innerWidth / 2;
-        const targetY = -sectionY * state.scale + window.innerHeight / 2;
+        const targetX = -centerX * state.scale + window.innerWidth / 2;
+        const targetY = -centerY * state.scale + window.innerHeight / 2;
 
         animateToPosition(targetX, targetY);
     };

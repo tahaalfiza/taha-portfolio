@@ -712,10 +712,17 @@
             return params.get('slug');
         }
 
-        // Build Sanity URL
-        function sanityUrl(query) {
+        // Build Sanity URL with optional params
+        function sanityUrl(query, params = {}) {
             const encodedQuery = encodeURIComponent(query);
-            return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
+            let url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
+
+            // Add query parameters
+            Object.keys(params).forEach(key => {
+                url += `&$${key}="${encodeURIComponent(params[key])}"`;
+            });
+
+            return url;
         }
 
         // Build Sanity image URL
@@ -728,21 +735,39 @@
 
         // Fetch blog post by slug
         async function fetchBlogPost(slug) {
-            const query = `*[_type == "blogPost" && slug.current == "${slug}"][0] {
+            // Decode the slug in case it was URL encoded
+            const decodedSlug = decodeURIComponent(slug);
+            console.log('Fetching post with slug:', decodedSlug);
+
+            const query = `*[_type == "blogPost" && slug.current == $slug][0] {
                 _id,
                 title,
                 slug,
                 publishedAt,
                 excerpt,
-                content,
+                content[] {
+                    ...,
+                    markDefs[] {
+                        ...,
+                        _type == "link" => {
+                            _key,
+                            _type,
+                            href
+                        }
+                    }
+                },
                 category,
                 mainImage,
                 password
             }`;
 
+            const url = sanityUrl(query, { slug: decodedSlug });
+            console.log('Sanity query URL:', url);
+
             try {
-                const response = await fetch(sanityUrl(query));
+                const response = await fetch(url);
                 const data = await response.json();
+                console.log('Sanity response:', data);
                 return data.result;
             } catch (error) {
                 console.error('Error fetching blog post:', error);
@@ -1013,6 +1038,7 @@
         // Initialize
         async function init() {
             const slug = getSlugFromUrl();
+            console.log('Blog slug from URL:', slug);
 
             if (!slug) {
                 document.getElementById('blogContent').innerHTML = `
@@ -1024,24 +1050,35 @@
                 return;
             }
 
-            const post = await fetchBlogPost(slug);
+            try {
+                const post = await fetchBlogPost(slug);
+                console.log('Fetched post:', post);
 
-            if (!post) {
+                if (!post) {
+                    document.getElementById('blogContent').innerHTML = `
+                        <div class="blog-loading">
+                            <h2>Post not found</h2>
+                            <p>The requested post could not be found.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                currentPost = post;
+
+                if (post.password && post.password.length > 0) {
+                    document.getElementById('passwordScreen').classList.add('active');
+                } else {
+                    renderBlogPost(post);
+                }
+            } catch (error) {
+                console.error('Error loading blog post:', error);
                 document.getElementById('blogContent').innerHTML = `
                     <div class="blog-loading">
-                        <h2>Post not found</h2>
-                        <p>The requested post could not be found.</p>
+                        <h2>Error loading post</h2>
+                        <p>There was an error loading this post. Please try again.</p>
                     </div>
                 `;
-                return;
-            }
-
-            currentPost = post;
-
-            if (post.password && post.password.length > 0) {
-                document.getElementById('passwordScreen').classList.add('active');
-            } else {
-                renderBlogPost(post);
             }
         }
 

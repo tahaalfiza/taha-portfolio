@@ -917,7 +917,7 @@ function renderTestimonials(testimonials) {
     const color = testimonial.color || 'yellow';
 
     const note = document.createElement('div');
-    note.className = `canvas-section floating-note note-${i + 1}`;
+    note.className = `canvas-section floating-note note-${i + 1} draggable-note`;
     note.style.left = pos.left;
     note.style.top = pos.top;
 
@@ -933,6 +933,96 @@ function renderTestimonials(testimonials) {
     `;
 
     canvas.appendChild(note);
+
+    // Add drag functionality
+    makeNoteDraggable(note);
+  });
+}
+
+// Make a testimonial note draggable
+function makeNoteDraggable(note) {
+  let isDragging = false;
+  let startX, startY;
+  let initialLeft, initialTop;
+
+  note.addEventListener('mousedown', (e) => {
+    // Prevent dragging if clicking on a link
+    if (e.target.tagName === 'A') return;
+
+    isDragging = true;
+    note.classList.add('dragging');
+
+    // Get initial position
+    const rect = note.getBoundingClientRect();
+    const canvasRect = note.parentElement.getBoundingClientRect();
+
+    startX = e.clientX;
+    startY = e.clientY;
+
+    // Convert percentage to pixels for smooth dragging
+    initialLeft = rect.left - canvasRect.left;
+    initialTop = rect.top - canvasRect.top;
+
+    // Set position in pixels
+    note.style.left = initialLeft + 'px';
+    note.style.top = initialTop + 'px';
+
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    note.style.left = (initialLeft + dx) + 'px';
+    note.style.top = (initialTop + dy) + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      note.classList.remove('dragging');
+    }
+  });
+
+  // Touch support for mobile
+  note.addEventListener('touchstart', (e) => {
+    if (e.target.tagName === 'A') return;
+
+    isDragging = true;
+    note.classList.add('dragging');
+
+    const touch = e.touches[0];
+    const rect = note.getBoundingClientRect();
+    const canvasRect = note.parentElement.getBoundingClientRect();
+
+    startX = touch.clientX;
+    startY = touch.clientY;
+    initialLeft = rect.left - canvasRect.left;
+    initialTop = rect.top - canvasRect.top;
+
+    note.style.left = initialLeft + 'px';
+    note.style.top = initialTop + 'px';
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+
+    const touch = e.touches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+
+    note.style.left = (initialLeft + dx) + 'px';
+    note.style.top = (initialTop + dy) + 'px';
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    if (isDragging) {
+      isDragging = false;
+      note.classList.remove('dragging');
+    }
   });
 }
 

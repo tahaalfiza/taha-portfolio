@@ -366,6 +366,26 @@ function initCanvas() {
         const section = document.getElementById(`section-${sectionId}`);
         if (!section) return;
 
+        // For home section, adjust scale to show the full card (like resetZoom)
+        if (sectionId === 'home') {
+            const sectionHeight = section.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const padding = 100;
+            const idealScale = (viewportHeight - padding) / sectionHeight;
+            const targetScale = Math.min(1.2, Math.max(0.7, idealScale));
+
+            // Get section position
+            const sectionX = parseFloat(section.style.left) / 100 * 2800;
+            const sectionY = parseFloat(section.style.top) / 100 * 2000;
+
+            // Calculate pan to center section on screen with new scale
+            const targetX = -sectionX * targetScale + window.innerWidth / 2;
+            const targetY = -sectionY * targetScale + window.innerHeight / 2;
+
+            animateToPositionAndScale(targetX, targetY, targetScale);
+            return;
+        }
+
         // Get section position in canvas coordinates (top-left corner)
         const sectionX = parseFloat(section.style.left) / 100 * 2800;
         const sectionY = parseFloat(section.style.top) / 100 * 2000;
@@ -400,6 +420,34 @@ function initCanvas() {
             state.panY = startY + (targetY - startY) * eased;
 
             updateTransform();
+            updateMinimap();
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    function animateToPositionAndScale(targetX, targetY, targetScale) {
+        const startX = state.panX;
+        const startY = state.panY;
+        const startScale = state.scale;
+        const duration = 800;
+        const startTime = performance.now();
+
+        function animate(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 4);
+
+            state.panX = startX + (targetX - startX) * eased;
+            state.panY = startY + (targetY - startY) * eased;
+            state.scale = startScale + (targetScale - startScale) * eased;
+
+            updateTransform();
+            updateZoomLevel();
             updateMinimap();
 
             if (progress < 1) {

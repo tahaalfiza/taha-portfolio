@@ -2440,18 +2440,85 @@ a {
     background: linear-gradient(180deg, #777, #666);
 }
 
-/* Scroll indicator at bottom of scrollable areas */
-.notes-items::after,
-.notes-preview-content::after {
-    content: '';
+/* Drag Scroll Handle - Always Visible */
+.drag-scroll-handle {
     position: sticky;
-    bottom: 0;
-    left: 0;
+    top: 0;
     right: 0;
-    height: 30px;
-    background: linear-gradient(to top, var(--bg-card-solid) 0%, transparent 100%);
-    pointer-events: none;
-    display: block;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    margin: 0 0 16px 0;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    border: 2px solid #ddd;
+    border-radius: 24px;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drag-scroll-handle:hover {
+    background: linear-gradient(135deg, #e8e8e8 0%, #ddd 100%);
+    border-color: #ccc;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.drag-scroll-handle:active {
+    cursor: grabbing;
+    background: linear-gradient(135deg, #ddd 0%, #ccc 100%);
+    transform: scale(0.98);
+}
+
+.drag-handle-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.drag-handle-icon svg {
+    width: 18px;
+    height: 18px;
+    color: #666;
+}
+
+.drag-scroll-handle span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .drag-scroll-handle {
+    background: linear-gradient(135deg, #333 0%, #2a2a2a 100%);
+    border-color: #444;
+}
+
+[data-theme="dark"] .drag-scroll-handle:hover {
+    background: linear-gradient(135deg, #3a3a3a 0%, #333 100%);
+    border-color: #555;
+}
+
+[data-theme="dark"] .drag-handle-icon {
+    background: #444;
+}
+
+[data-theme="dark"] .drag-handle-icon svg {
+    color: #aaa;
+}
+
+[data-theme="dark"] .drag-scroll-handle span {
+    color: #aaa;
 }
 
 .notes-loading {
@@ -2734,88 +2801,9 @@ a {
     padding: 0;
 }
 
-/* Scroll Hint - More prominent */
+/* Legacy scroll-hint (hidden, replaced by drag-scroll-handle) */
 .scroll-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 16px;
-    margin-top: 16px;
-    background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
-    color: #666;
-    font-size: 13px;
-    font-weight: 500;
-    border-radius: 8px;
-    animation: pulse-hint 2s infinite;
-    cursor: grab;
-}
-
-.scroll-hint:active {
-    cursor: grabbing;
-}
-
-.scroll-hint svg {
-    width: 18px;
-    height: 18px;
-    opacity: 0.8;
-    animation: bounce-arrow 1.5s infinite;
-}
-
-@keyframes pulse-hint {
-    0%, 100% {
-        opacity: 0.8;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.02);
-    }
-}
-
-@keyframes bounce-arrow {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(4px);
-    }
-    60% {
-        transform: translateY(2px);
-    }
-}
-
-[data-theme="dark"] .scroll-hint {
-    background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
-    color: #999;
-}
-
-/* Scroll drag indicator on scrollable containers */
-.notes-items,
-.notes-preview-content {
-    position: relative;
-}
-
-/* Visual drag handle indicator */
-.notes-items::before,
-.notes-preview-content::before {
-    content: '⋮⋮';
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    color: #bbb;
-    letter-spacing: 2px;
-    opacity: 0.5;
-    pointer-events: none;
-    z-index: 1;
-    transition: opacity 0.2s;
-}
-
-.notes-items:hover::before,
-.notes-preview-content:hover::before {
-    opacity: 0.8;
+    display: none;
 }
 
 /* Read More Button */

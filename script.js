@@ -1073,18 +1073,22 @@ window.selectListBlogPost = function(postId) {
                 </a>
             </div>
             <div class="notes-preview-content">
+                <!-- Drag Handle - Always Visible -->
+                <div class="drag-scroll-handle" title="Drag to scroll">
+                    <div class="drag-handle-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v8M8 12h8"/>
+                        </svg>
+                    </div>
+                    <span>Drag</span>
+                </div>
                 <div class="notes-preview-header">
                     <h1 class="notes-preview-title">${post.title}</h1>
                     <div class="notes-preview-meta">${dateStr}${post.category ? ` • ${post.category}` : ''}</div>
                 </div>
                 <div class="notes-preview-body">
                     ${contentHtml}
-                </div>
-                <div class="scroll-hint">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 5v14M5 12l7 7 7-7"/>
-                    </svg>
-                    <span>Drag to scroll</span>
                 </div>
             </div>
         `;

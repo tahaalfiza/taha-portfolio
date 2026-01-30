@@ -520,6 +520,29 @@ function renderAboutSection(aboutInfo, experiences) {
     // Create the bio HTML with inline elements
     bioEl.innerHTML = aboutInfo.shortBio;
   }
+
+  // Render experience preview (3 most recent)
+  const previewContainer = document.getElementById('experiencePreview');
+  if (previewContainer && experiences.length > 0) {
+    const recentExperiences = experiences.slice(0, 3);
+    previewContainer.innerHTML = recentExperiences.map(exp => {
+      // Company logo
+      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 80, 90) : '';
+      const logoHtml = logoUrl
+        ? `<div class="exp-preview-logo"><img src="${logoUrl}" alt="${exp.company}"></div>`
+        : `<div class="exp-preview-logo exp-preview-logo-placeholder"><span>${exp.company ? exp.company.charAt(0) : 'C'}</span></div>`;
+
+      return `
+        <div class="exp-preview-item">
+          ${logoHtml}
+          <div class="exp-preview-info">
+            <div class="exp-preview-role">${exp.role}</div>
+            <div class="exp-preview-company">${exp.company}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 // Render About overlay content

@@ -642,6 +642,9 @@ function initListViewContent() {
     // Always try to populate if data is available (retry on each toggle)
     populateListView();
 
+    // Initialize list blog search
+    initListBlogSearch();
+
     // If data isn't loaded yet, wait for it
     if (!listViewInitialized && (!window.projectsData || window.projectsData.length === 0)) {
         // Check again after a short delay (Sanity data might still be loading)
@@ -766,27 +769,44 @@ function populateListView() {
         }
     }
 
-    // Populate blog posts (same notes style as canvas)
+    // Populate blog posts (same notes style as canvas - using note-item class)
     if (window.blogPostsData && window.blogPostsData.length > 0) {
         const blogNotesList = document.getElementById('listBlogNotesList');
         const blogCount = document.getElementById('listBlogCount');
         if (blogNotesList) {
             blogNotesList.innerHTML = window.blogPostsData.map((post, index) => {
-                const dateStr = post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
-                const excerpt = post.excerpt || '';
+                const dateStr = post.publishedAt
+                    ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                      })
+                    : '';
+
+                // Get thumbnail image if available (same as canvas)
+                const thumbUrl = post.mainImage ? window.sanityImageUrl?.(post.mainImage, 100, 80) : null;
+                const thumbHtml = thumbUrl
+                    ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
+                    : `<div class="note-item-thumb-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                          <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                      </div>`;
+
                 return `
-                    <div class="notes-item ${index === 0 ? 'active' : ''}" data-blog-index="${index}" onclick="selectListBlogPost(${index})">
-                        <div class="notes-item-title">${post.title}</div>
-                        <div class="notes-item-meta">
-                            <span class="notes-item-date">${dateStr}</span>
+                    <div class="note-item ${index === 0 ? 'active' : ''}" data-post-id="${post._id}" onclick="selectListBlogPost('${post._id}')">
+                        <div class="note-item-info">
+                            <div class="note-item-title">${post.title}</div>
+                            <div class="note-item-date">${dateStr}</div>
                         </div>
-                        <div class="notes-item-preview">${excerpt.substring(0, 60)}...</div>
+                        ${thumbHtml}
                     </div>
                 `;
             }).join('');
             // Show first post in preview
             if (window.blogPostsData.length > 0) {
-                selectListBlogPost(0);
+                selectListBlogPost(window.blogPostsData[0]._id);
             }
         }
         if (blogCount) {
@@ -894,35 +914,57 @@ window.filterListProjects = function(category) {
     }).join('');
 };
 
-// Select blog post in list view (same as canvas)
-window.selectListBlogPost = function(index) {
-    if (!window.blogPostsData || !window.blogPostsData[index]) return;
+// Select blog post in list view (same as canvas - using post ID)
+window.selectListBlogPost = function(postId) {
+    const post = window.blogPostsData?.find(p => p._id === postId);
+    if (!post) return;
 
-    const post = window.blogPostsData[index];
     const preview = document.getElementById('listBlogPreview');
-    const items = document.querySelectorAll('#listBlogNotesList .notes-item');
+    const items = document.querySelectorAll('#listBlogNotesList .note-item');
 
-    // Update active state
-    items.forEach((item, i) => {
-        item.classList.toggle('active', i === index);
+    // Update active state in list
+    items.forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.postId === postId) {
+            item.classList.add('active');
+        }
     });
 
     if (preview) {
-        const imageUrl = post.mainImage
-            ? window.sanityImageUrl?.(post.mainImage, 600, 85) || ''
-            : '';
         const dateStr = post.publishedAt
-            ? new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })
             : '';
+
+        // Convert Sanity block content to HTML (same as canvas)
+        const contentHtml = window.renderBlockContentForList ? window.renderBlockContentForList(post.content) : `<p>${post.excerpt || 'No content available.'}</p>`;
+
+        // Build URL for single blog page
         const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
 
         preview.innerHTML = `
+            <div class="notes-preview-toolbar">
+                <a href="${blogUrl}" target="_blank" class="blog-open-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    Open
+                </a>
+            </div>
             <div class="notes-preview-content">
-                ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" class="preview-image">` : ''}
-                <h2 class="preview-title">${post.title}</h2>
-                <div class="preview-meta">${dateStr}</div>
-                <p class="preview-excerpt">${post.excerpt || ''}</p>
-                <a href="${blogUrl}" target="_blank" class="preview-read-more">Read Full Post →</a>
+                <div class="notes-preview-header">
+                    <h1 class="notes-preview-title">${post.title}</h1>
+                    <div class="notes-preview-meta">${dateStr}${post.category ? ` • ${post.category}` : ''}</div>
+                </div>
+                <div class="notes-preview-body">
+                    ${contentHtml}
+                </div>
             </div>
         `;
     }
@@ -936,6 +978,146 @@ window.blogPostsData = [];
 window.experiencesData = [];
 window.testimonialsData = [];
 window.populateListView = populateListView;
+
+// Render block content for list view (same as canvas)
+window.renderBlockContentForList = function(content) {
+    if (!content || !Array.isArray(content)) {
+        return '<p>No content available.</p>';
+    }
+
+    return content.map(block => {
+        // Handle different block types
+        if (block._type === 'block') {
+            const style = block.style || 'normal';
+            const text = renderBlockTextForList(block.children);
+
+            switch (style) {
+                case 'h2':
+                    return `<h2>${text}</h2>`;
+                case 'h3':
+                    return `<h3>${text}</h3>`;
+                case 'blockquote':
+                    return `<blockquote>${text}</blockquote>`;
+                default:
+                    return `<p>${text}</p>`;
+            }
+        }
+
+        if (block._type === 'image' && window.sanityImageUrl) {
+            const url = window.sanityImageUrl(block, 800, 90);
+            const caption = block.caption || '';
+            return url
+                ? `<figure><img src="${url}" alt="${caption}"><figcaption>${caption}</figcaption></figure>`
+                : '';
+        }
+
+        if (block._type === 'code' || block._type === 'codeBlock') {
+            return `<pre><code class="language-${block.language || 'javascript'}">${escapeHtmlForList(block.code || '')}</code></pre>`;
+        }
+
+        return '';
+    }).join('');
+};
+
+// Render block text with marks (bold, italic, links)
+function renderBlockTextForList(children) {
+    if (!children || !Array.isArray(children)) return '';
+
+    return children.map(child => {
+        let text = child.text || '';
+
+        if (child.marks && child.marks.length > 0) {
+            child.marks.forEach(mark => {
+                if (mark === 'strong') {
+                    text = `<strong>${text}</strong>`;
+                } else if (mark === 'em') {
+                    text = `<em>${text}</em>`;
+                } else if (mark === 'code') {
+                    text = `<code>${text}</code>`;
+                }
+            });
+        }
+
+        return text;
+    }).join('');
+}
+
+// Escape HTML for code blocks
+function escapeHtmlForList(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Initialize list view blog search
+function initListBlogSearch() {
+    const searchInput = document.getElementById('listBlogSearch');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const blogNotesList = document.getElementById('listBlogNotesList');
+        const blogCount = document.getElementById('listBlogCount');
+
+        if (!window.blogPostsData || window.blogPostsData.length === 0) return;
+
+        // Filter posts
+        const filtered = query === ''
+            ? window.blogPostsData
+            : window.blogPostsData.filter(post =>
+                post.title.toLowerCase().includes(query) ||
+                (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
+                (post.category && post.category.toLowerCase().includes(query))
+            );
+
+        // Re-render filtered posts
+        if (blogNotesList) {
+            if (filtered.length === 0) {
+                blogNotesList.innerHTML = '<div class="notes-loading">No posts found</div>';
+            } else {
+                blogNotesList.innerHTML = filtered.map((post, index) => {
+                    const dateStr = post.publishedAt
+                        ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                          })
+                        : '';
+
+                    // Get thumbnail image if available (same as canvas)
+                    const thumbUrl = post.mainImage ? window.sanityImageUrl?.(post.mainImage, 100, 80) : null;
+                    const thumbHtml = thumbUrl
+                        ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
+                        : `<div class="note-item-thumb-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                              <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                          </div>`;
+
+                    return `
+                        <div class="note-item ${index === 0 ? 'active' : ''}" data-post-id="${post._id}" onclick="selectListBlogPost('${post._id}')">
+                            <div class="note-item-info">
+                                <div class="note-item-title">${post.title}</div>
+                                <div class="note-item-date">${dateStr}</div>
+                            </div>
+                            ${thumbHtml}
+                        </div>
+                    `;
+                }).join('');
+
+                // Select first filtered post
+                if (filtered.length > 0) {
+                    selectListBlogPost(filtered[0]._id);
+                }
+            }
+        }
+
+        if (blogCount) {
+            blogCount.textContent = filtered.length;
+        }
+    });
+}
 
 /* ==========================================
    MINIMAP - Draggable and accurate

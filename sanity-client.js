@@ -526,19 +526,21 @@ function renderAboutSection(aboutInfo, experiences) {
   if (previewContainer && experiences.length > 0) {
     const recentExperiences = experiences.slice(0, 3);
     previewContainer.innerHTML = recentExperiences.map(exp => {
-      // Company logo
-      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 80, 90) : '';
-      const logoHtml = logoUrl
-        ? `<div class="exp-preview-logo"><img src="${logoUrl}" alt="${exp.company}"></div>`
-        : `<div class="exp-preview-logo exp-preview-logo-placeholder"><span>${exp.company ? exp.company.charAt(0) : 'C'}</span></div>`;
+      // Build date range
+      const dateRange = exp.endYear
+        ? `${exp.startYear} — ${exp.endYear}`
+        : `${exp.startYear} — Now`;
+
+      // Build meta (date | location)
+      const metaParts = [];
+      if (dateRange) metaParts.push(dateRange);
+      if (exp.location) metaParts.push(exp.location);
+      const metaText = metaParts.join(' | ');
 
       return `
         <div class="exp-preview-item">
-          ${logoHtml}
-          <div class="exp-preview-info">
-            <div class="exp-preview-role">${exp.role}</div>
-            <div class="exp-preview-company">${exp.company}</div>
-          </div>
+          <h4 class="exp-preview-title"><strong>${exp.role}</strong> @ ${exp.company}</h4>
+          <p class="exp-preview-meta">${metaText}</p>
         </div>
       `;
     }).join('');

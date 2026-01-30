@@ -822,11 +822,43 @@ function populateListView() {
     }
 
     // Populate blog posts (same notes style as canvas - using note-item class)
-    if (window.blogPostsData && window.blogPostsData.length > 0) {
-        const blogNotesList = document.getElementById('listBlogNotesList');
-        const blogCount = document.getElementById('listBlogCount');
+    const blogNotesList = document.getElementById('listBlogNotesList');
+    const blogCount = document.getElementById('listBlogCount');
+    const blogPreview = document.getElementById('listBlogPreview');
+
+    if (!window.blogPostsData || window.blogPostsData.length === 0) {
+        // Show empty state placeholder
         if (blogNotesList) {
-            blogNotesList.innerHTML = window.blogPostsData.map((post, index) => {
+            blogNotesList.innerHTML = `
+                <div class="notes-empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                    <p>Will post soon</p>
+                    <span>New content coming your way</span>
+                </div>
+            `;
+        }
+        if (blogPreview) {
+            blogPreview.innerHTML = `
+                <div class="notes-empty-state" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <p>Stay tuned</p>
+                    <span>Exciting posts are on the way</span>
+                </div>
+            `;
+        }
+        if (blogCount) {
+            blogCount.textContent = '0';
+        }
+    } else if (blogNotesList) {
+        blogNotesList.innerHTML = window.blogPostsData.map((post, index) => {
                 const dateStr = post.publishedAt
                     ? new Date(post.publishedAt).toLocaleDateString('en-US', {
                         day: '2-digit',
@@ -855,11 +887,10 @@ function populateListView() {
                         ${thumbHtml}
                     </div>
                 `;
-            }).join('');
-            // Show first post in preview
-            if (window.blogPostsData.length > 0) {
-                selectListBlogPost(window.blogPostsData[0]._id);
-            }
+        }).join('');
+        // Show first post in preview
+        if (window.blogPostsData.length > 0) {
+            selectListBlogPost(window.blogPostsData[0]._id);
         }
         if (blogCount) {
             blogCount.textContent = window.blogPostsData.length;

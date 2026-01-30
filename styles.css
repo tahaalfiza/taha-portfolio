@@ -2374,6 +2374,36 @@ a {
     font-size: 12px;
 }
 
+/* Empty State for Notes/Blog */
+.notes-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.notes-empty-state svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.notes-empty-state p {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.notes-empty-state span {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
 /* Individual Note Item in List - Title/Date on left, Image on right */
 .note-item {
     display: flex;

@@ -264,7 +264,15 @@ function renderBlogPosts(posts) {
   if (!listEl) return;
 
   if (posts.length === 0) {
-    listEl.innerHTML = '<div class="notes-loading">No posts yet</div>';
+    listEl.innerHTML = `
+      <div class="notes-empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+        </svg>
+        <p>Will post soon</p>
+        <span>New content coming your way</span>
+      </div>
+    `;
     return;
   }
 

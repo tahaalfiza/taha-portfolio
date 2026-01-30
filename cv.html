@@ -375,56 +375,12 @@
             return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
         }
 
-        // Fallback CV data (used when Sanity data is unavailable)
+        // Empty fallback - CV will only show actual Sanity data
         const fallbackData = {
-            about: {
-                name: 'Taha Alfiza',
-                title: 'Brand & Product Designer',
-                location: 'Istanbul, Turkey',
-                bio: 'Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Expertise in creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions. Specialized in UI/UX design, brand strategy, and visual design systems.'
-            },
-            contact: {
-                email: 'taha.alfiza@gmail.com',
-                linkedin: 'linkedin.com/in/tahaalfiza',
-                location: 'Istanbul, Turkey'
-            },
-            experience: [
-                {
-                    role: 'Senior Brand & Product Designer',
-                    company: 'Freelance',
-                    location: 'Istanbul, Turkey',
-                    startDate: '2019-01-01',
-                    current: true,
-                    description: 'Leading brand identity and product design projects for clients across MENA & Gulf regions.',
-                    highlights: [
-                        'Designed and delivered 50+ brand identity projects',
-                        'Created UI/UX designs for web and mobile applications',
-                        'Collaborated with international clients on digital product strategy'
-                    ]
-                },
-                {
-                    role: 'Product Designer',
-                    company: 'Design Agency',
-                    location: 'Dubai, UAE',
-                    startDate: '2015-01-01',
-                    endDate: '2018-12-01',
-                    description: 'Worked on enterprise product design and brand development.',
-                    highlights: [
-                        'Led design for enterprise SaaS products',
-                        'Established design systems and component libraries',
-                        'Mentored junior designers'
-                    ]
-                }
-            ],
-            education: [
-                {
-                    degree: 'Bachelor',
-                    field: 'Graphic Design',
-                    institution: 'University of Baghdad',
-                    startDate: '2010-01-01',
-                    endDate: '2014-01-01'
-                }
-            ]
+            about: {},
+            contact: {},
+            experience: [],
+            education: []
         };
 
         // Fetch all CV data from Sanity
@@ -494,19 +450,11 @@
             const linkedin = contact.linkedinUrl || contact.linkedin || about.linkedin || 'linkedin.com/in/tahaalfiza';
             const bio = about.fullBio || about.shortBio || about.bio || 'Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Expertise in creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions.';
 
-            // Skills from Sanity or fallback
+            // Skills from Sanity only - no fake fallback data
             let skills = {};
             if (about.skills && about.skills.length > 0) {
-                // Group all skills together from CMS
                 skills = {
                     'Skills': about.skills.join(', ')
-                };
-            } else {
-                // Fallback skills
-                skills = {
-                    'Design': 'Brand Identity, UI/UX Design, Product Design, Visual Design, Typography, Design Systems',
-                    'Tools': 'Figma, Adobe Creative Suite, Sketch, Framer, Webflow',
-                    'Other': 'Project Management, Client Communication, Design Strategy, Prototyping'
                 };
             }
 

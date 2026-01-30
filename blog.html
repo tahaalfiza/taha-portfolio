@@ -712,17 +712,10 @@
             return params.get('slug');
         }
 
-        // Build Sanity URL with optional params
-        function sanityUrl(query, params = {}) {
+        // Build Sanity URL
+        function sanityUrl(query) {
             const encodedQuery = encodeURIComponent(query);
-            let url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
-
-            // Add query parameters (Sanity expects $param="value" format)
-            Object.keys(params).forEach(key => {
-                url += `&$${key}=%22${encodeURIComponent(params[key])}%22`;
-            });
-
-            return url;
+            return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
         }
 
         // Build Sanity image URL
@@ -739,29 +732,20 @@
             const decodedSlug = decodeURIComponent(slug);
             console.log('Fetching post with slug:', decodedSlug);
 
-            const query = `*[_type == "blogPost" && slug.current == $slug][0] {
+            // Use string interpolation directly in the query (simpler approach)
+            const query = `*[_type == "blogPost" && slug.current == "${decodedSlug}"][0] {
                 _id,
                 title,
                 slug,
                 publishedAt,
                 excerpt,
-                content[] {
-                    ...,
-                    markDefs[] {
-                        ...,
-                        _type == "link" => {
-                            _key,
-                            _type,
-                            href
-                        }
-                    }
-                },
+                content,
                 category,
                 mainImage,
                 password
             }`;
 
-            const url = sanityUrl(query, { slug: decodedSlug });
+            const url = sanityUrl(query);
             console.log('Sanity query URL:', url);
 
             try {

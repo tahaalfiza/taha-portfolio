@@ -1669,3 +1669,24 @@ if (document.readyState === 'loading') {
 } else {
   initSanityContent();
 }
+
+// Prevent scroll events inside notes-app-window from affecting canvas pan
+document.addEventListener('DOMContentLoaded', () => {
+  // Add wheel event listener to all scrollable areas inside notes app
+  document.querySelectorAll('.notes-items, .notes-preview-content').forEach(el => {
+    el.addEventListener('wheel', (e) => {
+      const { scrollTop, scrollHeight, clientHeight } = el;
+      const isAtTop = scrollTop === 0;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      // Only stop propagation if we're not at the edges, or if scrolling away from edge
+      if (e.deltaY < 0 && !isAtTop) {
+        e.stopPropagation();
+      } else if (e.deltaY > 0 && !isAtBottom) {
+        e.stopPropagation();
+      } else if (!isAtTop && !isAtBottom) {
+        e.stopPropagation();
+      }
+    }, { passive: true });
+  });
+});

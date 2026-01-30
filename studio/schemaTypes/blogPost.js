@@ -11,13 +11,14 @@ export default {
     },
     {
       name: 'slug',
-      title: 'Slug',
+      title: 'Slug (URL)',
       type: 'slug',
       options: {
         source: 'title',
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+      description: 'Click "Generate" to create from title. Full URL: blog.html?slug=[this-value]',
     },
     {
       name: 'publishedAt',

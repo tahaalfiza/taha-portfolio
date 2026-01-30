@@ -661,47 +661,52 @@ function populateListView() {
         }
     }
 
-    // Populate projects (show first 4 with finder-style folders)
+    // Populate projects (same folder style as canvas finder)
     if (window.projectsData && window.projectsData.length > 0) {
         const projectsGrid = document.getElementById('listProjectsGrid');
+        const finderCount = document.getElementById('listFinderCount');
         if (projectsGrid) {
-            const displayProjects = window.projectsData.slice(0, 4);
-            projectsGrid.innerHTML = displayProjects.map((project, index) => {
+            projectsGrid.innerHTML = window.projectsData.map((project, index) => {
                 const imageUrl = project.images && project.images[0]
                     ? window.sanityImageUrl?.(project.images[0], 300, 85) || ''
                     : '';
                 return `
-                    <div class="project-folder" onclick="openProjectOverlay(${index})">
-                        ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : '<div style="height:100px;background:var(--bg-hover);"></div>'}
-                        <div class="project-folder-name">${project.title || 'Project'}</div>
+                    <div class="folder-item" onclick="openProjectOverlay(${index})">
+                        <div class="folder-thumbnail">
+                            ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : ''}
+                        </div>
+                        <span class="folder-name">${project.title || 'Project'}</span>
                     </div>
                 `;
             }).join('');
         }
+        if (finderCount) {
+            finderCount.textContent = window.projectsData.length + ' items';
+        }
     }
 
-    // Populate blog posts (show first 3 with notes-style cards)
+    // Populate blog posts (same notes style as canvas)
     if (window.blogPostsData && window.blogPostsData.length > 0) {
-        const blogGrid = document.getElementById('listBlogGrid');
+        const blogNotesList = document.getElementById('listBlogNotesList');
         const blogCount = document.getElementById('listBlogCount');
-        if (blogGrid) {
-            const displayPosts = window.blogPostsData.slice(0, 3);
-            blogGrid.innerHTML = displayPosts.map(post => {
-                const imageUrl = post.mainImage
-                    ? window.sanityImageUrl?.(post.mainImage, 400, 85) || ''
-                    : '';
-                const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+        if (blogNotesList) {
+            blogNotesList.innerHTML = window.blogPostsData.map((post, index) => {
                 const dateStr = post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+                const excerpt = post.excerpt || '';
                 return `
-                    <a href="${blogUrl}" class="blog-card" target="_blank">
-                        ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" loading="lazy">` : '<div style="height:100px;background:var(--bg-hover);"></div>'}
-                        <div class="blog-card-content">
-                            <div class="blog-card-title">${post.title}</div>
-                            <div class="blog-card-date">${dateStr}</div>
+                    <div class="notes-item ${index === 0 ? 'active' : ''}" data-blog-index="${index}" onclick="selectListBlogPost(${index})">
+                        <div class="notes-item-title">${post.title}</div>
+                        <div class="notes-item-meta">
+                            <span class="notes-item-date">${dateStr}</span>
                         </div>
-                    </a>
+                        <div class="notes-item-preview">${excerpt.substring(0, 60)}...</div>
+                    </div>
                 `;
             }).join('');
+            // Show first post in preview
+            if (window.blogPostsData.length > 0) {
+                selectListBlogPost(0);
+            }
         }
         if (blogCount) {
             blogCount.textContent = window.blogPostsData.length;
@@ -726,6 +731,40 @@ function populateListView() {
         }
     }
 }
+
+// Select blog post in list view (same as canvas)
+window.selectListBlogPost = function(index) {
+    if (!window.blogPostsData || !window.blogPostsData[index]) return;
+
+    const post = window.blogPostsData[index];
+    const preview = document.getElementById('listBlogPreview');
+    const items = document.querySelectorAll('#listBlogNotesList .notes-item');
+
+    // Update active state
+    items.forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+    });
+
+    if (preview) {
+        const imageUrl = post.mainImage
+            ? window.sanityImageUrl?.(post.mainImage, 600, 85) || ''
+            : '';
+        const dateStr = post.publishedAt
+            ? new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            : '';
+        const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+
+        preview.innerHTML = `
+            <div class="notes-preview-content">
+                ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" class="preview-image">` : ''}
+                <h2 class="preview-title">${post.title}</h2>
+                <div class="preview-meta">${dateStr}</div>
+                <p class="preview-excerpt">${post.excerpt || ''}</p>
+                <a href="${blogUrl}" target="_blank" class="preview-read-more">Read Full Post →</a>
+            </div>
+        `;
+    }
+};
 
 // Make data and functions available globally for list view
 window.aboutInfo = null;

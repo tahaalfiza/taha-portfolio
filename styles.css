@@ -419,301 +419,82 @@ a {
     display: block;
 }
 
-/* Block Container */
+/* Block Container - Full width */
 .block-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 100px 32px 60px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 100px 40px 60px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 32px;
 }
 
-/* Block Rows */
+/* Block Rows - Full width */
 .block-row {
     display: flex;
     gap: 24px;
+    width: 100%;
 }
 
 .block-row-2col > .block {
     flex: 1;
 }
 
-/* ===== HOME BLOCK - Uses hero-section styling ===== */
+/* ===== HOME BLOCK - Same as canvas hero ===== */
 .list-view .block-home {
+    width: 100%;
+    min-width: auto;
     background: var(--bg-card);
     backdrop-filter: blur(30px);
     border: 1px solid var(--border-light);
     border-radius: 24px;
     box-shadow: 0 2px 8px var(--shadow-color);
     padding: 60px 40px;
-    text-align: center;
 }
 
 .list-view .block-home .hero-logo {
-    margin: 0 auto 24px;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--text-primary);
 }
 
 .list-view .block-home .hero-logo svg {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
 }
 
-.list-view .block-home .hero-greeting {
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.list-view .block-home .hero-title {
-    margin-bottom: 16px;
-}
-
-.list-view .block-home .title-line {
-    display: block;
-    font-size: 56px;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -2px;
-}
-
-.list-view .block-home .title-line.accent {
-    color: var(--accent-primary);
-}
-
-.list-view .block-home .hero-subtitle {
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-bottom: 32px;
-}
-
-.list-view .block-home .hero-cta {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-}
-
-/* ===== ABOUT BLOCK - Uses about-card-modern styling ===== */
+/* ===== ABOUT BLOCK - Same as canvas about-card-modern ===== */
 .list-view .block-about {
-    background: var(--bg-card);
-    backdrop-filter: blur(30px);
-    border: 1px solid var(--border-light);
-    border-radius: 24px;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    width: 100%;
+    max-width: 100%;
     padding: 40px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.list-view .block-about:hover {
-    box-shadow: 0 4px 16px var(--shadow-color);
-}
-
-.list-view .block-about .about-photo-topleft {
-    width: 100px;
-    height: 100px;
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.list-view .block-about .about-photo-topleft img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    filter: grayscale(100%);
-    transition: filter 0.4s ease;
-}
-
-.list-view .block-about:hover .about-photo-topleft img {
-    filter: grayscale(0%);
-}
-
-.list-view .block-about .about-bio-text {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 12px;
-}
-
-.list-view .block-about .about-cta-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: transparent;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    margin-top: 16px;
-}
-
-.list-view .block-about .about-cta-outline:hover {
-    background: var(--bg-hover);
-    border-color: var(--accent-primary);
-}
-
-/* ===== PROJECTS BLOCK - Uses finder-window styling ===== */
+/* ===== PROJECTS BLOCK - Same as canvas finder-window ===== */
 .list-view .block-projects {
-    background: var(--bg-card);
-    backdrop-filter: blur(30px);
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    overflow: hidden;
-}
-
-.list-view .block-projects .finder-titlebar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: var(--bg-hover);
-    border-bottom: 1px solid var(--border-light);
-}
-
-.list-view .block-projects .finder-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.list-view .block-projects .finder-btn {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-
-.list-view .block-projects .finder-btn.red { background: #ff5f56; }
-.list-view .block-projects .finder-btn.yellow { background: #ffbd2e; }
-.list-view .block-projects .finder-btn.green { background: #27ca40; }
-
-.list-view .block-projects .finder-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.list-view .block-projects .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 20px;
-}
-
-.list-view .block-projects .project-folder {
-    background: var(--bg-hover);
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.list-view .block-projects .project-folder:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.list-view .block-projects .project-folder img {
     width: 100%;
-    aspect-ratio: 16/10;
-    object-fit: cover;
+    max-width: 100%;
 }
 
-.list-view .block-projects .project-folder-name {
-    padding: 12px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-primary);
-    text-align: center;
+.list-view .block-projects .finder-body {
+    min-height: 350px;
 }
 
-/* ===== BLOG BLOCK - Uses notes-app-window styling ===== */
+.list-view .block-projects .folders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+/* ===== BLOG BLOCK - Same as canvas notes-app-window ===== */
 .list-view .block-blogs {
-    background: var(--bg-card);
-    backdrop-filter: blur(30px);
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    overflow: hidden;
-}
-
-.list-view .block-blogs .notes-titlebar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: var(--bg-hover);
-    border-bottom: 1px solid var(--border-light);
-}
-
-.list-view .block-blogs .notes-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.list-view .block-blogs .notes-btn {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-
-.list-view .block-blogs .notes-btn.red { background: #ff5f56; }
-.list-view .block-blogs .notes-btn.yellow { background: #ffbd2e; }
-.list-view .block-blogs .notes-btn.green { background: #27ca40; }
-
-.list-view .block-blogs .notes-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.list-view .block-blogs .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    padding: 20px;
-}
-
-.list-view .block-blogs .blog-card {
-    background: var(--bg-hover);
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.list-view .block-blogs .blog-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.list-view .block-blogs .blog-card img {
     width: 100%;
-    aspect-ratio: 16/10;
-    object-fit: cover;
+    max-width: 100%;
 }
 
-.list-view .block-blogs .blog-card-content {
-    padding: 12px;
-}
-
-.list-view .block-blogs .blog-card-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
-
-.list-view .block-blogs .blog-card-date {
-    font-size: 12px;
-    color: var(--text-muted);
+.list-view .block-blogs .notes-body {
+    min-height: 350px;
 }
 
 /* ===== TESTIMONIALS - Uses sticky-note styling ===== */

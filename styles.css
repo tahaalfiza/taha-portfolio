@@ -2440,85 +2440,91 @@ a {
     background: linear-gradient(180deg, #777, #666);
 }
 
-/* Drag Scroll Handle - Always Visible */
+/* Notes Preview needs position relative for the drag handle */
+.notes-preview {
+    position: relative;
+}
+
+/* Drag Scroll Handle - Fixed on right side, always visible */
 .drag-scroll-handle {
-    position: sticky;
-    top: 0;
-    right: 0;
-    z-index: 10;
+    position: absolute !important;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 8px 16px;
-    margin: 0 0 16px 0;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-    border: 2px solid #ddd;
-    border-radius: 24px;
+    gap: 8px;
+    padding: 12px 8px;
+    background: linear-gradient(135deg, #007aff 0%, #0056b3 100%);
+    border: none;
+    border-radius: 20px;
     cursor: grab;
     user-select: none;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4);
 }
 
 .drag-scroll-handle:hover {
-    background: linear-gradient(135deg, #e8e8e8 0%, #ddd 100%);
-    border-color: #ccc;
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #0066d6 0%, #004499 100%);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.5);
 }
 
 .drag-scroll-handle:active {
     cursor: grabbing;
-    background: linear-gradient(135deg, #ddd 0%, #ccc 100%);
-    transform: scale(0.98);
+    background: linear-gradient(135deg, #0056b3 0%, #003d80 100%);
+    transform: translateY(-50%) scale(0.95);
 }
 
 .drag-handle-icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .drag-handle-icon svg {
-    width: 18px;
-    height: 18px;
-    color: #666;
+    width: 22px;
+    height: 22px;
+    color: #fff;
 }
 
 .drag-scroll-handle span {
-    font-size: 12px;
-    font-weight: 600;
-    color: #555;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
 }
 
 [data-theme="dark"] .drag-scroll-handle {
-    background: linear-gradient(135deg, #333 0%, #2a2a2a 100%);
-    border-color: #444;
+    background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+    box-shadow: 0 4px 16px rgba(10, 132, 255, 0.4);
 }
 
 [data-theme="dark"] .drag-scroll-handle:hover {
-    background: linear-gradient(135deg, #3a3a3a 0%, #333 100%);
-    border-color: #555;
+    background: linear-gradient(135deg, #0077e6 0%, #0055b3 100%);
+    box-shadow: 0 6px 20px rgba(10, 132, 255, 0.5);
 }
 
 [data-theme="dark"] .drag-handle-icon {
-    background: #444;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 [data-theme="dark"] .drag-handle-icon svg {
-    color: #aaa;
+    color: #fff;
 }
 
 [data-theme="dark"] .drag-scroll-handle span {
-    color: #aaa;
+    color: #fff;
 }
 
 .notes-loading {
@@ -2640,6 +2646,7 @@ a {
     flex-direction: column;
     overflow: hidden;
     min-height: 0; /* Important for flex child scrolling */
+    position: relative; /* Required for absolute drag handle */
 }
 
 .notes-preview-empty {

@@ -240,9 +240,13 @@
     <script>
         function goBack(e) {
             e.preventDefault();
-            if (window.history.length > 1 && document.referrer) {
+            // Check if user came from our site
+            const isFromOurSite = document.referrer && document.referrer.includes(window.location.hostname);
+            if (window.history.length > 1 && isFromOurSite) {
+                // Use history.back() - browser restores from cache (faster)
                 window.history.back();
             } else {
+                // Direct visit - go to homepage
                 window.location.href = '/';
             }
         }

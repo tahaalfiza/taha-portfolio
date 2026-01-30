@@ -441,6 +441,17 @@ a {
     flex: 1;
 }
 
+/* About + Projects row - About smaller, Projects larger */
+.block-row-2col > .block-about {
+    flex: 0 0 35%;
+    max-width: 35%;
+}
+
+.block-row-2col > .block-projects {
+    flex: 0 0 calc(65% - 24px);
+    max-width: calc(65% - 24px);
+}
+
 /* ===== HOME BLOCK - Same as canvas hero ===== */
 .list-view .block-home {
     width: 100%;

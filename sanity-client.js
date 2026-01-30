@@ -504,63 +504,20 @@ function getIconSvg(iconName) {
 
 // Render About section on main page
 function renderAboutSection(aboutInfo, experiences) {
-  if (!aboutInfo) return;
-
   // Update photo
   const photoEl = document.getElementById('aboutPhoto');
-  if (photoEl && aboutInfo.photo) {
-    const photoUrl = sanityImageUrl(aboutInfo.photo, 200, 90);
+  if (photoEl && aboutInfo?.photo) {
+    const photoUrl = sanityImageUrl(aboutInfo.photo, 400, 90);
     if (photoUrl) {
       photoEl.querySelector('img').src = photoUrl;
     }
   }
 
-  // Update name and title
-  const nameEl = document.getElementById('aboutName');
-  const titleEl = document.getElementById('aboutTitle');
-  if (nameEl && aboutInfo.name) nameEl.textContent = aboutInfo.name;
-  if (titleEl && aboutInfo.title) titleEl.textContent = aboutInfo.title;
-
-  // Update bio
+  // Update bio text if provided from CMS
   const bioEl = document.getElementById('aboutBio');
-  if (bioEl && aboutInfo.shortBio) bioEl.textContent = aboutInfo.shortBio;
-
-  // Update CTA text
-  const ctaEl = document.getElementById('aboutCta');
-  if (ctaEl && aboutInfo.ctaText) {
-    ctaEl.querySelector('span').textContent = aboutInfo.ctaText;
-  }
-
-  // Render experience preview (featured or first 3)
-  const previewContainer = document.getElementById('aboutExperiencePreview');
-  if (previewContainer && experiences.length > 0) {
-    // Get featured experiences or first 3
-    let previewExperiences = experiences.filter(exp => exp.isFeatured);
-    if (previewExperiences.length === 0) {
-      previewExperiences = experiences.slice(0, 3);
-    } else {
-      previewExperiences = previewExperiences.slice(0, 3);
-    }
-
-    previewContainer.innerHTML = previewExperiences.map(exp => {
-      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 100, 90) : '';
-      const years = exp.isCurrent || !exp.endYear
-        ? `${exp.startYear} — Now`
-        : `${exp.startYear} — ${exp.endYear}`;
-
-      return `
-        <div class="experience-preview-item" onclick="openAboutOverlay()">
-          <div class="experience-preview-logo">
-            ${logoUrl ? `<img src="${logoUrl}" alt="${exp.company}">` : getIconSvg('building')}
-          </div>
-          <div class="experience-preview-info">
-            <div class="experience-preview-role">${exp.role}</div>
-            <div class="experience-preview-company">${exp.company}</div>
-          </div>
-          <div class="experience-preview-years">${years}</div>
-        </div>
-      `;
-    }).join('');
+  if (bioEl && aboutInfo?.shortBio) {
+    // Create the bio HTML with inline elements
+    bioEl.innerHTML = aboutInfo.shortBio;
   }
 }
 
@@ -612,70 +569,48 @@ function renderAboutOverlay(aboutInfo, experiences, education) {
     document.getElementById('aboutSkills').style.display = 'none';
   }
 
-  // Render experiences
+  // Render experiences in career-item style
   const experienceContainer = document.getElementById('experienceList');
   if (experienceContainer && experiences.length > 0) {
     experienceContainer.innerHTML = experiences.map(exp => {
-      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 150, 90) : '';
-      const years = exp.isCurrent || !exp.endYear
-        ? `${exp.startYear} — Present`
-        : `${exp.startYear} — ${exp.endYear}`;
-      const duration = calculateDuration(exp.startYear, exp.isCurrent ? null : exp.endYear);
+      const dateRange = exp.endDate
+        ? `${exp.startDate} — ${exp.endDate}`
+        : exp.startDate || '';
 
       const companyLink = exp.companyUrl
-        ? `<a href="${exp.companyUrl}" target="_blank">${exp.company}</a>`
+        ? `<a href="${exp.companyUrl}" class="company-link" target="_blank">${exp.company}</a>`
         : exp.company;
 
-      const achievementsHtml = exp.achievements && exp.achievements.length > 0
-        ? `<ul class="experience-achievements">${exp.achievements.map(a => `<li>${a}</li>`).join('')}</ul>`
-        : '';
-
       return `
-        <div class="experience-item" data-year="${exp.startYear}">
-          <div class="experience-logo">
-            ${logoUrl ? `<img src="${logoUrl}" alt="${exp.company}">` : getIconSvg('building')}
-          </div>
-          <div class="experience-details">
-            <div class="experience-header">
-              <div class="experience-role">${exp.role}</div>
-              <div class="experience-duration">${duration}</div>
-            </div>
-            <div class="experience-company">${companyLink}</div>
-            ${exp.location ? `<div class="experience-location">${exp.location}</div>` : ''}
-            ${exp.description ? `<p class="experience-description">${exp.description}</p>` : ''}
-            ${achievementsHtml}
+        <div class="career-item" data-year="${exp.startYear}">
+          <span class="career-date">${dateRange}</span>
+          <div class="career-details">
+            <h3>${exp.role} at ${companyLink}</h3>
+            <p class="career-location">${exp.location || ''}</p>
           </div>
         </div>
       `;
     }).join('');
   }
 
-  // Render education
+  // Render education in career-item style
   const educationContainer = document.getElementById('educationList');
   if (educationContainer && education.length > 0) {
     educationContainer.innerHTML = education.map(edu => {
-      const logoUrl = edu.institutionLogo ? sanityImageUrl(edu.institutionLogo, 150, 90) : '';
-      const years = edu.startDate && edu.endDate
+      const dateRange = edu.endDate
         ? `${edu.startDate} — ${edu.endDate}`
-        : edu.startDate || edu.endDate || '';
+        : edu.startDate || '';
 
       const institutionLink = edu.institutionUrl
-        ? `<a href="${edu.institutionUrl}" target="_blank">${edu.institution}</a>`
+        ? `<a href="${edu.institutionUrl}" class="company-link" target="_blank">${edu.institution}</a>`
         : edu.institution;
 
       return `
-        <div class="education-item" data-year="${edu.startYear || ''}">
-          <div class="education-logo">
-            ${logoUrl ? `<img src="${logoUrl}" alt="${edu.institution}">` : getIconSvg('award')}
-          </div>
-          <div class="education-details">
-            <div class="education-degree">${edu.degree}</div>
-            <div class="education-institution">${institutionLink}</div>
-            <div class="education-meta">
-              ${years ? `<span>${years}</span>` : ''}
-              ${edu.location ? `<span>${edu.location}</span>` : ''}
-            </div>
-            ${edu.description ? `<p class="education-description">${edu.description}</p>` : ''}
+        <div class="career-item" data-year="${edu.startYear || ''}">
+          <span class="career-date">${dateRange}</span>
+          <div class="career-details">
+            <h3>${edu.degree} at ${institutionLink}</h3>
+            <p class="career-location">${edu.location || ''}</p>
           </div>
         </div>
       `;

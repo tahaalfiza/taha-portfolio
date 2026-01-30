@@ -113,29 +113,31 @@
 
             <!-- ==================== ABOUT SECTION ==================== -->
             <div class="canvas-section about" id="section-about" style="left: 22%; top: 45%;">
-                <div class="about-card" id="aboutCard">
-                    <div class="about-card-header">
-                        <div class="about-photo" id="aboutPhoto">
-                            <img src="taha-photo.jpg" alt="Taha Alfiza">
-                        </div>
-                        <div class="about-intro">
-                            <h2 class="about-name" id="aboutName">Taha Alfiza</h2>
-                            <p class="about-title" id="aboutTitle">Brand & Product Designer</p>
-                        </div>
+                <div class="about-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
+                    <div class="about-photo-modern" id="aboutPhoto">
+                        <img src="taha-photo.jpg" alt="Taha Alfiza">
                     </div>
-                    <p class="about-bio" id="aboutBio">
-                        I'm a Brand & Product Designer from Iraq, based in Istanbul with 10+ years of experience crafting brand identities and digital products across MENA & Gulf regions.
-                    </p>
-                    <div class="about-experience-preview" id="aboutExperiencePreview">
-                        <!-- 3 featured experiences will be inserted here -->
+                    <div class="about-text-modern">
+                        <p class="about-headline" id="aboutBio">
+                            I'm <strong>Taha</strong>, a Brand & Product Designer from
+                            <span class="flag-inline" data-country="Iraq">
+                                <span class="flag-label">Iraq</span>
+                                <svg width="28" height="20" viewBox="0 0 640 480"><rect width="640" height="160" fill="#ce1126"/><rect y="160" width="640" height="160" fill="#fff"/><rect y="320" width="640" height="160" fill="#000"/><text x="320" y="260" font-size="80" fill="#007a3d" text-anchor="middle" font-family="serif" font-weight="bold">&#1575;&#1604;&#1604;&#1607; &#1571;&#1603;&#1576;&#1585;</text></svg>
+                            </span>
+                            <span class="flag-inline" data-country="Turkey">
+                                <span class="flag-label">Turkey</span>
+                                <svg width="28" height="20" viewBox="0 0 640 480"><rect width="640" height="480" fill="#e30a17"/><circle cx="240" cy="240" r="120" fill="#fff"/><circle cx="270" cy="240" r="96" fill="#e30a17"/><polygon fill="#fff" points="360,240 410,190 390,240 410,290"/></svg>
+                            </span>
+                            based in <strong>Istanbul</strong> with <strong>10+ years</strong> of experience, crafting brand identities and digital products across <strong>MENA & Gulf</strong> regions.
+                        </p>
+                        <button class="about-cta-inline" onclick="event.stopPropagation(); openAboutOverlay();">
+                            <span>View Full Profile</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
                     </div>
-                    <button class="about-cta" id="aboutCta" onclick="openAboutOverlay()">
-                        <span>View Full Profile</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </button>
                 </div>
             </div>
 
@@ -202,77 +204,6 @@
                             <span class="folder-date">Winter 2025</span>
                         </div>
                         <h3 class="folder-name">Torus</h3>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ==================== CAREER SECTION ==================== -->
-            <div class="canvas-section career" id="section-experience" style="left: 22%; top: 62%;">
-                <div class="career-card">
-                    <!-- Work Experience -->
-                    <div class="career-section">
-                        <h2 class="career-title">Work Experience</h2>
-
-                        <div class="career-item">
-                            <span class="career-date">2023 — Now</span>
-                            <div class="career-details">
-                                <h3>Sr. Designer at <a href="#" class="company-link">tabii by TRT</a></h3>
-                                <p class="career-location">Istanbul, Türkiye</p>
-                            </div>
-                        </div>
-
-                        <div class="career-item">
-                            <span class="career-date">2024 — Now</span>
-                            <div class="career-details">
-                                <h3>Brand & Product Designer at <a href="#" class="company-link">Al-Jazeera</a></h3>
-                                <p class="career-location">Remote</p>
-                            </div>
-                        </div>
-
-                        <div class="career-item">
-                            <span class="career-date">2025 — Now</span>
-                            <div class="career-details">
-                                <h3>Brand & Product Consultant at <a href="#" class="company-link">Digital Zone</a></h3>
-                                <p class="career-location">Remote</p>
-                            </div>
-                        </div>
-
-                        <div class="career-item">
-                            <span class="career-date">2021 — 2023</span>
-                            <div class="career-details">
-                                <h3>Design Team Lead & Art Director at <a href="#" class="company-link">KAPITA Business Hub</a></h3>
-                                <p class="career-location">Remote</p>
-                            </div>
-                        </div>
-
-                        <div class="career-item">
-                            <span class="career-date">2019 — 2025</span>
-                            <div class="career-details">
-                                <h3>CO-Founder at <a href="#" class="company-link">Dal Agency</a></h3>
-                                <p class="career-location">Remote</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education -->
-                    <div class="career-section">
-                        <h2 class="career-title">Education</h2>
-
-                        <div class="career-item">
-                            <span class="career-date">2023 — 2024</span>
-                            <div class="career-details">
-                                <h3>TÖMER Turkish Language B1 at ITÜ</h3>
-                                <p class="career-location">Istanbul, Türkiye</p>
-                            </div>
-                        </div>
-
-                        <div class="career-item">
-                            <span class="career-date">2018 — 2022</span>
-                            <div class="career-details">
-                                <h3>Bachelor's in Communication Design at BAÜ</h3>
-                                <p class="career-location">Istanbul, Türkiye</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -505,19 +436,24 @@
                         </div>
                     </div>
 
-                    <!-- Work Experience -->
-                    <div class="about-section" id="aboutWorkExperience">
-                        <h2 class="about-section-title">Work Experience</h2>
-                        <div class="experience-list" id="experienceList">
-                            <!-- Experiences will be inserted here -->
-                        </div>
-                    </div>
+                    <!-- Career Section (Work + Education) -->
+                    <div class="about-career-section">
+                        <div class="career-card">
+                            <!-- Work Experience -->
+                            <div class="career-section" id="aboutWorkExperience">
+                                <h2 class="career-title">Work Experience</h2>
+                                <div id="experienceList">
+                                    <!-- Experiences will be inserted here -->
+                                </div>
+                            </div>
 
-                    <!-- Education -->
-                    <div class="about-section" id="aboutEducation">
-                        <h2 class="about-section-title">Education</h2>
-                        <div class="education-list" id="educationList">
-                            <!-- Education items will be inserted here -->
+                            <!-- Education -->
+                            <div class="career-section" id="aboutEducation">
+                                <h2 class="career-title">Education</h2>
+                                <div id="educationList">
+                                    <!-- Education items will be inserted here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

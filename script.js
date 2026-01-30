@@ -69,8 +69,8 @@ function initCanvas() {
     // Center on home section initially
     const homeSection = document.getElementById('section-home');
     if (homeSection) {
-        state.panX = -(parseFloat(homeSection.style.left) / 100 * 4000) + window.innerWidth / 2;
-        state.panY = -(parseFloat(homeSection.style.top) / 100 * 3000) + window.innerHeight / 2;
+        state.panX = -(parseFloat(homeSection.style.left) / 100 * 2800) + window.innerWidth / 2;
+        state.panY = -(parseFloat(homeSection.style.top) / 100 * 2000) + window.innerHeight / 2;
     }
 
     updateTransform();
@@ -273,8 +273,8 @@ function initCanvas() {
         if (!section) return;
 
         // Get section position in canvas coordinates
-        const sectionX = parseFloat(section.style.left) / 100 * 4000;
-        const sectionY = parseFloat(section.style.top) / 100 * 3000;
+        const sectionX = parseFloat(section.style.left) / 100 * 2800;
+        const sectionY = parseFloat(section.style.top) / 100 * 2000;
 
         // Calculate pan to center section on screen (accounting for scale)
         const targetX = -sectionX * state.scale + window.innerWidth / 2;
@@ -470,8 +470,8 @@ function initMinimap() {
         if (!state) return;
 
         // Canvas dimensions
-        const canvasWidth = 4000;
-        const canvasHeight = 3000;
+        const canvasWidth = 2800;
+        const canvasHeight = 2000;
 
         // Calculate the canvas point that was clicked
         const canvasX = x * canvasWidth;
@@ -535,8 +535,8 @@ function updateMinimap() {
     const minimapHeight = minimap.offsetHeight;
 
     // Canvas dimensions
-    const canvasWidth = 4000;
-    const canvasHeight = 3000;
+    const canvasWidth = 2800;
+    const canvasHeight = 2000;
 
     // Calculate viewport size based on visible area
     const visibleWidth = window.innerWidth / state.scale;

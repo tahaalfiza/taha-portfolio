@@ -1239,12 +1239,12 @@ function renderTestimonials(testimonials) {
   // Sections: Home(50%,45%), About(15%,45%), Blog(58%,45%), Projects(82%,38%),
   //           Experience(22%,62%), Hire(38%,82%), Contact(62%,78%)
   const positions = [
-    { left: '8%', top: '28%' },    // Top left area (free space)
-    { left: '8%', top: '85%' },    // Far bottom left (free space)
-    { left: '32%', top: '28%' },   // Between About and Home, top (free space)
-    { left: '55%', top: '68%' },   // Between Home/Blog and Hire/Contact (free space)
-    { left: '72%', top: '62%' },   // Between Blog/Projects and Contact (free space)
-    { left: '85%', top: '72%' }    // Bottom right corner (free space)
+    { left: '8%', top: '28%' },    // Above About section (left)
+    { left: '25%', top: '28%' },   // Above About section (right)
+    { left: '42%', top: '62%' },   // Under Home card (left)
+    { left: '56%', top: '62%' },   // Under Home card (right)
+    { left: '22%', top: '92%' },   // Next to Start Project/Hire (left)
+    { left: '56%', top: '92%' }    // Next to Start Project/Hire (right)
   ];
 
   testimonials.forEach((testimonial, i) => {

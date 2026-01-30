@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taha Alfiza - CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ATS-Friendly CV Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            color: #1a1a1a;
+            background: #f5f5f5;
+        }
+
+        /* Screen-only toolbar */
+        .cv-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+
+        .cv-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .back-btn:hover {
+            opacity: 1;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cv-toolbar-title {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .download-pdf-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #007aff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .download-pdf-btn:hover {
+            background: #0066d6;
+        }
+
+        .download-pdf-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* CV Container */
+        .cv-container {
+            max-width: 8.5in;
+            margin: 80px auto 40px;
+            background: #fff;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .cv-content {
+            padding: 0.5in 0.6in;
+        }
+
+        /* Header Section */
+        .cv-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1a1a1a;
+        }
+
+        .cv-name {
+            font-size: 28pt;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .cv-title {
+            font-size: 14pt;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .cv-contact {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            font-size: 10pt;
+            color: #333;
+        }
+
+        .cv-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cv-contact a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .cv-contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section Styles */
+        .cv-section {
+            margin-bottom: 20px;
+        }
+
+        .cv-section-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Summary */
+        .cv-summary {
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Experience Items */
+        .cv-item {
+            margin-bottom: 16px;
+        }
+
+        .cv-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cv-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+        }
+
+        .cv-item-title {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .cv-item-date {
+            font-size: 10pt;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .cv-item-subtitle {
+            font-size: 10pt;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .cv-item-description {
+            font-size: 10pt;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .cv-item-description ul {
+            margin: 6px 0 0 18px;
+            padding: 0;
+        }
+
+        .cv-item-description li {
+            margin-bottom: 4px;
+        }
+
+        /* Skills */
+        .cv-skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            font-size: 10pt;
+        }
+
+        .cv-skill-category {
+            margin-bottom: 8px;
+        }
+
+        .cv-skill-category-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-right: 8px;
+        }
+
+        .cv-skill-items {
+            color: #444;
+        }
+
+        /* Education */
+        .cv-education-item {
+            margin-bottom: 10px;
+        }
+
+        /* Loading */
+        .cv-loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+
+        /* Print Styles - ATS Optimized */
+        @media print {
+            body {
+                background: #fff;
+                font-size: 10pt;
+            }
+
+            .cv-toolbar {
+                display: none !important;
+            }
+
+            .cv-container {
+                margin: 0;
+                box-shadow: none;
+                max-width: none;
+            }
+
+            .cv-content {
+                padding: 0.4in 0.5in;
+            }
+
+            .cv-header {
+                margin-bottom: 18px;
+                padding-bottom: 14px;
+            }
+
+            .cv-name {
+                font-size: 22pt;
+            }
+
+            .cv-title {
+                font-size: 12pt;
+            }
+
+            .cv-contact {
+                font-size: 9pt;
+            }
+
+            .cv-section {
+                margin-bottom: 14px;
+            }
+
+            .cv-section-title {
+                font-size: 11pt;
+                margin-bottom: 8px;
+            }
+
+            .cv-summary,
+            .cv-item-description {
+                font-size: 10pt;
+            }
+
+            .cv-item {
+                margin-bottom: 12px;
+            }
+
+            a {
+                color: #000 !important;
+                text-decoration: none !important;
+            }
+
+            /* Avoid page breaks in items */
+            .cv-item {
+                page-break-inside: avoid;
+            }
+
+            .cv-section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 0.4in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toolbar (hidden in print) -->
+    <div class="cv-toolbar">
+        <div class="cv-toolbar-left">
+            <a href="index.html" class="back-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back
+            </a>
+            <span class="cv-toolbar-title">Curriculum Vitae</span>
+        </div>
+        <button class="download-pdf-btn" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download PDF
+        </button>
+    </div>
+
+    <!-- CV Content -->
+    <div class="cv-container">
+        <div class="cv-content" id="cvContent">
+            <div class="cv-loading">Loading CV...</div>
+        </div>
+    </div>
+
+    <script>
+        // Sanity configuration
+        const SANITY_PROJECT_ID = 'yfeclqp0';
+        const SANITY_DATASET = 'production';
+        const SANITY_API_VERSION = '2024-01-01';
+
+        function sanityUrl(query) {
+            const encodedQuery = encodeURIComponent(query);
+            return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
+        }
+
+        // Fetch all CV data from Sanity
+        async function fetchCVData() {
+            const queries = {
+                about: `*[_type == "aboutInfo"][0] {
+                    name, title, location, bio, email, phone, linkedin, website
+                }`,
+                experience: `*[_type == "workExperience"] | order(startDate desc) {
+                    _id, company, role, location, startDate, endDate, current, description, highlights
+                }`,
+                education: `*[_type == "education"] | order(startDate desc) {
+                    _id, institution, degree, field, startDate, endDate, description
+                }`,
+                contact: `*[_type == "contactInfo"][0] {
+                    email, phone, linkedin, location
+                }`
+            };
+
+            try {
+                const [aboutRes, experienceRes, educationRes, contactRes] = await Promise.all([
+                    fetch(sanityUrl(queries.about)),
+                    fetch(sanityUrl(queries.experience)),
+                    fetch(sanityUrl(queries.education)),
+                    fetch(sanityUrl(queries.contact))
+                ]);
+
+                const [aboutData, experienceData, educationData, contactData] = await Promise.all([
+                    aboutRes.json(),
+                    experienceRes.json(),
+                    educationRes.json(),
+                    contactRes.json()
+                ]);
+
+                return {
+                    about: aboutData.result || {},
+                    experience: experienceData.result || [],
+                    education: educationData.result || [],
+                    contact: contactData.result || {}
+                };
+            } catch (error) {
+                console.error('Error fetching CV data:', error);
+                return null;
+            }
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        }
+
+        // Render CV
+        function renderCV(data) {
+            const { about, experience, education, contact } = data;
+            const cvContent = document.getElementById('cvContent');
+
+            // Default values if Sanity data is not available
+            const name = about.name || 'Taha Alfiza';
+            const title = about.title || 'Brand & Product Designer';
+            const email = contact.email || about.email || 'taha.alfiza@gmail.com';
+            const phone = contact.phone || about.phone || '';
+            const location = contact.location || about.location || 'Istanbul, Turkey';
+            const linkedin = contact.linkedin || about.linkedin || 'linkedin.com/in/tahaalfiza';
+            const bio = about.bio || 'Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Expertise in creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions.';
+
+            // Skills (hardcoded for now - can be added to Sanity later)
+            const skills = {
+                'Design': 'Brand Identity, UI/UX Design, Product Design, Visual Design, Typography, Design Systems',
+                'Tools': 'Figma, Adobe Creative Suite, Sketch, Framer, Webflow',
+                'Other': 'Project Management, Client Communication, Design Strategy, Prototyping'
+            };
+
+            let html = `
+                <!-- Header -->
+                <header class="cv-header">
+                    <h1 class="cv-name">${name}</h1>
+                    <p class="cv-title">${title}</p>
+                    <div class="cv-contact">
+                        <span class="cv-contact-item">${location}</span>
+                        <span class="cv-contact-item"><a href="mailto:${email}">${email}</a></span>
+                        ${phone ? `<span class="cv-contact-item">${phone}</span>` : ''}
+                        <span class="cv-contact-item"><a href="https://${linkedin.replace('https://', '')}" target="_blank">${linkedin.replace('https://', '')}</a></span>
+                    </div>
+                </header>
+
+                <!-- Professional Summary -->
+                <section class="cv-section">
+                    <h2 class="cv-section-title">Professional Summary</h2>
+                    <p class="cv-summary">${bio}</p>
+                </section>
+
+                <!-- Experience -->
+                ${experience.length > 0 ? `
+                <section class="cv-section">
+                    <h2 class="cv-section-title">Professional Experience</h2>
+                    ${experience.map(job => `
+                        <div class="cv-item">
+                            <div class="cv-item-header">
+                                <span class="cv-item-title">${job.role || 'Role'}</span>
+                                <span class="cv-item-date">${formatDate(job.startDate)} - ${job.current ? 'Present' : formatDate(job.endDate)}</span>
+                            </div>
+                            <div class="cv-item-subtitle">${job.company || 'Company'}${job.location ? `, ${job.location}` : ''}</div>
+                            ${job.description ? `<div class="cv-item-description">${job.description}</div>` : ''}
+                            ${job.highlights && job.highlights.length > 0 ? `
+                                <div class="cv-item-description">
+                                    <ul>
+                                        ${job.highlights.map(h => `<li>${h}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('')}
+                </section>
+                ` : ''}
+
+                <!-- Skills -->
+                <section class="cv-section">
+                    <h2 class="cv-section-title">Skills</h2>
+                    ${Object.entries(skills).map(([category, items]) => `
+                        <div class="cv-skill-category">
+                            <span class="cv-skill-category-title">${category}:</span>
+                            <span class="cv-skill-items">${items}</span>
+                        </div>
+                    `).join('')}
+                </section>
+
+                <!-- Education -->
+                ${education.length > 0 ? `
+                <section class="cv-section">
+                    <h2 class="cv-section-title">Education</h2>
+                    ${education.map(edu => `
+                        <div class="cv-item cv-education-item">
+                            <div class="cv-item-header">
+                                <span class="cv-item-title">${edu.degree || 'Degree'}${edu.field ? ` in ${edu.field}` : ''}</span>
+                                <span class="cv-item-date">${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}</span>
+                            </div>
+                            <div class="cv-item-subtitle">${edu.institution || 'Institution'}</div>
+                            ${edu.description ? `<div class="cv-item-description">${edu.description}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </section>
+                ` : ''}
+            `;
+
+            cvContent.innerHTML = html;
+
+            // Update page title
+            document.title = `${name} - CV`;
+        }
+
+        // Initialize
+        async function init() {
+            const data = await fetchCVData();
+            if (data) {
+                renderCV(data);
+            } else {
+                document.getElementById('cvContent').innerHTML = `
+                    <div class="cv-loading">
+                        <p>Unable to load CV data. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

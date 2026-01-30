@@ -365,8 +365,8 @@
     </div>
 
     <script>
-        // Sanity configuration
-        const SANITY_PROJECT_ID = 'yfeclqp0';
+        // Sanity configuration - must match main website
+        const SANITY_PROJECT_ID = 'hsbvy0xe';
         const SANITY_DATASET = 'production';
         const SANITY_API_VERSION = '2024-01-01';
 
@@ -431,16 +431,16 @@
         async function fetchCVData() {
             const queries = {
                 about: `*[_type == "aboutInfo"][0] {
-                    name, title, location, bio, email, phone, linkedin, website
+                    name, title, location, shortBio, fullBio, skills, email, phone, linkedin, website
                 }`,
-                experience: `*[_type == "workExperience"] | order(startYear desc) {
-                    _id, company, role, location, startYear, endYear, startDate, endDate, isCurrent, description, achievements
+                experience: `*[_type == "workExperience"] | order(order asc) {
+                    _id, role, company, companyUrl, location, startYear, endYear, startDate, endDate, isCurrent, description, achievements, order
                 }`,
-                education: `*[_type == "education"] | order(startYear desc) {
-                    _id, institution, degree, field, location, startYear, endYear, startDate, endDate, description
+                education: `*[_type == "education"] | order(order asc) {
+                    _id, degree, institution, institutionUrl, location, startYear, endYear, startDate, endDate, description, order
                 }`,
                 contact: `*[_type == "contactInfo"][0] {
-                    email, phone, linkedin, location
+                    email, phone, linkedinUrl, linkedinLabel, location
                 }`
             };
 
@@ -491,15 +491,24 @@
             const email = contact.email || about.email || 'taha.alfiza@gmail.com';
             const phone = contact.phone || about.phone || '';
             const location = contact.location || about.location || 'Istanbul, Turkey';
-            const linkedin = contact.linkedin || about.linkedin || 'linkedin.com/in/tahaalfiza';
-            const bio = about.bio || 'Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Expertise in creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions.';
+            const linkedin = contact.linkedinUrl || contact.linkedin || about.linkedin || 'linkedin.com/in/tahaalfiza';
+            const bio = about.fullBio || about.shortBio || about.bio || 'Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Expertise in creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions.';
 
-            // Skills (hardcoded for now - can be added to Sanity later)
-            const skills = {
-                'Design': 'Brand Identity, UI/UX Design, Product Design, Visual Design, Typography, Design Systems',
-                'Tools': 'Figma, Adobe Creative Suite, Sketch, Framer, Webflow',
-                'Other': 'Project Management, Client Communication, Design Strategy, Prototyping'
-            };
+            // Skills from Sanity or fallback
+            let skills = {};
+            if (about.skills && about.skills.length > 0) {
+                // Group all skills together from CMS
+                skills = {
+                    'Skills': about.skills.join(', ')
+                };
+            } else {
+                // Fallback skills
+                skills = {
+                    'Design': 'Brand Identity, UI/UX Design, Product Design, Visual Design, Typography, Design Systems',
+                    'Tools': 'Figma, Adobe Creative Suite, Sketch, Framer, Webflow',
+                    'Other': 'Project Management, Client Communication, Design Strategy, Prototyping'
+                };
+            }
 
             let html = `
                 <!-- Header -->

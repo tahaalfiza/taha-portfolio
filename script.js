@@ -106,7 +106,7 @@ function initCanvas() {
     });
 
     function startDrag(e) {
-        if (e.target.closest('button, a, input, textarea')) return;
+        if (e.target.closest('button, a, input, textarea, .floating-note, .draggable-note')) return;
 
         state.isDragging = true;
         state.startX = e.clientX - state.panX;
@@ -121,7 +121,7 @@ function initCanvas() {
 
     // Enhanced touch handling with pinch-to-zoom
     function handleTouchStart(e) {
-        if (e.target.closest('button, a, input, textarea')) return;
+        if (e.target.closest('button, a, input, textarea, .floating-note, .draggable-note')) return;
 
         if (e.touches.length === 1) {
             // Single touch - pan

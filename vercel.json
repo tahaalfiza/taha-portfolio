@@ -5,7 +5,15 @@
       "destination": "/view_1/index.html"
     },
     {
+      "source": "/view_1/",
+      "destination": "/view_1/index.html"
+    },
+    {
       "source": "/view_2",
+      "destination": "/view_2/index.html"
+    },
+    {
+      "source": "/view_2/",
       "destination": "/view_2/index.html"
     },
     {
@@ -13,8 +21,17 @@
       "destination": "/blogs/index.html"
     },
     {
+      "source": "/blogs/:slug/",
+      "destination": "/blogs/index.html"
+    },
+    {
       "source": "/projects/:slug",
       "destination": "/projects/index.html"
+    },
+    {
+      "source": "/projects/:slug/",
+      "destination": "/projects/index.html"
     }
-  ]
+  ],
+  "trailingSlash": false
 }

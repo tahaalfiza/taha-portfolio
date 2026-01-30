@@ -814,18 +814,20 @@ function populateListView() {
         }
     }
 
-    // Populate testimonials (show first 6 with sticky note colors - same style as canvas)
+    // Populate testimonials (show first 6 with colors from CMS - same as canvas)
     if (window.testimonialsData && window.testimonialsData.length > 0) {
         const testimonialsGrid = document.getElementById('listTestimonialsGrid');
         if (testimonialsGrid) {
-            const colors = ['yellow', 'pink', 'blue', 'green', 'orange', 'purple'];
             const displayTestimonials = window.testimonialsData.slice(0, 6);
-            testimonialsGrid.innerHTML = displayTestimonials.map((testimonial, index) => {
-                const color = colors[index % colors.length];
+            testimonialsGrid.innerHTML = displayTestimonials.map((testimonial) => {
+                const color = testimonial.color || 'yellow';
+                const authorText = testimonial.role
+                    ? `- ${testimonial.author}, ${testimonial.role}`
+                    : `- ${testimonial.author}`;
                 return `
                     <div class="sticky-note ${color}">
                         <p>"${testimonial.quote || ''}"</p>
-                        <span class="note-author">- ${testimonial.name || ''}${testimonial.role ? ', ' + testimonial.role : ''}</span>
+                        <span class="note-author">${authorText}</span>
                     </div>
                 `;
             }).join('');

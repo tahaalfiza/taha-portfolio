@@ -2784,6 +2784,204 @@ a {
 /* Decorative elements removed - using subtle grid instead */
 
 /* ==========================================
+   HIRE ME SECTION - Contact Form
+   ========================================== */
+.canvas-section.hire {
+    z-index: 5;
+}
+
+.hire-form-window {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d1d1d6;
+    overflow: hidden;
+    box-shadow:
+        0 22px 70px 4px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hire-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(180deg, #f6f6f6 0%, #e8e8e8 100%);
+    border-bottom: 1px solid #d1d1d6;
+    min-height: 52px;
+    position: relative;
+}
+
+.hire-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.hire-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.hire-btn.red { background: #ff5f57; }
+.hire-btn.yellow { background: #febc2e; }
+.hire-btn.green { background: #28c840; }
+
+.hire-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d1d1f;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hire-actions {
+    width: 52px;
+}
+
+.hire-form-content {
+    padding: 28px;
+    background: #ffffff;
+}
+
+.hire-header {
+    margin-bottom: 24px;
+}
+
+.hire-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+}
+
+.hire-header p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.hire-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d1d1f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1d1d1f;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    background: #fff;
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.form-group textarea {
+    resize: none;
+    line-height: 1.5;
+}
+
+.hire-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: #007aff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.hire-submit-btn:hover {
+    background: #0066d6;
+    transform: translateY(-1px);
+}
+
+.hire-submit-btn:active {
+    transform: translateY(0);
+}
+
+.hire-submit-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Success State */
+.hire-success {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hire-success svg {
+    width: 56px;
+    height: 56px;
+    color: #28c840;
+    margin-bottom: 20px;
+}
+
+.hire-success h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+}
+
+.hire-success p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* ==========================================
    RESPONSIVE - Mobile Experience
    ========================================== */
 

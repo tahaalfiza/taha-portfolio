@@ -266,6 +266,75 @@
                 </div>
             </div>
 
+            <!-- ==================== HIRE ME SECTION (Contact Form) ==================== -->
+            <div class="canvas-section hire" id="section-hire" style="left: 50%; top: 78%;">
+                <div class="hire-form-window">
+                    <!-- Form Title Bar -->
+                    <div class="hire-titlebar">
+                        <div class="hire-buttons">
+                            <span class="hire-btn red"></span>
+                            <span class="hire-btn yellow"></span>
+                            <span class="hire-btn green"></span>
+                        </div>
+                        <div class="hire-title">New Project</div>
+                        <div class="hire-actions"></div>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="hire-form-content">
+                        <div class="hire-header">
+                            <h2>Start a Project</h2>
+                            <p>Tell me about your project and let's create something great together.</p>
+                        </div>
+
+                        <form id="hireForm" class="hire-form">
+                            <div class="form-group">
+                                <label for="hireName">Name</label>
+                                <input type="text" id="hireName" name="name" placeholder="Your name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hireEmail">Email</label>
+                                <input type="email" id="hireEmail" name="email" placeholder="your@email.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hireProject">Project Type</label>
+                                <select id="hireProject" name="project">
+                                    <option value="">Select project type</option>
+                                    <option value="branding">Brand Identity</option>
+                                    <option value="ui-design">UI/UX Design</option>
+                                    <option value="web-design">Web Design</option>
+                                    <option value="product-design">Product Design</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hireMessage">Message</label>
+                                <textarea id="hireMessage" name="message" placeholder="Tell me about your project..." rows="4" required></textarea>
+                            </div>
+
+                            <button type="submit" class="hire-submit-btn">
+                                <span>Send Message</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                                </svg>
+                            </button>
+                        </form>
+
+                        <div class="hire-success" id="hireSuccess" style="display: none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            <h3>Message Sent!</h3>
+                            <p>Thank you for reaching out. I'll get back to you soon.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ==================== CONTACT SECTION ==================== -->
             <div class="canvas-section contact" id="section-contact" style="left: 78%; top: 78%;">
                 <div class="section-content contact-section">
@@ -333,6 +402,12 @@
             </svg>
             <span class="nav-tooltip">Projects</span>
         </button>
+        <button class="nav-btn" data-target="hire" title="Hire Me">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm6 11h-3v3h-2v-3H8v-2h3v-3h2v3h3v2z" fill="currentColor"/>
+            </svg>
+            <span class="nav-tooltip">Hire Me</span>
+        </button>
         <button class="nav-btn" data-target="contact" title="Contact">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
@@ -357,6 +432,7 @@
         <div class="minimap-marker" data-section="blog" style="left: 50%; top: 50%;"></div>
         <div class="minimap-marker" data-section="projects" style="left: 78%; top: 42%;"></div>
         <div class="minimap-marker" data-section="experience" style="left: 22%; top: 62%;"></div>
+        <div class="minimap-marker" data-section="hire" style="left: 50%; top: 78%;"></div>
         <div class="minimap-marker" data-section="contact" style="left: 78%; top: 78%;"></div>
     </div>
 

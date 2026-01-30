@@ -381,247 +381,258 @@
         </div>
     </div>
 
-    <!-- List View Mode - Simple Block Layout -->
+    <!-- List View Mode - Grid Layout matching screenshot -->
     <div class="list-view" id="listView">
         <div class="block-container">
-            <!-- Block 1: Home -->
-            <div class="block-item" id="list-home">
-                <div class="section-content hero-section">
-                    <div class="hero-logo">
-                        <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
-                            <mask id="mask_list_hero" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="257" height="257">
-                                <path d="M128.5 256.88C199.469 256.88 257 199.376 257 128.44C257 57.5046 199.469 0 128.5 0C57.5314 0 0 57.5046 0 128.44C0 199.376 57.5314 256.88 128.5 256.88Z" fill="#D9D9D9"/>
-                            </mask>
-                            <g mask="url(#mask_list_hero)">
-                                <g opacity="0.5"><path d="M124.652 185.984C124.652 185.984 88.0831 196.023 86.3971 191.588C84.7112 187.155 86.3971 162.037 86.3971 162.037C86.3971 162.037 118.035 184.812 124.652 185.984Z" fill="currentColor"/></g>
-                                <g opacity="0.5"><path d="M128.724 161.164C128.724 163.7 126.668 165.756 124.13 165.756C121.593 165.756 119.537 163.7 119.537 161.164C119.537 158.628 121.876 161.101 124.413 161.101C126.95 161.101 128.727 158.628 128.727 161.164H128.724Z" fill="currentColor"/></g>
-                                <path d="M94.6074 32.266C94.6074 32.266 142.797 -0.748371 170.843 45.3466C176.51 54.6617 177.359 66.4029 171.917 75.8525C171.252 77.0079 171.356 78.4131 170.475 79.5412C170.475 79.5412 171.917 52.831 137.643 62.2284C137.643 62.2284 124.381 68.2006 113.276 62.7746C107.93 60.1618 101.78 59.3494 95.9748 60.6558C88.8329 62.2641 81.4576 67.2153 80.5185 80.5868L77.5283 108.776C77.5283 108.776 65.5729 56.7366 84.0853 54.4229C84.0853 54.4229 74.4447 42.0888 86.7845 28.9808V33.9923C86.7845 33.9923 94.1131 28.2095 99.8959 36.306" fill="currentColor"/>
-                                <path d="M171.172 71.903L174.772 54.9635C174.772 54.9635 184.163 95.5529 173.94 112.031C173.94 112.031 173.396 95.7807 171.095 84.7805C170.206 80.5319 170.272 76.1488 171.175 71.903H171.172Z" fill="currentColor"/>
-                                <path d="M77.7887 136.911C77.6926 136.911 77.5965 136.9 77.4977 136.878C72.7144 135.785 66.6708 131.52 65.0508 117.4C63.9552 107.862 65.1249 102.162 68.6259 99.9661C72.2421 97.7019 76.641 100.435 76.825 100.553C77.4318 100.938 77.6103 101.736 77.2286 102.343C76.8497 102.952 76.0451 103.136 75.4356 102.752C75.4053 102.73 72.2202 100.779 70.0015 102.175C68.5819 103.073 66.3853 106.202 67.6374 117.106C68.6725 126.119 71.7177 131.855 76.4872 133.834V130.17C76.4872 129.451 77.0693 128.869 77.7887 128.869C78.5082 128.869 79.0903 129.451 79.0903 130.17V135.61C79.0903 136.005 78.909 136.381 78.5988 136.625C78.3654 136.812 78.0798 136.911 77.7887 136.911Z" fill="currentColor"/>
-                                <path d="M124.128 169.963C102.04 171.698 84.7112 161.104 84.7112 161.104C105.681 190.015 127.376 185.967 127.376 185.967C153.698 183.365 164.11 161.104 164.11 161.104C164.11 161.104 144.153 170.356 124.131 169.963H124.128Z" fill="currentColor"/>
-                                <path d="M79.0848 129.901C79.0848 129.901 81.8087 154.896 88.039 162.548C88.039 162.548 101.634 177.292 137.113 183.953C137.113 183.953 136.86 184.038 136.355 184.189C110.626 191.86 83.3985 174.039 80.0349 147.417C77.8959 130.475 78.0991 139.189 79.0848 129.901Z" fill="currentColor"/>
-                                <path d="M164.11 208.758C163.39 208.758 162.808 208.176 162.808 207.457V168.298C162.808 164.4 163.632 160.651 165.26 157.152C168.179 150.87 173.001 139.266 173.141 130.9V130.167C173.141 129.454 173.718 128.872 174.431 128.866H174.442C175.151 128.866 175.733 129.435 175.744 130.145C175.747 130.395 175.747 130.645 175.744 130.9V133.831C180.514 131.853 183.559 126.116 184.594 117.103C185.846 106.202 183.649 103.07 182.23 102.176C180.014 100.768 176.826 102.73 176.796 102.749C176.186 103.133 175.382 102.949 175.003 102.34C174.621 101.736 174.799 100.935 175.406 100.551C175.59 100.43 179.997 97.6937 183.608 99.9634C187.109 102.159 188.279 107.86 187.183 117.397C185.602 131.172 179.813 135.569 175.088 136.787C173.613 144.538 170.005 153.12 167.625 158.247C166.158 161.398 165.414 164.776 165.414 168.295V207.454C165.414 208.173 164.832 208.755 164.113 208.755L164.11 208.758Z" fill="currentColor"/>
-                                <path d="M86.397 208.758C85.6776 208.758 85.0955 208.176 85.0955 207.457V163.352C85.0955 162.633 85.6776 162.051 86.397 162.051C87.1164 162.051 87.6985 162.633 87.6985 163.352V207.457C87.6985 208.176 87.1164 208.758 86.397 208.758Z" fill="currentColor"/>
-                                <path d="M183.575 273.941C136.536 291.869 31.0547 245.631 40.1132 232.907C49.0427 220.392 85.2521 205.481 86.3724 205.039C84.5492 206.573 83.5607 208.239 83.5607 209.982C83.5607 217.502 101.966 223.59 124.666 223.59C147.366 223.59 165.771 217.502 165.771 209.982C165.771 208.448 164.991 206.963 163.558 205.585C176.107 209.071 209.688 227.234 209.688 227.234C209.688 227.234 230.645 256.039 183.578 273.941H183.575Z" fill="currentColor"/>
-                                <path d="M109.899 112.407C109.567 112.407 109.232 112.281 108.979 112.026C105.107 108.153 98.8028 108.15 94.9285 112.026C94.4205 112.534 93.5967 112.534 93.0887 112.026C92.5808 111.518 92.5808 110.695 93.0887 110.187C97.9791 105.302 105.934 105.302 110.821 110.187C111.329 110.695 111.329 111.518 110.821 112.026C110.566 112.281 110.234 112.407 109.902 112.407H109.899Z" fill="currentColor"/>
-                                <path d="M154.925 114.051C154.593 114.051 154.258 113.925 154.005 113.67C150.131 109.794 143.829 109.794 139.955 113.67C139.447 114.178 138.623 114.178 138.115 113.67C137.607 113.162 137.607 112.339 138.115 111.831C143.003 106.946 150.955 106.948 155.845 111.831C156.353 112.339 156.353 113.162 155.845 113.67C155.59 113.925 155.257 114.051 154.925 114.051Z" fill="currentColor"/>
-                                <path d="M124.655 154.1C118.919 154.1 113.185 153.255 107.609 151.561C106.922 151.353 106.532 150.625 106.741 149.936C106.95 149.25 107.672 148.863 108.367 149.069C119.02 152.308 130.287 152.308 140.943 149.069C141.641 148.861 142.36 149.25 142.569 149.936C142.777 150.625 142.39 151.353 141.701 151.561C136.127 153.255 130.388 154.1 124.655 154.1Z" fill="currentColor"/>
-                            </g>
-                        </svg>
-                    </div>
-                    <p class="hero-greeting">hey, this is</p>
-                    <h1 class="hero-title">
-                        <span class="title-line">Taha's</span>
-                        <span class="title-line accent">Work</span>
-                    </h1>
-                    <p class="hero-subtitle">Brand & Product Designer</p>
-                    <div class="hero-cta">
-                        <a href="#list-projects" class="btn btn-primary">Projects</a>
-                        <a href="#list-about" class="btn btn-ghost">Resume</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Block 2: About -->
-            <div class="block-item" id="list-about">
-                <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
-                    <div class="about-photo-topleft">
-                        <img src="taha-photo.jpg" alt="Taha Alfiza">
-                    </div>
-                    <div class="about-flags">
-                        <span class="flag-item" title="Iraq">🇮🇶</span>
-                        <span class="flag-item" title="Turkey">🇹🇷</span>
-                    </div>
-                    <p class="about-bio-text">I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.</p>
-                    <p class="about-bio-text">Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.</p>
-                    <div class="experience-preview" id="listExperiencePreview"></div>
-                    <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
-                        <span>See More</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Block 3: Projects -->
-            <div class="block-item" id="list-projects">
-                <div class="finder-window">
-                    <div class="finder-titlebar">
-                        <div class="finder-buttons">
-                            <span class="finder-btn red"></span>
-                            <span class="finder-btn yellow"></span>
-                            <span class="finder-btn green"></span>
-                        </div>
-                        <div class="finder-title">Projects</div>
-                        <div class="finder-actions">
-                            <svg class="finder-view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
+            <!-- Row 1: Home + Projects -->
+            <div class="block-row">
+                <!-- Home -->
+                <div class="block-item" id="list-home">
+                    <div class="section-content hero-section">
+                        <div class="hero-logo">
+                            <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
+                                <mask id="mask_list_hero" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="257" height="257">
+                                    <path d="M128.5 256.88C199.469 256.88 257 199.376 257 128.44C257 57.5046 199.469 0 128.5 0C57.5314 0 0 57.5046 0 128.44C0 199.376 57.5314 256.88 128.5 256.88Z" fill="#D9D9D9"/>
+                                </mask>
+                                <g mask="url(#mask_list_hero)">
+                                    <g opacity="0.5"><path d="M124.652 185.984C124.652 185.984 88.0831 196.023 86.3971 191.588C84.7112 187.155 86.3971 162.037 86.3971 162.037C86.3971 162.037 118.035 184.812 124.652 185.984Z" fill="currentColor"/></g>
+                                    <g opacity="0.5"><path d="M128.724 161.164C128.724 163.7 126.668 165.756 124.13 165.756C121.593 165.756 119.537 163.7 119.537 161.164C119.537 158.628 121.876 161.101 124.413 161.101C126.95 161.101 128.727 158.628 128.727 161.164H128.724Z" fill="currentColor"/></g>
+                                    <path d="M94.6074 32.266C94.6074 32.266 142.797 -0.748371 170.843 45.3466C176.51 54.6617 177.359 66.4029 171.917 75.8525C171.252 77.0079 171.356 78.4131 170.475 79.5412C170.475 79.5412 171.917 52.831 137.643 62.2284C137.643 62.2284 124.381 68.2006 113.276 62.7746C107.93 60.1618 101.78 59.3494 95.9748 60.6558C88.8329 62.2641 81.4576 67.2153 80.5185 80.5868L77.5283 108.776C77.5283 108.776 65.5729 56.7366 84.0853 54.4229C84.0853 54.4229 74.4447 42.0888 86.7845 28.9808V33.9923C86.7845 33.9923 94.1131 28.2095 99.8959 36.306" fill="currentColor"/>
+                                    <path d="M171.172 71.903L174.772 54.9635C174.772 54.9635 184.163 95.5529 173.94 112.031C173.94 112.031 173.396 95.7807 171.095 84.7805C170.206 80.5319 170.272 76.1488 171.175 71.903H171.172Z" fill="currentColor"/>
+                                    <path d="M77.7887 136.911C77.6926 136.911 77.5965 136.9 77.4977 136.878C72.7144 135.785 66.6708 131.52 65.0508 117.4C63.9552 107.862 65.1249 102.162 68.6259 99.9661C72.2421 97.7019 76.641 100.435 76.825 100.553C77.4318 100.938 77.6103 101.736 77.2286 102.343C76.8497 102.952 76.0451 103.136 75.4356 102.752C75.4053 102.73 72.2202 100.779 70.0015 102.175C68.5819 103.073 66.3853 106.202 67.6374 117.106C68.6725 126.119 71.7177 131.855 76.4872 133.834V130.17C76.4872 129.451 77.0693 128.869 77.7887 128.869C78.5082 128.869 79.0903 129.451 79.0903 130.17V135.61C79.0903 136.005 78.909 136.381 78.5988 136.625C78.3654 136.812 78.0798 136.911 77.7887 136.911Z" fill="currentColor"/>
+                                    <path d="M124.128 169.963C102.04 171.698 84.7112 161.104 84.7112 161.104C105.681 190.015 127.376 185.967 127.376 185.967C153.698 183.365 164.11 161.104 164.11 161.104C164.11 161.104 144.153 170.356 124.131 169.963H124.128Z" fill="currentColor"/>
+                                    <path d="M79.0848 129.901C79.0848 129.901 81.8087 154.896 88.039 162.548C88.039 162.548 101.634 177.292 137.113 183.953C137.113 183.953 136.86 184.038 136.355 184.189C110.626 191.86 83.3985 174.039 80.0349 147.417C77.8959 130.475 78.0991 139.189 79.0848 129.901Z" fill="currentColor"/>
+                                    <path d="M164.11 208.758C163.39 208.758 162.808 208.176 162.808 207.457V168.298C162.808 164.4 163.632 160.651 165.26 157.152C168.179 150.87 173.001 139.266 173.141 130.9V130.167C173.141 129.454 173.718 128.872 174.431 128.866H174.442C175.151 128.866 175.733 129.435 175.744 130.145C175.747 130.395 175.747 130.645 175.744 130.9V133.831C180.514 131.853 183.559 126.116 184.594 117.103C185.846 106.202 183.649 103.07 182.23 102.176C180.014 100.768 176.826 102.73 176.796 102.749C176.186 103.133 175.382 102.949 175.003 102.34C174.621 101.736 174.799 100.935 175.406 100.551C175.59 100.43 179.997 97.6937 183.608 99.9634C187.109 102.159 188.279 107.86 187.183 117.397C185.602 131.172 179.813 135.569 175.088 136.787C173.613 144.538 170.005 153.12 167.625 158.247C166.158 161.398 165.414 164.776 165.414 168.295V207.454C165.414 208.173 164.832 208.755 164.113 208.755L164.11 208.758Z" fill="currentColor"/>
+                                    <path d="M86.397 208.758C85.6776 208.758 85.0955 208.176 85.0955 207.457V163.352C85.0955 162.633 85.6776 162.051 86.397 162.051C87.1164 162.051 87.6985 162.633 87.6985 163.352V207.457C87.6985 208.176 87.1164 208.758 86.397 208.758Z" fill="currentColor"/>
+                                    <path d="M183.575 273.941C136.536 291.869 31.0547 245.631 40.1132 232.907C49.0427 220.392 85.2521 205.481 86.3724 205.039C84.5492 206.573 83.5607 208.239 83.5607 209.982C83.5607 217.502 101.966 223.59 124.666 223.59C147.366 223.59 165.771 217.502 165.771 209.982C165.771 208.448 164.991 206.963 163.558 205.585C176.107 209.071 209.688 227.234 209.688 227.234C209.688 227.234 230.645 256.039 183.578 273.941H183.575Z" fill="currentColor"/>
+                                    <path d="M109.899 112.407C109.567 112.407 109.232 112.281 108.979 112.026C105.107 108.153 98.8028 108.15 94.9285 112.026C94.4205 112.534 93.5967 112.534 93.0887 112.026C92.5808 111.518 92.5808 110.695 93.0887 110.187C97.9791 105.302 105.934 105.302 110.821 110.187C111.329 110.695 111.329 111.518 110.821 112.026C110.566 112.281 110.234 112.407 109.902 112.407H109.899Z" fill="currentColor"/>
+                                    <path d="M154.925 114.051C154.593 114.051 154.258 113.925 154.005 113.67C150.131 109.794 143.829 109.794 139.955 113.67C139.447 114.178 138.623 114.178 138.115 113.67C137.607 113.162 137.607 112.339 138.115 111.831C143.003 106.946 150.955 106.948 155.845 111.831C156.353 112.339 156.353 113.162 155.845 113.67C155.59 113.925 155.257 114.051 154.925 114.051Z" fill="currentColor"/>
+                                    <path d="M124.655 154.1C118.919 154.1 113.185 153.255 107.609 151.561C106.922 151.353 106.532 150.625 106.741 149.936C106.95 149.25 107.672 148.863 108.367 149.069C119.02 152.308 130.287 152.308 140.943 149.069C141.641 148.861 142.36 149.25 142.569 149.936C142.777 150.625 142.39 151.353 141.701 151.561C136.127 153.255 130.388 154.1 124.655 154.1Z" fill="currentColor"/>
+                                </g>
                             </svg>
                         </div>
+                        <p class="hero-greeting">hey, this is</p>
+                        <h1 class="hero-title">
+                            <span class="title-line">Taha's</span>
+                            <span class="title-line accent">Work</span>
+                        </h1>
+                        <p class="hero-subtitle">Brand & Product Designer</p>
+                        <div class="hero-cta">
+                            <a href="#list-projects" class="btn btn-primary">Projects</a>
+                            <a href="#list-about" class="btn btn-ghost">Resume</a>
+                        </div>
                     </div>
-                    <div class="finder-body">
-                        <div class="finder-sidebar">
-                            <div class="sidebar-section">
-                                <span class="sidebar-label">Categories</span>
-                                <ul class="sidebar-list" id="listCategoriesList">
-                                    <li class="sidebar-item active" data-category="all">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="3" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="3" width="7" height="7"></rect>
-                                            <rect x="3" y="14" width="7" height="7"></rect>
-                                            <rect x="14" y="14" width="7" height="7"></rect>
-                                        </svg>
-                                        <span>All</span>
-                                    </li>
-                                </ul>
+                </div>
+
+                <!-- Projects -->
+                <div class="block-item block-item-large" id="list-projects">
+                    <div class="finder-window">
+                        <div class="finder-titlebar">
+                            <div class="finder-buttons">
+                                <span class="finder-btn red"></span>
+                                <span class="finder-btn yellow"></span>
+                                <span class="finder-btn green"></span>
+                            </div>
+                            <div class="finder-title">Projects</div>
+                            <div class="finder-actions">
+                                <svg class="finder-view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                </svg>
                             </div>
                         </div>
-                        <div class="finder-content">
-                            <div class="finder-toolbar">
-                                <span class="finder-path" id="listFinderPath">All Projects</span>
-                                <span class="finder-count" id="listFinderCount">0 items</span>
+                        <div class="finder-body">
+                            <div class="finder-sidebar">
+                                <div class="sidebar-section">
+                                    <span class="sidebar-label">Categories</span>
+                                    <ul class="sidebar-list" id="listCategoriesList">
+                                        <li class="sidebar-item active" data-category="all">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="3" width="7" height="7"></rect>
+                                                <rect x="3" y="14" width="7" height="7"></rect>
+                                                <rect x="14" y="14" width="7" height="7"></rect>
+                                            </svg>
+                                            <span>All</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="folders-grid" id="listProjectsGrid">
-                                <div class="list-loading">Loading projects...</div>
+                            <div class="finder-content">
+                                <div class="finder-toolbar">
+                                    <span class="finder-path" id="listFinderPath">All Projects</span>
+                                    <span class="finder-count" id="listFinderCount">0 items</span>
+                                </div>
+                                <div class="folders-grid" id="listProjectsGrid">
+                                    <div class="list-loading">Loading projects...</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Block 4: Blog -->
-            <div class="block-item" id="list-blog">
-                <div class="notes-app-window">
-                    <div class="notes-titlebar">
-                        <div class="notes-buttons">
-                            <span class="notes-btn red"></span>
-                            <span class="notes-btn yellow"></span>
-                            <span class="notes-btn green"></span>
+            <!-- Row 2: Blogs + About -->
+            <div class="block-row">
+                <!-- Blogs -->
+                <div class="block-item block-item-large" id="list-blog">
+                    <div class="notes-app-window">
+                        <div class="notes-titlebar">
+                            <div class="notes-buttons">
+                                <span class="notes-btn red"></span>
+                                <span class="notes-btn yellow"></span>
+                                <span class="notes-btn green"></span>
+                            </div>
+                            <div class="notes-title">Blogs</div>
+                            <div class="notes-actions">
+                                <span class="blog-count-badge" id="listBlogCount">0</span>
+                            </div>
                         </div>
-                        <div class="notes-title">Blogs</div>
-                        <div class="notes-actions">
-                            <span class="blog-count-badge" id="listBlogCount">0</span>
+                        <div class="notes-body">
+                            <div class="notes-list">
+                                <div class="notes-search">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="M21 21l-4.35-4.35"/>
+                                    </svg>
+                                    <input type="text" placeholder="Search" id="listBlogSearch">
+                                </div>
+                                <div class="notes-items" id="listBlogNotesList">
+                                    <div class="notes-loading">Loading posts...</div>
+                                </div>
+                            </div>
+                            <div class="notes-preview" id="listBlogPreview">
+                                <div class="notes-preview-empty">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                        <polyline points="10 9 9 9 8 9"/>
+                                    </svg>
+                                    <p>Select a blog to read</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="notes-body">
-                        <div class="notes-list">
-                            <div class="notes-search">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="11" cy="11" r="8"/>
-                                    <path d="M21 21l-4.35-4.35"/>
-                                </svg>
-                                <input type="text" placeholder="Search" id="listBlogSearch">
-                            </div>
-                            <div class="notes-items" id="listBlogNotesList">
-                                <div class="notes-loading">Loading posts...</div>
-                            </div>
+                </div>
+
+                <!-- About -->
+                <div class="block-item" id="list-about">
+                    <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
+                        <div class="about-photo-topleft">
+                            <img src="taha-photo.jpg" alt="Taha Alfiza">
                         </div>
-                        <div class="notes-preview" id="listBlogPreview">
-                            <div class="notes-preview-empty">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                    <polyline points="14 2 14 8 20 8"/>
-                                    <line x1="16" y1="13" x2="8" y2="13"/>
-                                    <line x1="16" y1="17" x2="8" y2="17"/>
-                                    <polyline points="10 9 9 9 8 9"/>
-                                </svg>
-                                <p>Select a blog to read</p>
+                        <div class="about-flags">
+                            <span class="flag-item" title="Iraq">🇮🇶</span>
+                            <span class="flag-item" title="Turkey">🇹🇷</span>
+                        </div>
+                        <p class="about-bio-text">I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.</p>
+                        <p class="about-bio-text">Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.</p>
+                        <div class="experience-preview" id="listExperiencePreview"></div>
+                        <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
+                            <span>See More</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Testimonials + Hire Form -->
+            <div class="block-row">
+                <!-- Testimonials -->
+                <div class="block-item block-item-large" id="list-testimonials">
+                    <div class="testimonials-grid-block" id="listTestimonialsGrid">
+                        <!-- Testimonials will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Hire Form -->
+                <div class="block-item" id="list-hire">
+                    <div class="hire-form-window">
+                        <div class="hire-titlebar">
+                            <div class="hire-buttons">
+                                <span class="hire-btn red"></span>
+                                <span class="hire-btn yellow"></span>
+                                <span class="hire-btn green"></span>
                             </div>
+                            <div class="hire-title">New Project</div>
+                            <div class="hire-actions"></div>
+                        </div>
+                        <div class="hire-form-content">
+                            <div class="hire-header">
+                                <h2>Start a Project</h2>
+                                <p>Tell me about your project and let's create something great together.</p>
+                            </div>
+                            <form id="listContactForm" class="hire-form">
+                                <div class="form-group">
+                                    <label for="listName">Name</label>
+                                    <input type="text" id="listName" name="name" placeholder="Your name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="listEmail">Email</label>
+                                    <input type="email" id="listEmail" name="email" placeholder="your@email.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="listProject">Project Type</label>
+                                    <select id="listProject" name="project">
+                                        <option value="">Select project type</option>
+                                        <option value="branding">Brand Identity</option>
+                                        <option value="ui-design">UI/UX Design</option>
+                                        <option value="web-design">Web Design</option>
+                                        <option value="product-design">Product Design</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="listMessage">Message</label>
+                                    <textarea id="listMessage" name="message" placeholder="Tell me about your project..." rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="hire-submit-btn">
+                                    <span>Send Message</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Block 5: Testimonials -->
-            <div class="block-item" id="list-testimonials">
-                <div class="testimonials-grid-block" id="listTestimonialsGrid">
-                    <!-- Testimonials will be loaded dynamically -->
-                </div>
-            </div>
-
-            <!-- Block 6: Contact -->
-            <div class="block-item" id="list-contact">
-                <div class="section-content contact-section">
-                    <div class="contact-card">
-                        <h2>Let's Create Something Amazing</h2>
-                        <p>I'm always open to discussing new projects and opportunities.</p>
-                        <div class="contact-links">
-                            <a href="mailto:taha.alfiza@gmail.com" class="contact-link">
-                                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                    <path d="M22 6L12 13L2 6"/>
-                                </svg>
-                                <span>taha.alfiza@gmail.com</span>
-                            </a>
-                            <a href="https://www.linkedin.com/in/tahaalfiza/" target="_blank" class="contact-link">
-                                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                                </svg>
-                                <span>LinkedIn</span>
-                            </a>
-                            <a href="https://www.instagram.com/tahaalfiza/" target="_blank" class="contact-link">
-                                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <rect x="2" y="2" width="20" height="20" rx="5"/>
-                                    <circle cx="12" cy="12" r="4"/>
-                                    <circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none"/>
-                                </svg>
-                                <span>Instagram</span>
-                            </a>
+            <!-- Row 4: Contact -->
+            <div class="block-row">
+                <div class="block-item" id="list-contact">
+                    <div class="section-content contact-section">
+                        <div class="contact-card">
+                            <h2>Let's Create Something Amazing</h2>
+                            <p>I'm always open to discussing new projects and opportunities.</p>
+                            <div class="contact-links">
+                                <a href="mailto:taha.alfiza@gmail.com" class="contact-link">
+                                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                        <path d="M22 6L12 13L2 6"/>
+                                    </svg>
+                                    <span>taha.alfiza@gmail.com</span>
+                                </a>
+                                <a href="https://www.linkedin.com/in/tahaalfiza/" target="_blank" class="contact-link">
+                                    <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://www.instagram.com/tahaalfiza/" target="_blank" class="contact-link">
+                                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                        <circle cx="12" cy="12" r="4"/>
+                                        <circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+                                    </svg>
+                                    <span>Instagram</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Block 7: Hire Form -->
-            <div class="block-item" id="list-hire">
-                <div class="hire-form-window">
-                    <div class="hire-titlebar">
-                        <div class="hire-buttons">
-                            <span class="hire-btn red"></span>
-                            <span class="hire-btn yellow"></span>
-                            <span class="hire-btn green"></span>
-                        </div>
-                        <div class="hire-title">New Project</div>
-                        <div class="hire-actions"></div>
-                    </div>
-                    <div class="hire-form-content">
-                        <div class="hire-header">
-                            <h2>Start a Project</h2>
-                            <p>Tell me about your project and let's create something great together.</p>
-                        </div>
-                        <form id="listContactForm" class="hire-form">
-                            <div class="form-group">
-                                <label for="listName">Name</label>
-                                <input type="text" id="listName" name="name" placeholder="Your name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="listEmail">Email</label>
-                                <input type="email" id="listEmail" name="email" placeholder="your@email.com" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="listProject">Project Type</label>
-                                <select id="listProject" name="project">
-                                    <option value="">Select project type</option>
-                                    <option value="branding">Brand Identity</option>
-                                    <option value="ui-design">UI/UX Design</option>
-                                    <option value="web-design">Web Design</option>
-                                    <option value="product-design">Product Design</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="listMessage">Message</label>
-                                <textarea id="listMessage" name="message" placeholder="Tell me about your project..." rows="3" required></textarea>
-                            </div>
-                            <button type="submit" class="hire-submit-btn">
-                                <span>Send Message</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                                </svg>
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>

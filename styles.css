@@ -399,7 +399,7 @@ a {
 }
 
 /* ==========================================
-   LIST VIEW - Simple Block Layout
+   LIST VIEW - Grid Layout
    ========================================== */
 .list-view {
     position: fixed;
@@ -416,38 +416,49 @@ a {
     display: block;
 }
 
-/* Block Container - Centered with max width */
+/* Block Container - Full width */
 .block-container {
     width: 100%;
-    max-width: 900px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 100px 40px 60px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 24px;
 }
 
-/* Block Items - Full width stacked */
+/* Block Rows - Side by side layout */
+.block-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+/* Block Items */
 .block-item {
-    width: 100%;
+    flex: 0 0 auto;
+}
+
+.block-item-large {
+    flex: 1;
 }
 
 /* Hero Section in block view */
 .list-view .hero-section {
-    min-width: auto;
-    max-width: 600px;
-    margin: 0 auto;
+    min-width: 280px;
+    max-width: 280px;
 }
 
 /* About Card in block view */
 .list-view .about-card-modern {
-    max-width: 100%;
+    max-width: 320px;
     width: 100%;
 }
 
 /* Finder Window in block view */
 .list-view .finder-window {
     width: 100%;
+    min-height: 300px;
 }
 
 /* Notes App Window in block view */
@@ -459,7 +470,7 @@ a {
     min-height: 350px;
 }
 
-/* Testimonials Grid in block view */
+/* Testimonials Grid in block view - 3x2 grid */
 .testimonials-grid-block {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -499,12 +510,13 @@ a {
 /* Contact Section in block view */
 .list-view .contact-section {
     min-width: auto;
-    width: 100%;
+    width: auto;
 }
 
 /* Hire Form in block view */
 .list-view .hire-form-window {
     width: 100%;
+    max-width: 320px;
 }
 
 /* Loading */
@@ -516,10 +528,33 @@ a {
 }
 
 /* Mobile Responsive for Block Layout */
+@media (max-width: 1024px) {
+    .block-row {
+        flex-direction: column;
+    }
+
+    .list-view .hero-section {
+        min-width: auto;
+        max-width: 100%;
+    }
+
+    .list-view .about-card-modern {
+        max-width: 100%;
+    }
+
+    .list-view .hire-form-window {
+        max-width: 100%;
+    }
+
+    .testimonials-grid-block {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .block-container {
         padding: 80px 16px 60px;
-        gap: 24px;
+        gap: 16px;
     }
 
     .list-view .hero-section {

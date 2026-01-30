@@ -41,6 +41,7 @@ async function fetchProjects() {
     client,
     role,
     tools,
+    category,
     folderTabColor,
     folderBodyColor,
     overlayBgColor,
@@ -218,12 +219,41 @@ async function fetchContactInfo() {
   }
 }
 
+// Current active category filter
+let activeCategory = 'all';
+
 // Render projects into the folders grid
 function renderProjects(projects) {
   const container = document.querySelector('.folders-grid');
-  if (!container || projects.length === 0) return;
+  if (!container) return;
 
-  container.innerHTML = projects.map((project, index) => {
+  // Build categories sidebar
+  buildCategoriesSidebar(projects);
+
+  // Filter projects by active category
+  const filteredProjects = activeCategory === 'all'
+    ? projects
+    : projects.filter(p => (p.category || '').toLowerCase() === activeCategory.toLowerCase());
+
+  // Update finder path and count
+  const pathEl = document.getElementById('finderPath');
+  const countEl = document.getElementById('finderCount');
+  if (pathEl) {
+    pathEl.textContent = activeCategory === 'all' ? 'All Projects' : activeCategory;
+  }
+  if (countEl) {
+    countEl.textContent = `${filteredProjects.length} item${filteredProjects.length !== 1 ? 's' : ''}`;
+  }
+
+  if (filteredProjects.length === 0) {
+    container.innerHTML = '<div class="finder-empty">No projects in this category</div>';
+    return;
+  }
+
+  container.innerHTML = filteredProjects.map((project) => {
+    // Find original index for overlay
+    const originalIndex = projects.findIndex(p => p._id === project._id);
+
     // Get up to 3 images - higher quality for folder previews
     const images = project.images || [];
     const imageHtml = images.slice(0, 3).map((img, i) => {
@@ -238,7 +268,7 @@ function renderProjects(projects) {
       clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
     } else {
       // Show overlay (either has overlay content or default behavior)
-      clickHandler = `onclick="openProjectOverlay(${index})"`;
+      clickHandler = `onclick="openProjectOverlay(${originalIndex})"`;
     }
 
     // Custom folder colors - inline styles if provided
@@ -266,6 +296,57 @@ function renderProjects(projects) {
       </div>
     `;
   }).join('');
+}
+
+// Build categories sidebar from projects
+function buildCategoriesSidebar(projects) {
+  const container = document.getElementById('categoriesList');
+  if (!container) return;
+
+  // Get unique categories from projects
+  const categories = [...new Set(projects.map(p => p.category).filter(Boolean))];
+
+  // Category icons mapping
+  const categoryIcons = {
+    'branding': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+    'product': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>`,
+    'ui/ux': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>`,
+    'web': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    'mobile': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>`,
+    'default': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`
+  };
+
+  // Build sidebar HTML
+  let html = `
+    <li class="sidebar-item ${activeCategory === 'all' ? 'active' : ''}" data-category="all" onclick="filterByCategory('all')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+      </svg>
+      <span>All</span>
+    </li>
+  `;
+
+  categories.forEach(category => {
+    const icon = categoryIcons[category.toLowerCase()] || categoryIcons['default'];
+    const isActive = activeCategory.toLowerCase() === category.toLowerCase();
+    html += `
+      <li class="sidebar-item ${isActive ? 'active' : ''}" data-category="${category}" onclick="filterByCategory('${category}')">
+        ${icon}
+        <span>${category}</span>
+      </li>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// Filter projects by category
+function filterByCategory(category) {
+  activeCategory = category;
+  renderProjects(projectsData);
 }
 
 // Helper function to format color (adds # for hex codes if missing)

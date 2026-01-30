@@ -138,69 +138,58 @@
                 </div>
             </div>
 
-            <!-- ==================== PROJECTS SECTION ==================== -->
+            <!-- ==================== PROJECTS SECTION (Finder Style) ==================== -->
             <div class="canvas-section projects" id="section-projects" style="left: 78%; top: 42%;">
-                <div class="folders-grid">
-                    <!-- Cheers Folder -->
-                    <div class="mac-folder">
-                        <div class="folder-wrapper">
-                            <!-- Popup images on hover -->
-                            <div class="popup-images">
-                                <img class="popup-img img-1" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=200&h=300&fit=crop" alt="Preview 1">
-                                <img class="popup-img img-2" src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=200&h=300&fit=crop" alt="Preview 2">
-                                <img class="popup-img img-3" src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=200&h=300&fit=crop" alt="Preview 3">
-                            </div>
-                            <!-- Folder Icon -->
-                            <div class="folder-icon">
-                                <div class="folder-tab"></div>
-                                <div class="folder-body"></div>
-                            </div>
+                <div class="finder-window">
+                    <!-- Finder Title Bar -->
+                    <div class="finder-titlebar">
+                        <div class="finder-buttons">
+                            <span class="finder-btn red"></span>
+                            <span class="finder-btn yellow"></span>
+                            <span class="finder-btn green"></span>
                         </div>
-                        <div class="folder-info">
-                            <span class="folder-duration">10 Weeks</span>
-                            <span class="folder-date">Spring 2024</span>
+                        <div class="finder-title">Projects</div>
+                        <div class="finder-actions">
+                            <svg class="finder-view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                            </svg>
                         </div>
-                        <h3 class="folder-name">Cheers</h3>
                     </div>
 
-                    <!-- Dream Line Folder -->
-                    <div class="mac-folder">
-                        <div class="folder-wrapper">
-                            <div class="popup-images">
-                                <img class="popup-img img-1" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&h=300&fit=crop" alt="Preview 1">
-                                <img class="popup-img img-2" src="https://images.unsplash.com/photo-1559825481-12a05cc00344?w=200&h=300&fit=crop" alt="Preview 2">
-                                <img class="popup-img img-3" src="https://images.unsplash.com/photo-1582967788606-a171c1080cb0?w=200&h=300&fit=crop" alt="Preview 3">
-                            </div>
-                            <div class="folder-icon blue">
-                                <div class="folder-tab"></div>
-                                <div class="folder-body"></div>
+                    <!-- Finder Body -->
+                    <div class="finder-body">
+                        <!-- Sidebar -->
+                        <div class="finder-sidebar">
+                            <div class="sidebar-section">
+                                <span class="sidebar-label">Categories</span>
+                                <ul class="sidebar-list" id="categoriesList">
+                                    <li class="sidebar-item active" data-category="all">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7"></rect>
+                                            <rect x="14" y="3" width="7" height="7"></rect>
+                                            <rect x="3" y="14" width="7" height="7"></rect>
+                                            <rect x="14" y="14" width="7" height="7"></rect>
+                                        </svg>
+                                        <span>All</span>
+                                    </li>
+                                    <!-- Categories will be dynamically added -->
+                                </ul>
                             </div>
                         </div>
-                        <div class="folder-info">
-                            <span class="folder-duration">10 Weeks</span>
-                            <span class="folder-date">Spring 2025</span>
-                        </div>
-                        <h3 class="folder-name">Dream Line</h3>
-                    </div>
 
-                    <!-- Torus Folder -->
-                    <div class="mac-folder">
-                        <div class="folder-wrapper">
-                            <div class="popup-images">
-                                <img class="popup-img img-1" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=200&h=300&fit=crop" alt="Preview 1">
-                                <img class="popup-img img-2" src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=200&h=300&fit=crop" alt="Preview 2">
-                                <img class="popup-img img-3" src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=200&h=300&fit=crop" alt="Preview 3">
+                        <!-- Content Area -->
+                        <div class="finder-content">
+                            <div class="finder-toolbar">
+                                <span class="finder-path" id="finderPath">All Projects</span>
+                                <span class="finder-count" id="finderCount">0 items</span>
                             </div>
-                            <div class="folder-icon yellow">
-                                <div class="folder-tab"></div>
-                                <div class="folder-body"></div>
+                            <div class="folders-grid" id="foldersGrid">
+                                <!-- Folders will be dynamically added -->
                             </div>
                         </div>
-                        <div class="folder-info">
-                            <span class="folder-duration">10 Weeks</span>
-                            <span class="folder-date">Winter 2025</span>
-                        </div>
-                        <h3 class="folder-name">Torus</h3>
                     </div>
                 </div>
             </div>

@@ -155,6 +155,12 @@ export default {
       type: 'number',
       description: 'Lower numbers appear first',
     },
+    {
+      name: 'password',
+      title: 'Password Protection',
+      type: 'string',
+      description: 'Leave empty for public access, or enter a password to protect this post',
+    },
   ],
   orderings: [
     {

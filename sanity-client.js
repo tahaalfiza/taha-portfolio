@@ -372,7 +372,8 @@ function renderBlockContent(content) {
     // Handle different block types
     if (block._type === 'block') {
       const style = block.style || 'normal';
-      const text = renderBlockText(block.children);
+      const markDefs = block.markDefs || [];
+      const text = renderBlockText(block.children, markDefs);
 
       switch (style) {
         case 'h2':
@@ -403,7 +404,7 @@ function renderBlockContent(content) {
 }
 
 // Render block text with marks (bold, italic, links)
-function renderBlockText(children) {
+function renderBlockText(children, markDefs = []) {
   if (!children || !Array.isArray(children)) return '';
 
   return children.map(child => {
@@ -417,6 +418,12 @@ function renderBlockText(children) {
           text = `<em>${text}</em>`;
         } else if (mark === 'code') {
           text = `<code>${text}</code>`;
+        } else {
+          // Check if it's a link annotation
+          const linkDef = markDefs.find(def => def._key === mark);
+          if (linkDef && linkDef._type === 'link' && linkDef.href) {
+            text = `<a href="${linkDef.href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+          }
         }
       });
     }

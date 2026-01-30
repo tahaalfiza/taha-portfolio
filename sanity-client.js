@@ -291,6 +291,36 @@ function openProjectOverlay(projectIndex) {
     gallery.innerHTML = '';
   }
 
+  // More Projects - show other projects (excluding current one)
+  const moreProjectsGrid = document.getElementById('moreProjectsGrid');
+  const otherProjects = projectsData.filter((_, i) => i !== projectIndex);
+
+  if (otherProjects.length > 0) {
+    // Show up to 3 other projects
+    const projectsToShow = otherProjects.slice(0, 3);
+    moreProjectsGrid.innerHTML = projectsToShow.map((otherProject) => {
+      const otherIndex = projectsData.findIndex(p => p._id === otherProject._id);
+      const previewImage = otherProject.images && otherProject.images[0]
+        ? sanityImageUrl(otherProject.images[0], 400, 85)
+        : '';
+
+      return `
+        <div class="more-project-card" onclick="openProjectOverlay(${otherIndex}); document.querySelector('.overlay-content').scrollTop = 0;">
+          <div class="more-project-image">
+            ${previewImage ? `<img src="${previewImage}" alt="${otherProject.title}" loading="lazy">` : ''}
+          </div>
+          <div class="more-project-info">
+            <h4 class="more-project-title">${otherProject.title}</h4>
+            <span class="more-project-date">${otherProject.date || ''}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('moreProjects').style.display = 'block';
+  } else {
+    document.getElementById('moreProjects').style.display = 'none';
+  }
+
   // Show overlay
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';

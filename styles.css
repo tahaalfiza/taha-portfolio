@@ -1093,63 +1093,43 @@ a {
 /* Decorative elements removed - using subtle grid instead */
 
 /* ==========================================
-   RESPONSIVE
+   RESPONSIVE - Mobile Experience
    ========================================== */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 12px 20px;
-        gap: 12px;
-        bottom: 16px;
-    }
 
-    .nav-links {
-        display: none;
-    }
-
-    .nav-logo {
-        padding-right: 0;
-        border-right: none;
-    }
-
-    .nav-right {
-        padding-left: 0;
-        border-left: none;
-    }
-
-    .minimap {
-        display: none;
-    }
-
-    .zoom-controls {
-        top: 16px;
-        left: 16px;
-    }
-
+/* Tablet */
+@media (max-width: 1024px) {
     .hero-section {
-        min-width: 320px;
-        padding: 24px;
+        min-width: 420px;
     }
 
     .title-line {
-        font-size: 48px;
+        font-size: 56px;
     }
 
-    .hero-cta {
-        flex-direction: column;
+    .about-modern {
+        max-width: 480px;
+        padding: 32px;
     }
 
-    .about-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    .about-headline {
+        font-size: 24px;
     }
 
-    .projects-grid {
-        grid-template-columns: 1fr;
+    .career-card {
+        min-width: 420px;
+        padding: 32px;
     }
 
+    .folders-grid {
+        gap: 40px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    /* Hide custom cursor on mobile */
     .custom-cursor {
-        display: none;
+        display: none !important;
     }
 
     body {
@@ -1158,9 +1138,378 @@ a {
 
     .canvas-container {
         cursor: grab;
+        touch-action: none;
     }
 
     .canvas-container:active {
         cursor: grabbing;
+    }
+
+    /* Navigation - Bottom bar optimized for thumb */
+    .navbar {
+        padding: 8px 12px;
+        gap: 4px;
+        bottom: 16px;
+        border-radius: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: calc(100% - 32px);
+    }
+
+    .nav-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+    }
+
+    .nav-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .nav-tooltip {
+        display: none;
+    }
+
+    /* Zoom controls - Compact for mobile */
+    .zoom-controls {
+        top: auto;
+        bottom: 90px;
+        left: 16px;
+        padding: 6px;
+        border-radius: 14px;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .zoom-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        border-radius: 10px;
+    }
+
+    .zoom-level {
+        font-size: 10px;
+        min-width: 40px;
+        padding: 4px 0;
+    }
+
+    /* Hide minimap on mobile - use nav instead */
+    .minimap {
+        display: none;
+    }
+
+    /* Canvas sections - Mobile optimized */
+    .section-content {
+        padding: 24px;
+        border-radius: 20px;
+    }
+
+    /* Hero Section - Mobile */
+    .hero-section {
+        min-width: 280px;
+        max-width: 320px;
+        padding: 24px;
+    }
+
+    .hero-logo svg {
+        width: 80px;
+        height: 80px;
+    }
+
+    .hero-logo {
+        margin-bottom: 24px;
+    }
+
+    .title-line {
+        font-size: 40px;
+        letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+    }
+
+    .hero-subtitle-small {
+        font-size: 12px;
+        margin-bottom: 24px;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 32px;
+    }
+
+    .btn {
+        padding: 14px 24px;
+        font-size: 13px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .scroll-indicator {
+        display: none;
+    }
+
+    /* About Section - Mobile */
+    .about-modern {
+        max-width: 300px;
+        padding: 24px;
+        gap: 24px;
+    }
+
+    .about-photo-modern {
+        width: 120px;
+        height: 120px;
+        border-radius: 16px;
+    }
+
+    .about-headline {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .flag-inline svg {
+        width: 22px;
+        height: 16px;
+    }
+
+    /* Projects Section - Mobile */
+    .folders-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        padding: 16px;
+    }
+
+    .folder-wrapper {
+        width: 100px;
+        height: 120px;
+    }
+
+    .folder-icon {
+        width: 100px;
+        height: 80px;
+    }
+
+    .folder-tab {
+        width: 36px;
+        height: 14px;
+        left: 8px;
+    }
+
+    .folder-body {
+        top: 10px;
+        border-radius: 3px 8px 8px 8px;
+    }
+
+    .popup-img {
+        width: 60px;
+        height: 75px;
+        border-radius: 6px;
+    }
+
+    .mac-folder:hover .popup-img.img-1 {
+        transform: translate(-120%, -100%) rotate(-12deg) scale(1);
+    }
+
+    .mac-folder:hover .popup-img.img-2 {
+        transform: translate(-50%, -120%) rotate(0deg) scale(1);
+    }
+
+    .mac-folder:hover .popup-img.img-3 {
+        transform: translate(20%, -100%) rotate(12deg) scale(1);
+    }
+
+    .folder-info {
+        margin-bottom: 4px;
+    }
+
+    .folder-duration {
+        font-size: 10px;
+    }
+
+    .folder-date {
+        font-size: 9px;
+    }
+
+    .folder-name {
+        font-size: 13px;
+    }
+
+    /* Career Section - Mobile */
+    .career-card {
+        min-width: 280px;
+        max-width: 320px;
+        padding: 24px;
+    }
+
+    .career-title {
+        font-size: 12px;
+        margin-bottom: 16px;
+    }
+
+    .career-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 12px 0;
+    }
+
+    .career-date {
+        font-size: 11px;
+        color: var(--accent-primary);
+        font-weight: 500;
+    }
+
+    .career-details h3 {
+        font-size: 13px;
+    }
+
+    .career-location {
+        font-size: 11px;
+    }
+
+    .career-item:hover {
+        margin: 0;
+        padding: 12px 0;
+        background: transparent;
+    }
+
+    /* Testimonials - Mobile */
+    .sticky-note {
+        width: 180px;
+        padding: 16px;
+    }
+
+    .sticky-note p {
+        font-size: 12px;
+    }
+
+    .note-author {
+        font-size: 10px;
+    }
+
+    /* Contact Section - Mobile */
+    .contact-section {
+        min-width: 280px;
+        max-width: 320px;
+    }
+
+    .contact-card h2 {
+        font-size: 22px;
+    }
+
+    .contact-card > p {
+        font-size: 13px;
+        margin-bottom: 24px;
+    }
+
+    .contact-links {
+        gap: 10px;
+    }
+
+    .contact-link {
+        padding: 14px 16px;
+        gap: 12px;
+        border-radius: 10px;
+    }
+
+    .contact-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .contact-link span {
+        font-size: 13px;
+    }
+
+    /* Section Labels - Mobile */
+    .section-label {
+        margin-bottom: 16px;
+    }
+
+    .label-number {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+
+    .label-text {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 375px) {
+    .navbar {
+        padding: 6px 8px;
+    }
+
+    .nav-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hero-section {
+        min-width: 260px;
+        max-width: 280px;
+    }
+
+    .title-line {
+        font-size: 36px;
+    }
+
+    .about-modern {
+        max-width: 260px;
+    }
+
+    .about-headline {
+        font-size: 16px;
+    }
+
+    .career-card {
+        min-width: 260px;
+        max-width: 280px;
+    }
+
+    .folders-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .contact-section {
+        min-width: 260px;
+        max-width: 280px;
+    }
+}
+
+/* Landscape Mobile - Optimize for horizontal view */
+@media (max-height: 500px) and (orientation: landscape) {
+    .navbar {
+        bottom: 8px;
+        padding: 6px 10px;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .zoom-controls {
+        bottom: 60px;
+        flex-direction: row;
+    }
+
+    .hero-section {
+        min-width: 400px;
+    }
+
+    .title-line {
+        font-size: 48px;
+    }
+
+    .hero-cta {
+        flex-direction: row;
     }
 }

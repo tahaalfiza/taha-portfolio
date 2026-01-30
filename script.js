@@ -45,54 +45,67 @@ function initLoadingScreen() {
 }
 
 /* ==========================================
-   INFINITE CANVAS ENGINE
+   INFINITE CANVAS ENGINE - Mobile Enhanced
    ========================================== */
 function initCanvas() {
     const container = document.getElementById('canvasContainer');
     const canvas = document.getElementById('canvas');
+    const isMobile = window.innerWidth <= 768;
 
     let state = {
-        scale: 1,
-        minScale: 0.3,
+        scale: isMobile ? 0.6 : 1,
+        minScale: isMobile ? 0.25 : 0.3,
         maxScale: 2,
         panX: 0,
         panY: 0,
         isDragging: false,
+        isPinching: false,
         startX: 0,
         startY: 0,
         lastX: 0,
         lastY: 0,
         velocity: { x: 0, y: 0 },
-        friction: 0.92
+        friction: 0.92,
+        lastPinchDistance: 0,
+        lastPinchCenter: { x: 0, y: 0 }
     };
 
     // Center on home section initially
     const homeSection = document.getElementById('section-home');
     if (homeSection) {
-        state.panX = -(parseFloat(homeSection.style.left) / 100 * 2800) + window.innerWidth / 2;
-        state.panY = -(parseFloat(homeSection.style.top) / 100 * 2000) + window.innerHeight / 2;
+        state.panX = -(parseFloat(homeSection.style.left) / 100 * 2800) * state.scale + window.innerWidth / 2;
+        state.panY = -(parseFloat(homeSection.style.top) / 100 * 2000) * state.scale + window.innerHeight / 2;
     }
 
     updateTransform();
+    updateZoomLevel();
 
     // Mouse events
     container.addEventListener('mousedown', startDrag);
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', endDrag);
 
-    // Touch events
-    container.addEventListener('touchstart', startDragTouch, { passive: false });
-    document.addEventListener('touchmove', dragTouch, { passive: false });
-    document.addEventListener('touchend', endDrag);
+    // Touch events - Enhanced for mobile
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-    // Wheel event - FIXED: scroll aligns with sections
+    // Wheel event
     container.addEventListener('wheel', handleWheel, { passive: false });
 
     // Keyboard
     document.addEventListener('keydown', handleKeyboard);
 
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const wasMobile = isMobile;
+        const nowMobile = window.innerWidth <= 768;
+        if (wasMobile !== nowMobile) {
+            location.reload();
+        }
+    });
+
     function startDrag(e) {
-        // Allow drag from anywhere except buttons and links
         if (e.target.closest('button, a, input, textarea')) return;
 
         state.isDragging = true;
@@ -106,8 +119,90 @@ function initCanvas() {
         document.getElementById('cursor')?.classList.add('cursor-drag');
     }
 
-    function startDragTouch(e) {
+    // Enhanced touch handling with pinch-to-zoom
+    function handleTouchStart(e) {
+        if (e.target.closest('button, a, input, textarea')) return;
+
         if (e.touches.length === 1) {
+            // Single touch - pan
+            const touch = e.touches[0];
+            state.isDragging = true;
+            state.isPinching = false;
+            state.startX = touch.clientX - state.panX;
+            state.startY = touch.clientY - state.panY;
+            state.lastX = touch.clientX;
+            state.lastY = touch.clientY;
+            state.velocity = { x: 0, y: 0 };
+        } else if (e.touches.length === 2) {
+            // Two finger - pinch zoom
+            e.preventDefault();
+            state.isDragging = false;
+            state.isPinching = true;
+            state.lastPinchDistance = getPinchDistance(e.touches);
+            state.lastPinchCenter = getPinchCenter(e.touches);
+        }
+    }
+
+    function handleTouchMove(e) {
+        if (e.touches.length === 1 && state.isDragging) {
+            e.preventDefault();
+            const touch = e.touches[0];
+
+            const dx = touch.clientX - state.lastX;
+            const dy = touch.clientY - state.lastY;
+
+            state.velocity.x = dx * 0.8;
+            state.velocity.y = dy * 0.8;
+
+            state.panX = touch.clientX - state.startX;
+            state.panY = touch.clientY - state.startY;
+            state.lastX = touch.clientX;
+            state.lastY = touch.clientY;
+
+            updateTransform();
+            updateMinimap();
+        } else if (e.touches.length === 2 && state.isPinching) {
+            e.preventDefault();
+
+            const newDistance = getPinchDistance(e.touches);
+            const newCenter = getPinchCenter(e.touches);
+
+            // Calculate zoom
+            const scaleFactor = newDistance / state.lastPinchDistance;
+            const oldScale = state.scale;
+            const newScale = Math.max(state.minScale, Math.min(state.maxScale, oldScale * scaleFactor));
+
+            // Zoom toward pinch center
+            const canvasX = (newCenter.x - state.panX) / oldScale;
+            const canvasY = (newCenter.y - state.panY) / oldScale;
+
+            state.scale = newScale;
+            state.panX = newCenter.x - canvasX * newScale;
+            state.panY = newCenter.y - canvasY * newScale;
+
+            // Also pan with pinch movement
+            state.panX += newCenter.x - state.lastPinchCenter.x;
+            state.panY += newCenter.y - state.lastPinchCenter.y;
+
+            state.lastPinchDistance = newDistance;
+            state.lastPinchCenter = newCenter;
+
+            updateTransform();
+            updateZoomLevel();
+            updateMinimap();
+        }
+    }
+
+    function handleTouchEnd(e) {
+        if (e.touches.length === 0) {
+            if (state.isDragging) {
+                state.isDragging = false;
+                applyMomentum();
+            }
+            state.isPinching = false;
+        } else if (e.touches.length === 1) {
+            // Went from 2 touches to 1
+            state.isPinching = false;
             const touch = e.touches[0];
             state.isDragging = true;
             state.startX = touch.clientX - state.panX;
@@ -115,6 +210,19 @@ function initCanvas() {
             state.lastX = touch.clientX;
             state.lastY = touch.clientY;
         }
+    }
+
+    function getPinchDistance(touches) {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function getPinchCenter(touches) {
+        return {
+            x: (touches[0].clientX + touches[1].clientX) / 2,
+            y: (touches[0].clientY + touches[1].clientY) / 2
+        };
     }
 
     function drag(e) {
@@ -131,20 +239,6 @@ function initCanvas() {
 
         state.lastX = e.clientX;
         state.lastY = e.clientY;
-
-        updateTransform();
-        updateMinimap();
-    }
-
-    function dragTouch(e) {
-        if (!state.isDragging || e.touches.length !== 1) return;
-        e.preventDefault();
-
-        const touch = e.touches[0];
-        state.panX = touch.clientX - state.startX;
-        state.panY = touch.clientY - state.startY;
-        state.lastX = touch.clientX;
-        state.lastY = touch.clientY;
 
         updateTransform();
         updateMinimap();

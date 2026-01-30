@@ -902,13 +902,14 @@ function renderTestimonials(testimonials) {
   const canvas = document.getElementById('canvas');
   if (!canvas) return;
 
-  // Positions for testimonials (closer together but no overlap)
+  // Positions for 6 testimonials (no overlap)
   const positions = [
-    { left: '44%', top: '35%' },
-    { left: '56%', top: '42%' },
-    { left: '44%', top: '52%' },
-    { left: '56%', top: '59%' },
-    { left: '50%', top: '70%' }
+    { left: '42%', top: '30%' },
+    { left: '56%', top: '30%' },
+    { left: '42%', top: '45%' },
+    { left: '56%', top: '45%' },
+    { left: '42%', top: '60%' },
+    { left: '56%', top: '60%' }
   ];
 
   testimonials.forEach((testimonial, i) => {

@@ -1615,6 +1615,8 @@ async function initSanityContent() {
     window.blogPostsData = blogPosts;
     window.aboutInfo = aboutInfo;
     window.contactInfo = contactInfo;
+    window.experiencesData = experiences;
+    window.testimonialsData = testimonials;
     window.sanityImageUrl = sanityImageUrl;
 
     // Update list view if it's open

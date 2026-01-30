@@ -382,13 +382,17 @@
             <!-- Hero Section -->
             <section class="list-section list-hero" id="list-home">
                 <div class="list-hero-content">
+                    <div class="list-hero-logo">
+                        <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
+                        </svg>
+                    </div>
                     <p class="list-hero-greeting">hey, this is</p>
                     <h1 class="list-hero-title">Taha's <span>Work</span></h1>
                     <p class="list-hero-subtitle">Brand & Product Designer</p>
-                    <p class="list-hero-desc">Creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions.</p>
                     <div class="list-hero-cta">
-                        <a href="#list-projects" class="list-btn-primary">View Projects</a>
-                        <a href="#list-contact" class="list-btn-secondary">Get in Touch</a>
+                        <a href="#list-projects" class="list-btn-primary">Projects</a>
+                        <a href="#list-about" class="list-btn-secondary">Resume</a>
                     </div>
                 </div>
             </section>
@@ -411,7 +415,7 @@
                             </div>
                             <div class="list-about-detail">
                                 <span class="detail-label">Experience</span>
-                                <span class="detail-value">10+ Years</span>
+                                <span class="detail-value" id="listExperience">10+ Years</span>
                             </div>
                         </div>
                         <div class="list-about-skills" id="listSkills">
@@ -425,6 +429,17 @@
                             View Full CV
                         </a>
                     </div>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section class="list-section list-experience" id="list-experience">
+                <div class="list-section-header">
+                    <h2>Experience</h2>
+                </div>
+                <div class="list-experience-grid" id="listExperienceGrid">
+                    <!-- Experience will be loaded from Sanity -->
+                    <div class="list-loading">Loading experience...</div>
                 </div>
             </section>
 
@@ -450,6 +465,59 @@
                 </div>
             </section>
 
+            <!-- Testimonials Section -->
+            <section class="list-section list-testimonials" id="list-testimonials">
+                <div class="list-section-header">
+                    <h2>What People Say</h2>
+                </div>
+                <div class="list-testimonials-grid" id="listTestimonialsGrid">
+                    <!-- Testimonials will be loaded from Sanity -->
+                </div>
+            </section>
+
+            <!-- Hire Me Section -->
+            <section class="list-section list-hire" id="list-hire">
+                <div class="list-section-header">
+                    <h2>Start a Project</h2>
+                </div>
+                <div class="list-hire-content">
+                    <p class="list-hire-desc">Tell me about your project and let's create something great together.</p>
+                    <form class="list-contact-form" id="listContactForm">
+                        <div class="list-form-row">
+                            <div class="list-form-group">
+                                <label for="listName">Name</label>
+                                <input type="text" id="listName" name="name" placeholder="Your name" required>
+                            </div>
+                            <div class="list-form-group">
+                                <label for="listEmail">Email</label>
+                                <input type="email" id="listEmail" name="email" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="list-form-group">
+                            <label for="listProject">Project Type</label>
+                            <select id="listProject" name="project">
+                                <option value="">Select project type</option>
+                                <option value="branding">Brand Identity</option>
+                                <option value="ui-design">UI/UX Design</option>
+                                <option value="web-design">Web Design</option>
+                                <option value="product-design">Product Design</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="list-form-group">
+                            <label for="listMessage">Message</label>
+                            <textarea id="listMessage" name="message" placeholder="Tell me about your project..." rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="list-submit-btn">
+                            <span>Send Message</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
             <!-- Contact Section -->
             <section class="list-section list-contact" id="list-contact">
                 <div class="list-section-header">
@@ -457,26 +525,12 @@
                 </div>
                 <div class="list-contact-content">
                     <div class="list-contact-info">
+                        <h3>Let's Create Something Amazing</h3>
                         <p>I'm always open to discussing new projects and opportunities.</p>
                         <div class="list-contact-links" id="listContactLinks">
                             <!-- Contact links will be loaded from Sanity -->
                         </div>
                     </div>
-                    <form class="list-contact-form" id="listContactForm">
-                        <div class="list-form-group">
-                            <label for="listName">Name</label>
-                            <input type="text" id="listName" name="name" placeholder="Your name" required>
-                        </div>
-                        <div class="list-form-group">
-                            <label for="listEmail">Email</label>
-                            <input type="email" id="listEmail" name="email" placeholder="your@email.com" required>
-                        </div>
-                        <div class="list-form-group">
-                            <label for="listMessage">Message</label>
-                            <textarea id="listMessage" name="message" placeholder="Tell me about your project..." rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="list-submit-btn">Send Message</button>
-                    </form>
                 </div>
             </section>
 
@@ -549,7 +603,7 @@
                 <line x1="3" y1="12" x2="3.01" y2="12"/>
                 <line x1="3" y1="18" x2="3.01" y2="18"/>
             </svg>
-            <svg class="icon-canvas" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+            <svg class="icon-canvas" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="7" height="7"/>
                 <rect x="14" y="3" width="7" height="7"/>
                 <rect x="3" y="14" width="7" height="7"/>

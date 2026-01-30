@@ -752,6 +752,63 @@ function populateListView() {
             contactLinksEl.innerHTML = linksHtml;
         }
     }
+
+    // Populate experience
+    if (window.experiencesData && window.experiencesData.length > 0) {
+        const experienceGrid = document.getElementById('listExperienceGrid');
+        if (experienceGrid) {
+            experienceGrid.innerHTML = window.experiencesData.map(exp => {
+                const logoUrl = exp.companyLogo && window.sanityImageUrl
+                    ? window.sanityImageUrl(exp.companyLogo, 112, 90)
+                    : '';
+                const dateRange = `${exp.startDate || ''} – ${exp.endDate || 'Present'}`;
+                return `
+                    <div class="list-experience-card">
+                        <div class="list-exp-logo">
+                            ${logoUrl ? `<img src="${logoUrl}" alt="${exp.company || ''}" loading="lazy">` : ''}
+                        </div>
+                        <div class="list-exp-info">
+                            <h3 class="list-exp-title">${exp.role || ''}</h3>
+                            <p class="list-exp-company">${exp.company || ''}</p>
+                            ${exp.description ? `<p class="list-exp-description">${exp.description}</p>` : ''}
+                        </div>
+                        <div class="list-exp-meta">
+                            <span class="list-exp-date">${dateRange}</span>
+                            ${exp.location ? `<p class="list-exp-location">${exp.location}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    // Populate testimonials
+    if (window.testimonialsData && window.testimonialsData.length > 0) {
+        const testimonialsGrid = document.getElementById('listTestimonialsGrid');
+        if (testimonialsGrid) {
+            const colors = ['yellow', 'pink', 'blue', 'green'];
+            testimonialsGrid.innerHTML = window.testimonialsData.map((testimonial, index) => {
+                const avatarUrl = testimonial.avatar && window.sanityImageUrl
+                    ? window.sanityImageUrl(testimonial.avatar, 80, 90)
+                    : '';
+                const color = colors[index % colors.length];
+                return `
+                    <div class="list-testimonial-card ${color}">
+                        <p class="list-testimonial-quote">"${testimonial.quote || ''}"</p>
+                        <div class="list-testimonial-author">
+                            <div class="list-testimonial-avatar">
+                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${testimonial.name || ''}" loading="lazy">` : ''}
+                            </div>
+                            <div class="list-testimonial-info">
+                                <p class="list-testimonial-name">${testimonial.name || ''}</p>
+                                <p class="list-testimonial-role">${testimonial.role || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
 }
 
 // Make data and functions available globally for list view
@@ -759,6 +816,8 @@ window.aboutInfo = null;
 window.contactInfo = null;
 window.projectsData = [];
 window.blogPostsData = [];
+window.experiencesData = [];
+window.testimonialsData = [];
 window.populateListView = populateListView;
 
 /* ==========================================

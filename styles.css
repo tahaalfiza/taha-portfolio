@@ -87,7 +87,7 @@ a {
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
 .loading-screen.hidden {
@@ -97,25 +97,62 @@ a {
 
 .loader {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
 }
 
-.loader-icon {
-    font-size: 48px;
-    color: var(--accent-primary);
-    animation: pulse 1.5s ease-in-out infinite;
+.loader-logo {
+    color: var(--text-primary);
+    animation: logo-pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.1); }
+.loader-logo svg {
+    width: 100px;
+    height: 100px;
 }
 
-.loader p {
+@keyframes logo-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+.loader-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 200px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border-light);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--text-primary);
+    border-radius: 3px;
+    transition: width 0.1s ease-out;
+}
+
+.progress-text {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-muted);
-    margin-top: 20px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 }
 
 /* ==========================================

@@ -13,13 +13,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================
-   LOADING SCREEN
+   LOADING SCREEN WITH PROGRESS
    ========================================== */
 function initLoadingScreen() {
     const loadingScreen = document.getElementById('loadingScreen');
-    setTimeout(() => {
-        loadingScreen.classList.add('hidden');
-    }, 1500);
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+
+    let progress = 0;
+    const duration = 1800; // Total loading time in ms
+    const interval = 30; // Update every 30ms
+    const increment = 100 / (duration / interval);
+
+    const progressInterval = setInterval(() => {
+        // Add some randomness to make it feel more natural
+        const randomIncrement = increment * (0.5 + Math.random());
+        progress = Math.min(100, progress + randomIncrement);
+
+        // Update UI
+        if (progressFill) progressFill.style.width = progress + '%';
+        if (progressText) progressText.textContent = Math.floor(progress) + '%';
+
+        // Complete loading
+        if (progress >= 100) {
+            clearInterval(progressInterval);
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 200);
+        }
+    }, interval);
 }
 
 /* ==========================================

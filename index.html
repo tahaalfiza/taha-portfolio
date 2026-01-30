@@ -57,7 +57,7 @@
     <div class="canvas-container" id="canvasContainer">
         <div class="canvas" id="canvas">
             <!-- ==================== HOME SECTION ==================== -->
-            <div class="canvas-section home" id="section-home" style="left: 50%; top: 35%; transform: translate(-50%, -50%);">
+            <div class="canvas-section home" id="section-home" style="left: 50%; top: 18%; transform: translate(-50%, -50%);">
                 <div class="section-content hero-section">
                     <div class="hero-logo">
                         <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,7 +112,7 @@
             </div>
 
             <!-- ==================== ABOUT SECTION ==================== -->
-            <div class="canvas-section about" id="section-about" style="left: 25%; top: 50%;">
+            <div class="canvas-section about" id="section-about" style="left: 22%; top: 45%;">
                 <div class="section-content about-section">
                     <div class="section-label">
                         <span class="label-number">01</span>
@@ -162,7 +162,7 @@
             </div>
 
             <!-- ==================== PROJECTS SECTION ==================== -->
-            <div class="canvas-section projects" id="section-projects" style="left: 70%; top: 38%;">
+            <div class="canvas-section projects" id="section-projects" style="left: 78%; top: 42%;">
                 <div class="folders-grid">
                     <!-- Cheers Folder -->
                     <div class="mac-folder">
@@ -229,7 +229,7 @@
             </div>
 
             <!-- ==================== CAREER SECTION ==================== -->
-            <div class="canvas-section career" id="section-experience" style="left: 30%; top: 65%;">
+            <div class="canvas-section career" id="section-experience" style="left: 22%; top: 78%;">
                 <div class="career-card">
                     <!-- Work Experience -->
                     <div class="career-section">
@@ -300,21 +300,21 @@
             </div>
 
             <!-- ==================== TESTIMONIALS (Floating Notes) ==================== -->
-            <div class="canvas-section floating-note note-1" style="left: 48%; top: 52%;">
+            <div class="canvas-section floating-note note-1" style="left: 50%; top: 42%;">
                 <div class="sticky-note yellow">
                     <p>"Amazing work ethic and creative solutions!"</p>
                     <span class="note-author">- Alex, Manager</span>
                 </div>
             </div>
 
-            <div class="canvas-section floating-note note-2" style="left: 58%; top: 58%;">
+            <div class="canvas-section floating-note note-2" style="left: 55%; top: 55%;">
                 <div class="sticky-note pink">
                     <p>"A true UX rockstar. Highly recommend!"</p>
                     <span class="note-author">- Sarah, Designer</span>
                 </div>
             </div>
 
-            <div class="canvas-section floating-note note-3" style="left: 78%; top: 28%;">
+            <div class="canvas-section floating-note note-3" style="left: 50%; top: 68%;">
                 <div class="sticky-note blue">
                     <p>"Exceptional attention to detail."</p>
                     <span class="note-author">- Mike, Developer</span>
@@ -322,7 +322,7 @@
             </div>
 
             <!-- ==================== CONTACT SECTION ==================== -->
-            <div class="canvas-section contact" id="section-contact" style="left: 62%; top: 62%;">
+            <div class="canvas-section contact" id="section-contact" style="left: 78%; top: 78%;">
                 <div class="section-content contact-section">
                     <div class="section-label">
                         <span class="label-number">04</span>
@@ -366,44 +366,36 @@
                 </div>
             </div>
 
-            <!-- ==================== DECORATIVE ELEMENTS ==================== -->
-            <div class="deco-element circle-1" style="left: 18%; top: 32%;"></div>
-            <div class="deco-element circle-2" style="left: 82%; top: 52%;"></div>
-            <div class="deco-element line-1" style="left: 15%; top: 42%;"></div>
-            <div class="deco-element dots-1" style="left: 85%; top: 30%;"></div>
-            <div class="deco-element square-1" style="left: 20%; top: 58%;"></div>
+            <!-- Subtle Grid Background -->
+            <div class="canvas-grid"></div>
 
         </div>
     </div>
 
-    <!-- Bottom Navigation - Icon Only -->
+    <!-- Bottom Navigation - iOS Style Icons -->
     <nav class="navbar">
         <button class="nav-btn active" data-target="home" title="Home">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z" fill="currentColor"/>
             </svg>
             <span class="nav-tooltip">Home</span>
         </button>
         <button class="nav-btn" data-target="about" title="About">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                <path d="M12 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" fill="currentColor"/>
             </svg>
             <span class="nav-tooltip">About</span>
         </button>
         <button class="nav-btn" data-target="projects" title="Projects">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" fill="currentColor"/>
             </svg>
             <span class="nav-tooltip">Projects</span>
         </button>
         <button class="nav-btn" data-target="contact" title="Contact">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
             </svg>
             <span class="nav-tooltip">Contact</span>
         </button>
@@ -420,11 +412,11 @@
     <!-- Mini Map -->
     <div class="minimap" id="minimap">
         <div class="minimap-viewport" id="minimapViewport"></div>
-        <div class="minimap-marker" data-section="home" style="left: 50%; top: 35%;"></div>
-        <div class="minimap-marker" data-section="about" style="left: 25%; top: 50%;"></div>
-        <div class="minimap-marker" data-section="projects" style="left: 70%; top: 38%;"></div>
-        <div class="minimap-marker" data-section="experience" style="left: 30%; top: 65%;"></div>
-        <div class="minimap-marker" data-section="contact" style="left: 62%; top: 62%;"></div>
+        <div class="minimap-marker" data-section="home" style="left: 50%; top: 18%;"></div>
+        <div class="minimap-marker" data-section="about" style="left: 22%; top: 45%;"></div>
+        <div class="minimap-marker" data-section="projects" style="left: 78%; top: 42%;"></div>
+        <div class="minimap-marker" data-section="experience" style="left: 22%; top: 78%;"></div>
+        <div class="minimap-marker" data-section="contact" style="left: 78%; top: 78%;"></div>
     </div>
 
     <!-- Cursor -->

@@ -113,37 +113,28 @@
 
             <!-- ==================== ABOUT SECTION ==================== -->
             <div class="canvas-section about" id="section-about" style="left: 22%; top: 45%;">
-                <div class="about-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
-                    <div class="about-photo-modern" id="aboutPhoto">
+                <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
+                    <!-- Photo at top right -->
+                    <div class="about-photo-topright" id="aboutPhoto">
                         <img src="taha-photo.jpg" alt="Taha Alfiza">
                     </div>
-                    <div class="about-text-modern">
-                        <p class="about-headline" id="aboutBio">
-                            I'm <strong>Taha</strong>, a Brand & Product Designer from
-                            <span class="flag-inline" data-country="Iraq">
-                                <span class="flag-label">Iraq</span>
-                                <svg width="28" height="20" viewBox="0 0 640 480"><rect width="640" height="160" fill="#ce1126"/><rect y="160" width="640" height="160" fill="#fff"/><rect y="320" width="640" height="160" fill="#000"/><text x="320" y="260" font-size="80" fill="#007a3d" text-anchor="middle" font-family="serif" font-weight="bold">&#1575;&#1604;&#1604;&#1607; &#1571;&#1603;&#1576;&#1585;</text></svg>
-                            </span>
-                            <span class="flag-inline" data-country="Turkey">
-                                <span class="flag-label">Turkey</span>
-                                <svg width="28" height="20" viewBox="0 0 640 480"><rect width="640" height="480" fill="#e30a17"/><circle cx="240" cy="240" r="120" fill="#fff"/><circle cx="270" cy="240" r="96" fill="#e30a17"/><polygon fill="#fff" points="360,240 410,190 390,240 410,290"/></svg>
-                            </span>
-                            based in <strong>Istanbul</strong> with <strong>10+ years</strong> of experience, crafting brand identities and digital products across <strong>MENA & Gulf</strong> regions.
-                        </p>
 
-                        <!-- Recent Experience Preview -->
-                        <div class="experience-preview" id="experiencePreview">
-                            <!-- Will be populated by JS -->
-                        </div>
+                    <!-- Bio text -->
+                    <p class="about-bio-text" id="aboutBio">
+                        I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.
+                    </p>
+                    <p class="about-bio-text about-bio-secondary">
+                        Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
+                    </p>
 
-                        <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
-                            <span>See More</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </button>
+                    <!-- Recent Experience Preview -->
+                    <div class="experience-preview" id="experiencePreview">
+                        <!-- Will be populated by JS -->
                     </div>
+
+                    <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
+                        <span>See More</span>
+                    </button>
                 </div>
             </div>
 

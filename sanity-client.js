@@ -14,14 +14,15 @@ function sanityUrl(query) {
 }
 
 // Sanity image URL builder
-function sanityImageUrl(imageRef, width = 400) {
+function sanityImageUrl(imageRef, width = 800, quality = 90) {
   if (!imageRef || !imageRef.asset || !imageRef.asset._ref) return '';
 
   // Parse the image reference: image-{id}-{dimensions}-{format}
   const ref = imageRef.asset._ref;
   const [, id, dimensions, format] = ref.split('-');
 
-  return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&fit=crop`;
+  // Higher quality settings: auto=format for best compression, q for quality
+  return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&q=${quality}&auto=format&fit=max`;
 }
 
 // Store projects globally for overlay access
@@ -164,10 +165,10 @@ function renderProjects(projects) {
   if (!container || projects.length === 0) return;
 
   container.innerHTML = projects.map((project, index) => {
-    // Get up to 3 images
+    // Get up to 3 images - higher quality for folder previews
     const images = project.images || [];
     const imageHtml = images.slice(0, 3).map((img, i) => {
-      const url = sanityImageUrl(img, 200);
+      const url = sanityImageUrl(img, 400, 85);
       return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
     }).join('');
 
@@ -261,12 +262,12 @@ function openProjectOverlay(projectIndex) {
     toolsDetail.classList.add('hidden');
   }
 
-  // Gallery
+  // Gallery - high quality images for overlay
   const gallery = document.getElementById('overlayGallery');
   const galleryImages = project.galleryImages || project.images || [];
   if (galleryImages.length > 0) {
     gallery.innerHTML = galleryImages.map(img => {
-      const url = sanityImageUrl(img, 800);
+      const url = sanityImageUrl(img, 1600, 90);
       return url ? `
         <div class="gallery-image">
           <img src="${url}" alt="${project.title}" loading="lazy">

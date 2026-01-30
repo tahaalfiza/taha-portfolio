@@ -1235,14 +1235,16 @@ function renderTestimonials(testimonials) {
   const canvas = document.getElementById('canvas');
   if (!canvas) return;
 
-  // Positions for 6 testimonials (spread around canvas)
+  // Positions for 6 testimonials (in free spaces between sections)
+  // Sections: Home(50%,45%), About(15%,45%), Blog(58%,45%), Projects(82%,38%),
+  //           Experience(22%,62%), Hire(38%,82%), Contact(62%,78%)
   const positions = [
-    { left: '12%', top: '32%' },   // Top left (Azad Hassan - yellow)
-    { left: '10%', top: '52%' },   // Left side below (Ibrahim Sherkhan - white)
-    { left: '28%', top: '72%' },   // Bottom center-left (Mohammed Al-Hamaoy - yellow)
-    { left: '48%', top: '72%' },   // Bottom center-right (Mujahed Alwasi - blue)
-    { left: '52%', top: '48%' },   // Center near home (Muhanned Munjed - blue)
-    { left: '68%', top: '52%' }    // Right side (Mukhtar Talip - white)
+    { left: '5%', top: '28%' },    // Top left corner (free space)
+    { left: '5%', top: '78%' },    // Bottom left corner (free space)
+    { left: '32%', top: '28%' },   // Between About and Home, top (free space)
+    { left: '32%', top: '58%' },   // Between About/Experience and Home/Hire (free space)
+    { left: '72%', top: '58%' },   // Between Blog/Projects and Contact (free space)
+    { left: '92%', top: '58%' }    // Far right side (free space)
   ];
 
   testimonials.forEach((testimonial, i) => {

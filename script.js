@@ -758,10 +758,9 @@ document.addEventListener('DOMContentLoaded', () => {
             message: document.getElementById('hireMessage').value
         };
 
-        // Send to Formspree or similar service
-        // Replace YOUR_FORM_ID with your actual Formspree form ID
+        // Send to Formspree
         try {
-            const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+            const response = await fetch('https://formspree.io/f/mpqrkbyd', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

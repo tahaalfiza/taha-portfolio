@@ -26,14 +26,8 @@ export default {
       name: 'color',
       title: 'Sticky Note Color',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Yellow', value: 'yellow' },
-          { title: 'Pink', value: 'pink' },
-          { title: 'Blue', value: 'blue' },
-        ],
-      },
-      initialValue: 'yellow',
+      description: 'Enter a hex color code (e.g., #fef08a for yellow, #fda4af for pink, #93c5fd for blue)',
+      initialValue: '#fef08a',
     },
     {
       name: 'order',

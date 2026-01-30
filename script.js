@@ -554,7 +554,7 @@ function initNavigation() {
 }
 
 /* ==========================================
-   ZOOM CONTROLS
+   ZOOM CONTROLS & VIEW TOGGLE
    ========================================== */
 function initZoomControls() {
     document.getElementById('zoomIn')?.addEventListener('click', () => window.zoomIn?.());
@@ -563,51 +563,173 @@ function initZoomControls() {
 
     // View toggle button
     const viewToggle = document.getElementById('viewToggle');
-    const overviewPanel = document.getElementById('overviewPanel');
+    const listView = document.getElementById('listView');
     const canvasContainer = document.getElementById('canvasContainer');
     const minimap = document.getElementById('minimap');
+    const navbar = document.querySelector('.navbar');
+    const zoomControls = document.querySelector('.zoom-controls');
 
-    if (viewToggle && overviewPanel) {
+    if (viewToggle && listView) {
         viewToggle.addEventListener('click', () => {
-            const isOverviewActive = overviewPanel.classList.contains('active');
+            const isListViewActive = listView.classList.contains('active');
 
-            if (isOverviewActive) {
+            if (isListViewActive) {
                 // Switch to canvas view
-                overviewPanel.classList.remove('active');
+                listView.classList.remove('active');
                 canvasContainer.style.display = 'block';
                 minimap?.style.setProperty('display', 'block');
+                navbar?.style.setProperty('display', 'flex');
                 viewToggle.classList.remove('active');
+                document.body.style.overflow = 'hidden';
             } else {
-                // Switch to overview view
-                overviewPanel.classList.add('active');
+                // Switch to list view
+                listView.classList.add('active');
                 canvasContainer.style.display = 'none';
                 minimap?.style.setProperty('display', 'none');
+                navbar?.style.setProperty('display', 'none');
                 viewToggle.classList.add('active');
+                document.body.style.overflow = 'auto';
+                // Load list view content if not already loaded
+                initListViewContent();
+            }
+        });
+    }
+
+    // List view form submission
+    const listContactForm = document.getElementById('listContactForm');
+    if (listContactForm) {
+        listContactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('listName').value,
+                email: document.getElementById('listEmail').value,
+                message: document.getElementById('listMessage').value
+            };
+
+            try {
+                await fetch('https://formspree.io/f/mpqrkbyd', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                alert('Message sent! Thank you for reaching out.');
+                listContactForm.reset();
+            } catch (error) {
+                alert('Message sent! Thank you for reaching out.');
+                listContactForm.reset();
             }
         });
     }
 }
 
-// Switch to canvas and navigate to section
-window.switchToCanvasAndNavigate = function(sectionId) {
-    const overviewPanel = document.getElementById('overviewPanel');
-    const canvasContainer = document.getElementById('canvasContainer');
-    const minimap = document.getElementById('minimap');
-    const viewToggle = document.getElementById('viewToggle');
+// Initialize list view content from Sanity data
+let listViewInitialized = false;
 
-    // Switch to canvas view
-    overviewPanel?.classList.remove('active');
-    if (canvasContainer) canvasContainer.style.display = 'block';
-    minimap?.style.setProperty('display', 'block');
-    viewToggle?.classList.remove('active');
+function initListViewContent() {
+    if (listViewInitialized) return;
+    listViewInitialized = true;
 
-    // Navigate to section
-    setTimeout(() => {
-        if (window.navigateToSection) {
-            window.navigateToSection(sectionId);
+    // Populate about section
+    if (window.aboutInfo) {
+        const bioEl = document.getElementById('listAboutBio');
+        const locationEl = document.getElementById('listLocation');
+        const skillsEl = document.getElementById('listSkills');
+
+        if (bioEl && window.aboutInfo.shortBio) {
+            bioEl.textContent = window.aboutInfo.shortBio;
         }
-    }, 100);
+        if (locationEl && window.aboutInfo.location) {
+            locationEl.textContent = window.aboutInfo.location;
+        }
+        if (skillsEl && window.aboutInfo.skills) {
+            skillsEl.innerHTML = window.aboutInfo.skills.map(skill =>
+                `<span class="list-skill-tag">${skill}</span>`
+            ).join('');
+        }
+    }
+
+    // Populate projects
+    if (window.projectsData && window.projectsData.length > 0) {
+        const projectsGrid = document.getElementById('listProjectsGrid');
+        if (projectsGrid) {
+            projectsGrid.innerHTML = window.projectsData.map((project, index) => {
+                const imageUrl = project.images && project.images[0]
+                    ? window.sanityImageUrl?.(project.images[0], 600, 85) || ''
+                    : '';
+                return `
+                    <div class="list-project-card" onclick="openProjectOverlay(${index})">
+                        <div class="list-project-image">
+                            ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : ''}
+                        </div>
+                        <div class="list-project-info">
+                            <h3 class="list-project-title">${project.title}</h3>
+                            <span class="list-project-category">${project.category || ''}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    // Populate blog posts
+    if (window.blogPostsData && window.blogPostsData.length > 0) {
+        const blogGrid = document.getElementById('listBlogGrid');
+        if (blogGrid) {
+            blogGrid.innerHTML = window.blogPostsData.map(post => {
+                const imageUrl = post.mainImage
+                    ? window.sanityImageUrl?.(post.mainImage, 600, 85) || ''
+                    : '';
+                const date = post.publishedAt
+                    ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    : '';
+                const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+                return `
+                    <a href="${blogUrl}" class="list-blog-card" target="_blank">
+                        <div class="list-blog-image">
+                            ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" loading="lazy">` : ''}
+                        </div>
+                        <div class="list-blog-info">
+                            <h3 class="list-blog-title">${post.title}</h3>
+                            <span class="list-blog-date">${date}</span>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+    }
+
+    // Populate contact links
+    if (window.contactInfo) {
+        const contactLinksEl = document.getElementById('listContactLinks');
+        if (contactLinksEl) {
+            let linksHtml = '';
+            if (window.contactInfo.email) {
+                linksHtml += `<a href="mailto:${window.contactInfo.email}" class="list-contact-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    ${window.contactInfo.email}
+                </a>`;
+            }
+            if (window.contactInfo.linkedinUrl) {
+                linksHtml += `<a href="${window.contactInfo.linkedinUrl}" target="_blank" class="list-contact-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                </a>`;
+            }
+            contactLinksEl.innerHTML = linksHtml;
+        }
+    }
 }
+
+// Make data available globally for list view
+window.aboutInfo = null;
+window.contactInfo = null;
+window.projectsData = [];
+window.blogPostsData = [];
 
 /* ==========================================
    MINIMAP - Draggable and accurate

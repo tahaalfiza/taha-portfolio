@@ -375,76 +375,131 @@
         </div>
     </div>
 
-    <!-- Overview Mode - Alternative Navigation View -->
-    <div class="overview-panel" id="overviewPanel">
-        <div class="overview-header">
-            <h2>Quick Navigation</h2>
-            <p>Click any section to jump directly</p>
-        </div>
-        <div class="overview-grid">
-            <button class="overview-card" onclick="switchToCanvasAndNavigate('home')">
-                <div class="overview-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                        <polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
+    <!-- List View Mode - Full Scrollable Layout -->
+    <div class="list-view" id="listView">
+        <!-- List View Navigation -->
+        <nav class="list-nav">
+            <div class="list-nav-logo">
+                <svg width="32" height="32" viewBox="0 0 257 258" fill="none">
+                    <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
+                </svg>
+                <span>Taha's Work</span>
+            </div>
+            <div class="list-nav-links">
+                <a href="#list-about" class="list-nav-link">About</a>
+                <a href="#list-projects" class="list-nav-link">Projects</a>
+                <a href="#list-blog" class="list-nav-link">Blog</a>
+                <a href="#list-contact" class="list-nav-link">Contact</a>
+            </div>
+        </nav>
+
+        <!-- List View Content -->
+        <div class="list-content">
+            <!-- Hero Section -->
+            <section class="list-section list-hero" id="list-home">
+                <div class="list-hero-content">
+                    <p class="list-hero-greeting">hey, this is</p>
+                    <h1 class="list-hero-title">Taha's <span>Work</span></h1>
+                    <p class="list-hero-subtitle">Brand & Product Designer</p>
+                    <p class="list-hero-desc">Creating meaningful digital experiences and establishing strong visual identities for businesses across the MENA & Gulf regions.</p>
+                    <div class="list-hero-cta">
+                        <a href="#list-projects" class="list-btn-primary">View Projects</a>
+                        <a href="#list-contact" class="list-btn-secondary">Get in Touch</a>
+                    </div>
                 </div>
-                <span class="overview-label">Home</span>
-            </button>
-            <button class="overview-card" onclick="switchToCanvasAndNavigate('about')">
-                <div class="overview-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="8" r="4"/>
-                        <path d="M20 21a8 8 0 1 0-16 0"/>
-                    </svg>
+            </section>
+
+            <!-- About Section -->
+            <section class="list-section list-about" id="list-about">
+                <div class="list-section-header">
+                    <h2>About Me</h2>
                 </div>
-                <span class="overview-label">About Me</span>
-            </button>
-            <button class="overview-card" onclick="switchToCanvasAndNavigate('blog')">
-                <div class="overview-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                    </svg>
+                <div class="list-about-content">
+                    <div class="list-about-photo" id="listAboutPhoto">
+                        <img src="taha-photo.jpg" alt="Taha Alfiza">
+                    </div>
+                    <div class="list-about-info">
+                        <p class="list-about-bio" id="listAboutBio">I'm a Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Based in Istanbul, I've worked with clients across the MENA & Gulf regions.</p>
+                        <div class="list-about-details">
+                            <div class="list-about-detail">
+                                <span class="detail-label">Location</span>
+                                <span class="detail-value" id="listLocation">Istanbul, Turkey</span>
+                            </div>
+                            <div class="list-about-detail">
+                                <span class="detail-label">Experience</span>
+                                <span class="detail-value">10+ Years</span>
+                            </div>
+                        </div>
+                        <div class="list-about-skills" id="listSkills">
+                            <!-- Skills will be loaded from Sanity -->
+                        </div>
+                        <a href="cv.html" target="_blank" class="list-cv-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            View Full CV
+                        </a>
+                    </div>
                 </div>
-                <span class="overview-label">Blogs</span>
-            </button>
-            <button class="overview-card" onclick="switchToCanvasAndNavigate('projects')">
-                <div class="overview-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                    </svg>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="list-section list-projects" id="list-projects">
+                <div class="list-section-header">
+                    <h2>Projects</h2>
                 </div>
-                <span class="overview-label">Projects</span>
-            </button>
-            <button class="overview-card" onclick="switchToCanvasAndNavigate('hire')">
-                <div class="overview-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
+                <div class="list-projects-grid" id="listProjectsGrid">
+                    <!-- Projects will be loaded from Sanity -->
+                    <div class="list-loading">Loading projects...</div>
                 </div>
-                <span class="overview-label">New Project</span>
-            </button>
-            <button class="overview-card" onclick="switchToCanvasAndNavigate('contact')">
-                <div class="overview-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
+            </section>
+
+            <!-- Blog Section -->
+            <section class="list-section list-blog" id="list-blog">
+                <div class="list-section-header">
+                    <h2>Blog</h2>
                 </div>
-                <span class="overview-label">Contact</span>
-            </button>
-        </div>
-        <div class="overview-tip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="16" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-            <span>Tip: Use scroll or pinch to zoom, drag to pan in canvas mode</span>
+                <div class="list-blog-grid" id="listBlogGrid">
+                    <!-- Blog posts will be loaded from Sanity -->
+                    <div class="list-loading">Loading posts...</div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="list-section list-contact" id="list-contact">
+                <div class="list-section-header">
+                    <h2>Get in Touch</h2>
+                </div>
+                <div class="list-contact-content">
+                    <div class="list-contact-info">
+                        <p>I'm always open to discussing new projects and opportunities.</p>
+                        <div class="list-contact-links" id="listContactLinks">
+                            <!-- Contact links will be loaded from Sanity -->
+                        </div>
+                    </div>
+                    <form class="list-contact-form" id="listContactForm">
+                        <div class="list-form-group">
+                            <label for="listName">Name</label>
+                            <input type="text" id="listName" name="name" placeholder="Your name" required>
+                        </div>
+                        <div class="list-form-group">
+                            <label for="listEmail">Email</label>
+                            <input type="email" id="listEmail" name="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="list-form-group">
+                            <label for="listMessage">Message</label>
+                            <textarea id="listMessage" name="message" placeholder="Tell me about your project..." rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="list-submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="list-footer">
+                <p>&copy; 2024 Taha Alfiza. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 

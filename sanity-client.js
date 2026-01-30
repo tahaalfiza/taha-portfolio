@@ -1518,6 +1518,13 @@ async function initSanityContent() {
     renderBlogPosts(blogPosts);
     initBlogSearch();
 
+    // Expose data globally for list view
+    window.projectsData = projects;
+    window.blogPostsData = blogPosts;
+    window.aboutInfo = aboutInfo;
+    window.contactInfo = contactInfo;
+    window.sanityImageUrl = sanityImageUrl;
+
     // Check for deep link after content is loaded
     checkAboutDeepLink();
 

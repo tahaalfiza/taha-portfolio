@@ -5,7 +5,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initLoadingScreen();
-    initThemeToggle();
     initCanvas();
     initCustomCursor();
     initNavigation();
@@ -22,26 +21,6 @@ function initLoadingScreen() {
     setTimeout(() => {
         loadingScreen.classList.add('hidden');
     }, 1500);
-}
-
-/* ==========================================
-   THEME TOGGLE
-   ========================================== */
-function initThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-
-    // Check for saved theme preference - default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    html.setAttribute('data-theme', savedTheme);
-
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
 }
 
 /* ==========================================
@@ -92,7 +71,8 @@ function initCanvas() {
     document.addEventListener('keydown', handleKeyboard);
 
     function startDrag(e) {
-        if (e.target.closest('.section-content') && !e.target.closest('.draggable')) return;
+        // Allow drag from anywhere except buttons and links
+        if (e.target.closest('button, a, input, textarea')) return;
 
         state.isDragging = true;
         state.startX = e.clientX - state.panX;
@@ -466,9 +446,17 @@ function initMinimap() {
         const state = window.canvasState;
         if (!state) return;
 
-        // Calculate target pan position
-        const targetX = -(x * 4000 * state.scale) + window.innerWidth / 2;
-        const targetY = -(y * 3000 * state.scale) + window.innerHeight / 2;
+        // Canvas dimensions
+        const canvasWidth = 4000;
+        const canvasHeight = 3000;
+
+        // Calculate the canvas point that was clicked
+        const canvasX = x * canvasWidth;
+        const canvasY = y * canvasHeight;
+
+        // Pan so that point is centered on screen
+        const targetX = -canvasX * state.scale + window.innerWidth / 2;
+        const targetY = -canvasY * state.scale + window.innerHeight / 2;
 
         state.panX = targetX;
         state.panY = targetY;

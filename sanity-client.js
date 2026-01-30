@@ -40,7 +40,8 @@ async function fetchProjects() {
     client,
     role,
     tools,
-    folderColor,
+    folderTabColor,
+    folderBodyColor,
     images,
     galleryImages,
     projectUrl,
@@ -163,9 +164,6 @@ function renderProjects(projects) {
   if (!container || projects.length === 0) return;
 
   container.innerHTML = projects.map((project, index) => {
-    const colorClass = project.folderColor || 'default';
-    const folderColorClass = colorClass === 'default' ? '' : colorClass;
-
     // Get up to 3 images
     const images = project.images || [];
     const imageHtml = images.slice(0, 3).map((img, i) => {
@@ -183,15 +181,19 @@ function renderProjects(projects) {
       clickHandler = `onclick="openProjectOverlay(${index})"`;
     }
 
+    // Custom folder colors - inline styles if provided
+    const tabStyle = project.folderTabColor ? `style="background: ${project.folderTabColor}"` : '';
+    const bodyStyle = project.folderBodyColor ? `style="background: ${project.folderBodyColor}"` : '';
+
     return `
       <div class="mac-folder" ${clickHandler}>
         <div class="folder-wrapper">
           <div class="popup-images">
             ${imageHtml}
           </div>
-          <div class="folder-icon ${folderColorClass}">
-            <div class="folder-tab"></div>
-            <div class="folder-body"></div>
+          <div class="folder-icon">
+            <div class="folder-tab" ${tabStyle}></div>
+            <div class="folder-body" ${bodyStyle}></div>
           </div>
         </div>
         <div class="folder-info">

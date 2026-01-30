@@ -62,16 +62,16 @@ export default {
       description: 'e.g., Figma, Illustrator, Photoshop',
     },
     {
-      name: 'folderColor',
-      title: 'Folder Color',
+      name: 'folderTabColor',
+      title: 'Folder Tab Color',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Blue', value: 'blue' },
-          { title: 'Yellow', value: 'yellow' },
-          { title: 'Default', value: 'default' },
-        ],
-      },
+      description: 'CSS color or gradient for the tab. e.g., "#7DC8FB" or "linear-gradient(180deg, #60A5FA 0%, #3B82F6 100%)"',
+    },
+    {
+      name: 'folderBodyColor',
+      title: 'Folder Body Color',
+      type: 'string',
+      description: 'CSS color or gradient for the body. e.g., "#4BA3E3" or "linear-gradient(180deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%)"',
     },
     {
       name: 'images',

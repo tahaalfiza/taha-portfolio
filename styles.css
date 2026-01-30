@@ -2320,6 +2320,7 @@ a {
     display: flex;
     flex: 1;
     overflow: hidden;
+    min-height: 0; /* Important for flex child scrolling */
 }
 
 /* Notes List - Left Column */
@@ -2485,6 +2486,7 @@ a {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    min-height: 0; /* Important for flex child scrolling */
 }
 
 .notes-preview-empty {
@@ -2511,6 +2513,8 @@ a {
     flex: 1;
     padding: 24px;
     overflow-y: auto;
+    min-height: 0; /* Important for flex child scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 /* Preview Toolbar with Open Button */

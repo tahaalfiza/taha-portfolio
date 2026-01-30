@@ -2371,9 +2371,54 @@ a {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 4px;
-    overscroll-behavior: contain; /* Prevent scroll from bubbling to parent */
+    overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y; /* Allow vertical scroll only */
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.notes-items:active {
+    cursor: grabbing;
+}
+
+/* Custom scrollbar - always visible */
+.notes-items::-webkit-scrollbar,
+.notes-preview-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notes-items::-webkit-scrollbar-track,
+.notes-preview-content::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.notes-items::-webkit-scrollbar-thumb,
+.notes-preview-content::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 4px;
+    border: 2px solid #f0f0f0;
+}
+
+.notes-items::-webkit-scrollbar-thumb:hover,
+.notes-preview-content::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
+
+[data-theme="dark"] .notes-items::-webkit-scrollbar-track,
+[data-theme="dark"] .notes-preview-content::-webkit-scrollbar-track {
+    background: #2a2a2a;
+}
+
+[data-theme="dark"] .notes-items::-webkit-scrollbar-thumb,
+[data-theme="dark"] .notes-preview-content::-webkit-scrollbar-thumb {
+    background: #555;
+    border-color: #2a2a2a;
+}
+
+[data-theme="dark"] .notes-items::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .notes-preview-content::-webkit-scrollbar-thumb:hover {
+    background: #666;
 }
 
 .notes-loading {
@@ -2522,11 +2567,16 @@ a {
     padding: 24px;
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 0; /* Important for flex child scrolling */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    overscroll-behavior: contain; /* Prevent scroll from bubbling to parent */
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     scroll-behavior: smooth;
-    touch-action: pan-y; /* Allow vertical scroll only */
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.notes-preview-content:active {
+    cursor: grabbing;
 }
 
 /* Preview Toolbar with Open Button */
@@ -2649,6 +2699,43 @@ a {
 .notes-preview-body pre code {
     background: none;
     padding: 0;
+}
+
+/* Scroll Hint */
+.scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    margin-top: 20px;
+    color: #999;
+    font-size: 12px;
+    border-top: 1px solid #eee;
+    animation: bounce 2s infinite;
+}
+
+.scroll-hint svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+[data-theme="dark"] .scroll-hint {
+    color: #666;
+    border-top-color: #333;
 }
 
 /* Read More Button */

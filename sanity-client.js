@@ -366,8 +366,21 @@ function selectBlogPost(postId) {
       <div class="notes-preview-body">
         ${contentHtml}
       </div>
+      <div class="scroll-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+        <span>Drag to scroll</span>
+      </div>
     </div>
   `;
+
+  // Reinitialize drag-to-scroll for new content
+  setTimeout(() => {
+    if (typeof initDragToScroll === 'function') {
+      initDragToScroll();
+    }
+  }, 100);
 }
 
 // Convert Sanity block content to HTML
@@ -1670,23 +1683,76 @@ if (document.readyState === 'loading') {
   initSanityContent();
 }
 
-// Prevent scroll events inside notes-app-window from affecting canvas pan
+// Initialize drag-to-scroll for notes app in canvas view
 document.addEventListener('DOMContentLoaded', () => {
-  // Add wheel event listener to all scrollable areas inside notes app
-  document.querySelectorAll('.notes-items, .notes-preview-content').forEach(el => {
-    el.addEventListener('wheel', (e) => {
-      const { scrollTop, scrollHeight, clientHeight } = el;
-      const isAtTop = scrollTop === 0;
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+  initDragToScroll();
+});
 
-      // Only stop propagation if we're not at the edges, or if scrolling away from edge
-      if (e.deltaY < 0 && !isAtTop) {
-        e.stopPropagation();
-      } else if (e.deltaY > 0 && !isAtBottom) {
-        e.stopPropagation();
-      } else if (!isAtTop && !isAtBottom) {
-        e.stopPropagation();
+function initDragToScroll() {
+  const scrollableAreas = document.querySelectorAll('.notes-items, .notes-preview-content');
+
+  scrollableAreas.forEach(el => {
+    let isDragging = false;
+    let startY = 0;
+    let scrollStart = 0;
+
+    // Add drag cursor style
+    el.style.cursor = 'grab';
+
+    // Mouse events
+    el.addEventListener('mousedown', (e) => {
+      // Don't start drag on links or buttons
+      if (e.target.closest('a, button')) return;
+
+      isDragging = true;
+      startY = e.clientY;
+      scrollStart = el.scrollTop;
+      el.style.cursor = 'grabbing';
+      el.style.userSelect = 'none';
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const deltaY = startY - e.clientY;
+      el.scrollTop = scrollStart + deltaY;
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        el.style.cursor = 'grab';
+        el.style.userSelect = '';
       }
+    });
+
+    // Touch events for mobile
+    el.addEventListener('touchstart', (e) => {
+      if (e.target.closest('a, button')) return;
+
+      isDragging = true;
+      startY = e.touches[0].clientY;
+      scrollStart = el.scrollTop;
+    }, { passive: true });
+
+    el.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+
+      const deltaY = startY - e.touches[0].clientY;
+      el.scrollTop = scrollStart + deltaY;
+    }, { passive: true });
+
+    el.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Prevent wheel events from affecting canvas
+    el.addEventListener('wheel', (e) => {
+      e.stopPropagation();
     }, { passive: true });
   });
-});
+}

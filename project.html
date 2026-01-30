@@ -9,6 +9,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* Override main styles for project page */
+        html, body {
+            overflow: auto !important;
+            height: auto !important;
+            cursor: auto !important;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Hide canvas-specific elements */
+        .custom-cursor,
+        .loading-screen,
+        #canvasContainer,
+        #canvas {
+            display: none !important;
+        }
+
         /* Project Page Specific Styles */
         .project-page {
             min-height: 100vh;
@@ -71,7 +90,7 @@
             font-weight: 600;
             color: var(--accent-primary);
             padding: 6px 14px;
-            background: rgba(124, 58, 237, 0.1);
+            background: rgba(45, 45, 45, 0.1);
             border-radius: 20px;
         }
 

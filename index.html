@@ -57,7 +57,7 @@
     <div class="canvas-container" id="canvasContainer">
         <div class="canvas" id="canvas">
             <!-- ==================== HOME SECTION ==================== -->
-            <div class="canvas-section home" id="section-home" style="left: 50%; top: 18%; transform: translate(-50%, -50%);">
+            <div class="canvas-section home" id="section-home" style="left: 50%; top: 45%; transform: translate(-50%, -50%);">
                 <div class="section-content hero-section">
                     <div class="hero-logo">
                         <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,7 +112,7 @@
             </div>
 
             <!-- ==================== ABOUT SECTION ==================== -->
-            <div class="canvas-section about" id="section-about" style="left: 22%; top: 45%;">
+            <div class="canvas-section about" id="section-about" style="left: 15%; top: 45%;">
                 <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
                     <!-- Photo at top left -->
                     <div class="about-photo-topleft" id="aboutPhoto">
@@ -139,7 +139,7 @@
             </div>
 
             <!-- ==================== BLOG SECTION (Notes App Style) ==================== -->
-            <div class="canvas-section blog" id="section-blog" style="left: 50%; top: 50%;">
+            <div class="canvas-section blog" id="section-blog" style="left: 85%; top: 45%;">
                 <div class="notes-app-window">
                     <!-- Notes Title Bar -->
                     <div class="notes-titlebar">
@@ -375,169 +375,89 @@
         </div>
     </div>
 
-    <!-- List View Mode - Full Scrollable Layout -->
+    <!-- List View Mode - Block Layout -->
     <div class="list-view" id="listView">
-        <!-- List View Content -->
-        <div class="list-content">
-            <!-- Hero Section -->
-            <section class="list-section list-hero" id="list-home">
-                <div class="list-hero-content">
-                    <div class="list-hero-logo">
-                        <svg width="80" height="80" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
-                        </svg>
-                    </div>
-                    <p class="list-hero-greeting">hey, this is</p>
-                    <h1 class="list-hero-title">Taha's <span>Work</span></h1>
-                    <p class="list-hero-subtitle">Brand & Product Designer</p>
-                    <div class="list-hero-cta">
-                        <a href="#list-projects" class="list-btn-primary">Projects</a>
-                        <a href="#list-about" class="list-btn-secondary">Resume</a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- About Section -->
-            <section class="list-section list-about" id="list-about">
-                <div class="list-section-header">
-                    <h2>About Me</h2>
-                </div>
-                <div class="list-about-content">
-                    <div class="list-about-photo" id="listAboutPhoto">
-                        <img src="taha-photo.jpg" alt="Taha Alfiza">
-                    </div>
-                    <div class="list-about-info">
-                        <p class="list-about-bio" id="listAboutBio">I'm a Brand & Product Designer with over 10 years of experience crafting brand identities and digital products. Based in Istanbul, I've worked with clients across the MENA & Gulf regions.</p>
-                        <div class="list-about-details">
-                            <div class="list-about-detail">
-                                <span class="detail-label">Location</span>
-                                <span class="detail-value" id="listLocation">Istanbul, Turkey</span>
-                            </div>
-                            <div class="list-about-detail">
-                                <span class="detail-label">Experience</span>
-                                <span class="detail-value" id="listExperience">10+ Years</span>
-                            </div>
-                        </div>
-                        <div class="list-about-skills" id="listSkills">
-                            <!-- Skills will be loaded from Sanity -->
-                        </div>
-                        <a href="cv.html" target="_blank" class="list-cv-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                            </svg>
-                            View Full CV
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Experience Section -->
-            <section class="list-section list-experience" id="list-experience">
-                <div class="list-section-header">
-                    <h2>Experience</h2>
-                </div>
-                <div class="list-experience-grid" id="listExperienceGrid">
-                    <!-- Experience will be loaded from Sanity -->
-                    <div class="list-loading">Loading experience...</div>
-                </div>
-            </section>
-
-            <!-- Projects Section -->
-            <section class="list-section list-projects" id="list-projects">
-                <div class="list-section-header">
-                    <h2>Projects</h2>
-                </div>
-                <div class="list-projects-grid" id="listProjectsGrid">
-                    <!-- Projects will be loaded from Sanity -->
-                    <div class="list-loading">Loading projects...</div>
-                </div>
-            </section>
-
-            <!-- Blog Section -->
-            <section class="list-section list-blog" id="list-blog">
-                <div class="list-section-header">
-                    <h2>Blog</h2>
-                </div>
-                <div class="list-blog-grid" id="listBlogGrid">
-                    <!-- Blog posts will be loaded from Sanity -->
-                    <div class="list-loading">Loading posts...</div>
-                </div>
-            </section>
-
-            <!-- Testimonials Section -->
-            <section class="list-section list-testimonials" id="list-testimonials">
-                <div class="list-section-header">
-                    <h2>What People Say</h2>
-                </div>
-                <div class="list-testimonials-grid" id="listTestimonialsGrid">
-                    <!-- Testimonials will be loaded from Sanity -->
-                </div>
-            </section>
-
-            <!-- Hire Me Section -->
-            <section class="list-section list-hire" id="list-hire">
-                <div class="list-section-header">
-                    <h2>Start a Project</h2>
-                </div>
-                <div class="list-hire-content">
-                    <p class="list-hire-desc">Tell me about your project and let's create something great together.</p>
-                    <form class="list-contact-form" id="listContactForm">
-                        <div class="list-form-row">
-                            <div class="list-form-group">
-                                <label for="listName">Name</label>
-                                <input type="text" id="listName" name="name" placeholder="Your name" required>
-                            </div>
-                            <div class="list-form-group">
-                                <label for="listEmail">Email</label>
-                                <input type="email" id="listEmail" name="email" placeholder="your@email.com" required>
-                            </div>
-                        </div>
-                        <div class="list-form-group">
-                            <label for="listProject">Project Type</label>
-                            <select id="listProject" name="project">
-                                <option value="">Select project type</option>
-                                <option value="branding">Brand Identity</option>
-                                <option value="ui-design">UI/UX Design</option>
-                                <option value="web-design">Web Design</option>
-                                <option value="product-design">Product Design</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="list-form-group">
-                            <label for="listMessage">Message</label>
-                            <textarea id="listMessage" name="message" placeholder="Tell me about your project..." rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="list-submit-btn">
-                            <span>Send Message</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-            </section>
-
-            <!-- Contact Section -->
-            <section class="list-section list-contact" id="list-contact">
-                <div class="list-section-header">
-                    <h2>Get in Touch</h2>
-                </div>
-                <div class="list-contact-content">
-                    <div class="list-contact-info">
-                        <h3>Let's Create Something Amazing</h3>
-                        <p>I'm always open to discussing new projects and opportunities.</p>
-                        <div class="list-contact-links" id="listContactLinks">
-                            <!-- Contact links will be loaded from Sanity -->
+        <div class="block-container">
+            <!-- Row 1: Home Card (full width) -->
+            <div class="block-row">
+                <div class="block block-home" id="list-home">
+                    <div class="block-inner">
+                        <p class="block-greeting">hey, this is</p>
+                        <h1 class="block-title">Taha's <span>Work</span></h1>
+                        <p class="block-subtitle">Brand & Product Designer</p>
+                        <div class="block-cta">
+                            <a href="#list-projects" class="block-btn-primary">Projects</a>
+                            <a href="#list-about" class="block-btn-secondary">Resume</a>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Footer -->
-            <footer class="list-footer">
-                <p>&copy; 2024 Taha Alfiza. All rights reserved.</p>
-            </footer>
+            <!-- Row 2: About + Projects (side by side) -->
+            <div class="block-row block-row-2col">
+                <div class="block block-about" id="list-about">
+                    <div class="block-inner">
+                        <h2>About</h2>
+                        <div class="block-about-photo" id="listAboutPhoto">
+                            <img src="taha-photo.jpg" alt="Taha Alfiza">
+                        </div>
+                        <p class="block-about-bio" id="listAboutBio">Brand & Product Designer with 10+ years of experience.</p>
+                        <a href="cv.html" target="_blank" class="block-link">View CV</a>
+                    </div>
+                </div>
+                <div class="block block-projects" id="list-projects">
+                    <div class="block-inner">
+                        <h2>Projects</h2>
+                        <div class="block-projects-grid" id="listProjectsGrid">
+                            <div class="list-loading">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Blogs (full width) -->
+            <div class="block-row">
+                <div class="block block-blogs" id="list-blog">
+                    <div class="block-inner">
+                        <h2>Blogs</h2>
+                        <div class="block-blog-grid" id="listBlogGrid">
+                            <div class="list-loading">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Testimonials (3x2 grid) -->
+            <div class="block-row">
+                <div class="block-testimonials-wrapper" id="list-testimonials">
+                    <div class="block-testimonials-grid" id="listTestimonialsGrid">
+                        <!-- Testimonials will be loaded -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 5: Contact + Form (side by side) -->
+            <div class="block-row block-row-2col">
+                <div class="block block-contact" id="list-contact">
+                    <div class="block-inner">
+                        <h2>Contact</h2>
+                        <div class="block-contact-links" id="listContactLinks">
+                            <!-- Contact links will be loaded -->
+                        </div>
+                    </div>
+                </div>
+                <div class="block block-form" id="list-hire">
+                    <div class="block-inner">
+                        <h2>Form</h2>
+                        <form class="block-contact-form" id="listContactForm">
+                            <input type="text" id="listName" name="name" placeholder="Name" required>
+                            <input type="email" id="listEmail" name="email" placeholder="Email" required>
+                            <textarea id="listMessage" name="message" placeholder="Message..." rows="3" required></textarea>
+                            <button type="submit" class="block-submit-btn">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -615,9 +535,9 @@
     <!-- Mini Map -->
     <div class="minimap" id="minimap">
         <div class="minimap-viewport" id="minimapViewport"></div>
-        <div class="minimap-marker" data-section="home" style="left: 50%; top: 18%;"></div>
-        <div class="minimap-marker" data-section="about" style="left: 22%; top: 45%;"></div>
-        <div class="minimap-marker" data-section="blog" style="left: 50%; top: 50%;"></div>
+        <div class="minimap-marker" data-section="home" style="left: 50%; top: 45%;"></div>
+        <div class="minimap-marker" data-section="about" style="left: 15%; top: 45%;"></div>
+        <div class="minimap-marker" data-section="blog" style="left: 85%; top: 45%;"></div>
         <div class="minimap-marker" data-section="projects" style="left: 78%; top: 42%;"></div>
         <div class="minimap-marker" data-section="experience" style="left: 22%; top: 62%;"></div>
         <div class="minimap-marker" data-section="hire" style="left: 38%; top: 82%;"></div>

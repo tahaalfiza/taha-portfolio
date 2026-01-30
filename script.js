@@ -656,71 +656,43 @@ function populateListView() {
     // Populate about section
     if (window.aboutInfo) {
         const bioEl = document.getElementById('listAboutBio');
-        const locationEl = document.getElementById('listLocation');
-        const skillsEl = document.getElementById('listSkills');
-
         if (bioEl && window.aboutInfo.shortBio) {
             bioEl.textContent = window.aboutInfo.shortBio;
         }
-        if (locationEl && window.aboutInfo.location) {
-            locationEl.textContent = window.aboutInfo.location;
-        }
-        if (skillsEl && window.aboutInfo.skills && window.aboutInfo.skills.length > 0) {
-            skillsEl.innerHTML = window.aboutInfo.skills.map(skill =>
-                `<span class="list-skill-tag">${skill}</span>`
-            ).join('');
-        }
     }
 
-    // Populate projects
+    // Populate projects (show first 4 as thumbnails)
     if (window.projectsData && window.projectsData.length > 0) {
         const projectsGrid = document.getElementById('listProjectsGrid');
         if (projectsGrid) {
-            projectsGrid.innerHTML = window.projectsData.map((project, index) => {
+            const displayProjects = window.projectsData.slice(0, 4);
+            projectsGrid.innerHTML = displayProjects.map((project, index) => {
                 const imageUrl = project.images && project.images[0]
-                    ? window.sanityImageUrl?.(project.images[0], 600, 85) || ''
+                    ? window.sanityImageUrl?.(project.images[0], 200, 85) || ''
                     : '';
                 return `
-                    <div class="list-project-card" onclick="openProjectOverlay(${index})">
-                        <div class="list-project-image">
-                            ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : ''}
-                        </div>
-                        <div class="list-project-info">
-                            <h3 class="list-project-title">${project.title}</h3>
-                            <span class="list-project-category">${project.category || ''}</span>
-                        </div>
+                    <div class="block-project-thumb" onclick="openProjectOverlay(${index})">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : ''}
                     </div>
                 `;
             }).join('');
         }
-    } else {
-        const projectsGrid = document.getElementById('listProjectsGrid');
-        if (projectsGrid && projectsGrid.querySelector('.list-loading')) {
-            // Still loading, keep the loading message
-        }
     }
 
-    // Populate blog posts
+    // Populate blog posts (show first 3)
     if (window.blogPostsData && window.blogPostsData.length > 0) {
         const blogGrid = document.getElementById('listBlogGrid');
         if (blogGrid) {
-            blogGrid.innerHTML = window.blogPostsData.map(post => {
+            const displayPosts = window.blogPostsData.slice(0, 3);
+            blogGrid.innerHTML = displayPosts.map(post => {
                 const imageUrl = post.mainImage
-                    ? window.sanityImageUrl?.(post.mainImage, 600, 85) || ''
-                    : '';
-                const date = post.publishedAt
-                    ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    ? window.sanityImageUrl?.(post.mainImage, 300, 85) || ''
                     : '';
                 const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
                 return `
-                    <a href="${blogUrl}" class="list-blog-card" target="_blank">
-                        <div class="list-blog-image">
-                            ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" loading="lazy">` : ''}
-                        </div>
-                        <div class="list-blog-info">
-                            <h3 class="list-blog-title">${post.title}</h3>
-                            <span class="list-blog-date">${date}</span>
-                        </div>
+                    <a href="${blogUrl}" class="block-blog-item" target="_blank">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" loading="lazy">` : ''}
+                        <p>${post.title}</p>
                     </a>
                 `;
             }).join('');
@@ -733,16 +705,16 @@ function populateListView() {
         if (contactLinksEl) {
             let linksHtml = '';
             if (window.contactInfo.email) {
-                linksHtml += `<a href="mailto:${window.contactInfo.email}" class="list-contact-link">
+                linksHtml += `<a href="mailto:${window.contactInfo.email}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                         <polyline points="22,6 12,13 2,6"/>
                     </svg>
-                    ${window.contactInfo.email}
+                    Email
                 </a>`;
             }
             if (window.contactInfo.linkedinUrl) {
-                linksHtml += `<a href="${window.contactInfo.linkedinUrl}" target="_blank" class="list-contact-link">
+                linksHtml += `<a href="${window.contactInfo.linkedinUrl}" target="_blank">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                     </svg>
@@ -753,57 +725,16 @@ function populateListView() {
         }
     }
 
-    // Populate experience
-    if (window.experiencesData && window.experiencesData.length > 0) {
-        const experienceGrid = document.getElementById('listExperienceGrid');
-        if (experienceGrid) {
-            experienceGrid.innerHTML = window.experiencesData.map(exp => {
-                const logoUrl = exp.companyLogo && window.sanityImageUrl
-                    ? window.sanityImageUrl(exp.companyLogo, 112, 90)
-                    : '';
-                const dateRange = `${exp.startDate || ''} – ${exp.endDate || 'Present'}`;
-                return `
-                    <div class="list-experience-card">
-                        <div class="list-exp-logo">
-                            ${logoUrl ? `<img src="${logoUrl}" alt="${exp.company || ''}" loading="lazy">` : ''}
-                        </div>
-                        <div class="list-exp-info">
-                            <h3 class="list-exp-title">${exp.role || ''}</h3>
-                            <p class="list-exp-company">${exp.company || ''}</p>
-                            ${exp.description ? `<p class="list-exp-description">${exp.description}</p>` : ''}
-                        </div>
-                        <div class="list-exp-meta">
-                            <span class="list-exp-date">${dateRange}</span>
-                            ${exp.location ? `<p class="list-exp-location">${exp.location}</p>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-    }
-
-    // Populate testimonials
+    // Populate testimonials (show first 6)
     if (window.testimonialsData && window.testimonialsData.length > 0) {
         const testimonialsGrid = document.getElementById('listTestimonialsGrid');
         if (testimonialsGrid) {
-            const colors = ['yellow', 'pink', 'blue', 'green'];
-            testimonialsGrid.innerHTML = window.testimonialsData.map((testimonial, index) => {
-                const avatarUrl = testimonial.avatar && window.sanityImageUrl
-                    ? window.sanityImageUrl(testimonial.avatar, 80, 90)
-                    : '';
-                const color = colors[index % colors.length];
+            const displayTestimonials = window.testimonialsData.slice(0, 6);
+            testimonialsGrid.innerHTML = displayTestimonials.map((testimonial, index) => {
                 return `
-                    <div class="list-testimonial-card ${color}">
-                        <p class="list-testimonial-quote">"${testimonial.quote || ''}"</p>
-                        <div class="list-testimonial-author">
-                            <div class="list-testimonial-avatar">
-                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${testimonial.name || ''}" loading="lazy">` : ''}
-                            </div>
-                            <div class="list-testimonial-info">
-                                <p class="list-testimonial-name">${testimonial.name || ''}</p>
-                                <p class="list-testimonial-role">${testimonial.role || ''}</p>
-                            </div>
-                        </div>
+                    <div class="block-testimonial">
+                        <p>"${testimonial.quote || ''}"</p>
+                        <span>- ${testimonial.name || ''}</span>
                     </div>
                 `;
             }).join('');

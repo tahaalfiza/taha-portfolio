@@ -558,6 +558,14 @@ a {
     margin-bottom: 16px;
 }
 
+.hero-greeting {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: 0;
+}
+
 .title-line {
     display: block;
     font-size: 72px;
@@ -574,13 +582,6 @@ a {
     font-size: 18px;
     font-weight: 500;
     color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.hero-subtitle-small {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--text-muted);
     margin-bottom: 32px;
 }
 
@@ -1236,12 +1237,12 @@ a {
         letter-spacing: -1px;
     }
 
-    .hero-subtitle {
-        font-size: 14px;
+    .hero-greeting {
+        font-size: 16px;
     }
 
-    .hero-subtitle-small {
-        font-size: 12px;
+    .hero-subtitle {
+        font-size: 14px;
         margin-bottom: 24px;
     }
 

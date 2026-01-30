@@ -1011,47 +1011,382 @@ a {
     color: white;
 }
 
-/* Career Section inside About Overlay */
-.about-career-section {
-    margin-top: 48px;
+/* Experience Cards - New Style */
+.experience-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-.about-career-section .career-card {
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-    border: none;
-}
-
-.about-career-section .career-section {
-    margin-bottom: 40px;
-}
-
-.about-career-section .career-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 24px;
-}
-
-.about-career-section .career-item {
-    padding: 16px 0;
+.exp-card {
+    padding: 24px 0;
     border-bottom: 1px solid var(--border-light);
+    position: relative;
 }
 
-.about-career-section .career-item:last-child {
+.exp-card:last-child {
     border-bottom: none;
 }
 
-.about-career-section .career-date {
-    min-width: 140px;
-    border-color: var(--accent-primary);
-    color: white;
+.exp-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    cursor: pointer;
 }
 
-/* Experience List */
+.exp-card.no-expand .exp-card-header {
+    cursor: default;
+}
+
+.exp-card-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--bg-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+}
+
+.exp-card-logo-placeholder {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+}
+
+.exp-card-logo-placeholder span {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.exp-card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.exp-card-logo svg {
+    width: 28px;
+    height: 28px;
+    color: var(--text-muted);
+}
+
+.exp-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.exp-card-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.exp-card-title .exp-card-at {
+    color: var(--text-muted);
+    font-weight: 400;
+    margin: 0 4px;
+}
+
+.exp-card-title .company-link {
+    color: var(--text-primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.exp-card-title .company-link:hover {
+    color: var(--accent-primary);
+}
+
+.exp-card-expand {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+
+.exp-card-expand:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.exp-card-expand svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.exp-card.expanded .exp-card-expand svg {
+    transform: rotate(45deg);
+}
+
+.exp-card-meta {
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.exp-card-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.exp-card-meta .separator {
+    color: var(--border-light);
+}
+
+.exp-card-description {
+    margin-top: 20px;
+    margin-left: 72px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    display: none;
+}
+
+.exp-card.expanded .exp-card-description {
+    display: block;
+}
+
+.exp-card-description p {
+    margin-bottom: 16px;
+}
+
+.exp-achievements {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.exp-achievements li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.exp-achievements li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent-primary);
+    font-weight: bold;
+}
+
+.exp-card-images {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.exp-card-images:first-child {
+    margin-top: 0;
+}
+
+.exp-card-images img {
+    height: 120px;
+    width: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exp-card-images img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Education Cards */
+.education-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.edu-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.edu-card:last-child {
+    border-bottom: none;
+}
+
+.edu-card-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--bg-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+}
+
+.edu-card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edu-card-logo svg {
+    width: 24px;
+    height: 24px;
+    color: var(--text-muted);
+}
+
+.edu-card-content {
+    flex: 1;
+}
+
+.edu-card-logo-placeholder {
+    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+}
+
+.edu-card-logo-placeholder span {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.edu-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.edu-card-title .edu-card-at {
+    color: var(--text-muted);
+    font-weight: 400;
+    margin: 0 4px;
+}
+
+.edu-card-title .company-link {
+    color: var(--text-primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.edu-card-title .company-link:hover {
+    color: var(--accent-primary);
+}
+
+.edu-card-degree {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.edu-card-institution {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.edu-card-institution a {
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+.edu-card-institution a:hover {
+    text-decoration: underline;
+}
+
+.edu-card-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.edu-card-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .exp-card {
+        padding: 20px 0;
+    }
+
+    .exp-card-header {
+        gap: 12px;
+    }
+
+    .exp-card-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+    }
+
+    .exp-card-logo-placeholder span {
+        font-size: 18px;
+    }
+
+    .exp-card-title {
+        font-size: 15px;
+    }
+
+    .exp-card-description {
+        margin-left: 56px;
+    }
+
+    .exp-card-images img {
+        height: 100px;
+    }
+
+    .exp-card-expand {
+        width: 28px;
+        height: 28px;
+    }
+
+    .edu-card {
+        gap: 12px;
+        padding: 18px 0;
+    }
+
+    .edu-card-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .edu-card-title {
+        font-size: 14px;
+    }
+}
+
+/* Legacy Experience List - Keep for compatibility */
 .experience-list {
     display: flex;
     flex-direction: column;

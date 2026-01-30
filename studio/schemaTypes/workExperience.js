@@ -79,6 +79,13 @@ export default {
       description: 'Bullet points of key achievements',
     },
     {
+      name: 'images',
+      title: 'Experience Images',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Photos from this experience (team photos, work environment, etc.)',
+    },
+    {
       name: 'isFeatured',
       title: 'Featured on Main Page',
       type: 'boolean',

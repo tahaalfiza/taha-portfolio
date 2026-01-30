@@ -123,6 +123,7 @@ async function fetchWorkExperience() {
     endDate,
     description,
     achievements,
+    images,
     isFeatured,
     order
   }`;
@@ -569,31 +570,70 @@ function renderAboutOverlay(aboutInfo, experiences, education) {
     document.getElementById('aboutSkills').style.display = 'none';
   }
 
-  // Render experiences in career-item style
+  // Render experiences in exp-card style with logos and expandable content
   const experienceContainer = document.getElementById('experienceList');
   if (experienceContainer && experiences.length > 0) {
-    experienceContainer.innerHTML = experiences.map(exp => {
+    experienceContainer.innerHTML = experiences.map((exp, index) => {
       const dateRange = exp.endDate
         ? `${exp.startDate} — ${exp.endDate}`
         : exp.startDate || '';
 
-      const companyLink = exp.companyUrl
+      // Build meta info (date | location)
+      const metaParts = [];
+      if (dateRange) metaParts.push(dateRange);
+      if (exp.location) metaParts.push(exp.location);
+      const metaText = metaParts.join(' | ');
+
+      // Company logo
+      const logoUrl = exp.companyLogo ? sanityImageUrl(exp.companyLogo, 100, 90) : '';
+      const logoHtml = logoUrl
+        ? `<div class="exp-card-logo"><img src="${logoUrl}" alt="${exp.company}"></div>`
+        : `<div class="exp-card-logo exp-card-logo-placeholder"><span>${exp.company ? exp.company.charAt(0) : 'C'}</span></div>`;
+
+      // Company link or text
+      const companyText = exp.companyUrl
         ? `<a href="${exp.companyUrl}" class="company-link" target="_blank">${exp.company}</a>`
         : exp.company;
 
+      // Description content
+      const hasDescription = exp.description || (exp.achievements && exp.achievements.length > 0) || (exp.images && exp.images.length > 0);
+
+      // Achievement bullets
+      const achievementsHtml = exp.achievements && exp.achievements.length > 0
+        ? `<ul class="exp-achievements">${exp.achievements.map(a => `<li>${a}</li>`).join('')}</ul>`
+        : '';
+
+      // Experience images
+      const imagesHtml = exp.images && exp.images.length > 0
+        ? `<div class="exp-card-images">${exp.images.map(img => {
+            const imgUrl = sanityImageUrl(img, 600, 85);
+            return imgUrl ? `<img src="${imgUrl}" alt="${exp.company} experience" loading="lazy">` : '';
+          }).join('')}</div>`
+        : '';
+
       return `
-        <div class="career-item" data-year="${exp.startYear}">
-          <span class="career-date">${dateRange}</span>
-          <div class="career-details">
-            <h3>${exp.role} at ${companyLink}</h3>
-            <p class="career-location">${exp.location || ''}</p>
+        <div class="exp-card${hasDescription ? '' : ' no-expand'}" data-year="${exp.startYear}">
+          <div class="exp-card-header" ${hasDescription ? `onclick="toggleExpCard(this)"` : ''}>
+            ${logoHtml}
+            <div class="exp-card-content">
+              <h3 class="exp-card-title">${exp.role} <span class="exp-card-at">@</span> ${companyText}</h3>
+              <p class="exp-card-meta">${metaText}</p>
+            </div>
+            ${hasDescription ? `<button class="exp-card-expand" aria-label="Expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
           </div>
+          ${hasDescription ? `
+          <div class="exp-card-description">
+            ${exp.description ? `<p>${exp.description}</p>` : ''}
+            ${achievementsHtml}
+            ${imagesHtml}
+          </div>
+          ` : ''}
         </div>
       `;
     }).join('');
   }
 
-  // Render education in career-item style
+  // Render education in edu-card style with logos
   const educationContainer = document.getElementById('educationList');
   if (educationContainer && education.length > 0) {
     educationContainer.innerHTML = education.map(edu => {
@@ -601,16 +641,30 @@ function renderAboutOverlay(aboutInfo, experiences, education) {
         ? `${edu.startDate} — ${edu.endDate}`
         : edu.startDate || '';
 
-      const institutionLink = edu.institutionUrl
+      // Build meta info (date | location)
+      const metaParts = [];
+      if (dateRange) metaParts.push(dateRange);
+      if (edu.location) metaParts.push(edu.location);
+      const metaText = metaParts.join(' | ');
+
+      // Institution logo
+      const logoUrl = edu.institutionLogo ? sanityImageUrl(edu.institutionLogo, 100, 90) : '';
+      const logoHtml = logoUrl
+        ? `<div class="edu-card-logo"><img src="${logoUrl}" alt="${edu.institution}"></div>`
+        : `<div class="edu-card-logo edu-card-logo-placeholder"><span>${edu.institution ? edu.institution.charAt(0) : 'U'}</span></div>`;
+
+      // Institution link or text
+      const institutionText = edu.institutionUrl
         ? `<a href="${edu.institutionUrl}" class="company-link" target="_blank">${edu.institution}</a>`
         : edu.institution;
 
       return `
-        <div class="career-item" data-year="${edu.startYear || ''}">
-          <span class="career-date">${dateRange}</span>
-          <div class="career-details">
-            <h3>${edu.degree} at ${institutionLink}</h3>
-            <p class="career-location">${edu.location || ''}</p>
+        <div class="edu-card" data-year="${edu.startYear || ''}">
+          ${logoHtml}
+          <div class="edu-card-content">
+            <h3 class="edu-card-title">${edu.degree} <span class="edu-card-at">@</span> ${institutionText}</h3>
+            <p class="edu-card-meta">${metaText}</p>
+            ${edu.description ? `<p class="edu-card-desc">${edu.description}</p>` : ''}
           </div>
         </div>
       `;
@@ -696,6 +750,14 @@ function setupTimelineScrolling() {
       }
     });
   });
+}
+
+// Toggle experience card expansion
+function toggleExpCard(headerEl) {
+  const card = headerEl.closest('.exp-card');
+  if (card) {
+    card.classList.toggle('expanded');
+  }
 }
 
 // Open About overlay

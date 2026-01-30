@@ -484,6 +484,11 @@ a {
     display: none;
 }
 
+/* Make Home section height similar to Projects section */
+.list-view #list-home .hero-section {
+    min-height: 300px;
+}
+
 /* About Card in block view */
 .list-view .about-card-modern {
     max-width: 320px;
@@ -502,13 +507,15 @@ a {
     min-height: 300px;
 }
 
-/* Notes App Window in block view */
+/* Notes App Window in block view - height similar to About section */
 .list-view .notes-app-window {
     width: 100%;
+    max-height: 480px;
 }
 
 .list-view .notes-body {
-    min-height: 350px;
+    min-height: 300px;
+    max-height: 400px;
 }
 
 /* Testimonials Grid in block view - 3x2 grid */

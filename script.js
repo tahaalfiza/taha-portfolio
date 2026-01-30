@@ -661,27 +661,108 @@ function populateListView() {
         }
     }
 
-    // Populate projects (same folder style as canvas finder)
+    // Populate projects (same mac-folder style as canvas finder)
     if (window.projectsData && window.projectsData.length > 0) {
         const projectsGrid = document.getElementById('listProjectsGrid');
         const finderCount = document.getElementById('listFinderCount');
         if (projectsGrid) {
             projectsGrid.innerHTML = window.projectsData.map((project, index) => {
-                const imageUrl = project.images && project.images[0]
-                    ? window.sanityImageUrl?.(project.images[0], 300, 85) || ''
-                    : '';
+                // Get up to 3 images for popup preview
+                const images = project.images || [];
+                const imageHtml = images.slice(0, 3).map((img, i) => {
+                    const url = window.sanityImageUrl?.(img, 400, 85) || '';
+                    return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
+                }).join('');
+
+                // Determine click behavior
+                let clickHandler = '';
+                if (project.projectUrl && !project.hasOverlay) {
+                    clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
+                } else {
+                    clickHandler = `onclick="openProjectOverlay(${index})"`;
+                }
+
+                // Custom folder colors
+                const formatColor = (color) => {
+                    if (!color) return null;
+                    if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) return color;
+                    return `#${color}`;
+                };
+                const tabColor = formatColor(project.folderTabColor);
+                const bodyColor = formatColor(project.folderBodyColor);
+                const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
+                const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
+
                 return `
-                    <div class="folder-item" onclick="openProjectOverlay(${index})">
-                        <div class="folder-thumbnail">
-                            ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : ''}
+                    <div class="mac-folder" ${clickHandler}>
+                        <div class="folder-wrapper">
+                            <div class="popup-images">
+                                ${imageHtml}
+                            </div>
+                            <div class="folder-icon">
+                                <div class="folder-tab" ${tabStyle}></div>
+                                <div class="folder-body" ${bodyStyle}></div>
+                            </div>
                         </div>
-                        <span class="folder-name">${project.title || 'Project'}</span>
+                        <h3 class="folder-name">${project.title}</h3>
+                        <div class="folder-info">
+                            <span class="folder-duration">${project.duration || ''}</span>
+                            <span class="folder-date">${project.date || ''}</span>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
         if (finderCount) {
             finderCount.textContent = window.projectsData.length + ' items';
+        }
+
+        // Build categories sidebar for list view
+        const listCategoriesContainer = document.getElementById('listCategoriesList');
+        if (listCategoriesContainer) {
+            // Get unique categories
+            const categoryMap = new Map();
+            window.projectsData.forEach(p => {
+                if (p.category && !categoryMap.has(p.category)) {
+                    categoryMap.set(p.category, {
+                        name: p.category,
+                        icon: p.categoryIcon || 'folder',
+                        order: p.categoryOrder || 999
+                    });
+                }
+            });
+            const categories = Array.from(categoryMap.values()).sort((a, b) => a.order - b.order);
+
+            // Category icons
+            const categoryIcons = {
+                'branding': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+                'product': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>`,
+                'folder': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`
+            };
+
+            let html = `
+                <li class="sidebar-item active" data-category="all" onclick="filterListProjects('all')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span>All</span>
+                </li>
+            `;
+
+            categories.forEach(cat => {
+                const icon = categoryIcons[cat.icon] || categoryIcons['folder'];
+                html += `
+                    <li class="sidebar-item" data-category="${cat.name}" onclick="filterListProjects('${cat.name}')">
+                        ${icon}
+                        <span>${cat.name}</span>
+                    </li>
+                `;
+            });
+
+            listCategoriesContainer.innerHTML = html;
         }
     }
 
@@ -731,6 +812,87 @@ function populateListView() {
         }
     }
 }
+
+// Filter projects in list view by category
+let listActiveCategory = 'all';
+window.filterListProjects = function(category) {
+    listActiveCategory = category;
+
+    // Update active state in sidebar
+    const items = document.querySelectorAll('#listCategoriesList .sidebar-item');
+    items.forEach(item => {
+        item.classList.toggle('active', item.dataset.category === category);
+    });
+
+    // Filter and re-render projects
+    const projectsGrid = document.getElementById('listProjectsGrid');
+    const finderPath = document.getElementById('listFinderPath');
+    const finderCount = document.getElementById('listFinderCount');
+
+    if (!projectsGrid || !window.projectsData) return;
+
+    const filteredProjects = category === 'all'
+        ? window.projectsData
+        : window.projectsData.filter(p => (p.category || '').toLowerCase() === category.toLowerCase());
+
+    // Update path and count
+    if (finderPath) {
+        finderPath.textContent = category === 'all' ? 'All Projects' : category;
+    }
+    if (finderCount) {
+        finderCount.textContent = `${filteredProjects.length} item${filteredProjects.length !== 1 ? 's' : ''}`;
+    }
+
+    // Re-render projects
+    projectsGrid.innerHTML = filteredProjects.map((project) => {
+        const originalIndex = window.projectsData.findIndex(p => p._id === project._id);
+
+        // Get up to 3 images for popup preview
+        const images = project.images || [];
+        const imageHtml = images.slice(0, 3).map((img, i) => {
+            const url = window.sanityImageUrl?.(img, 400, 85) || '';
+            return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
+        }).join('');
+
+        // Determine click behavior
+        let clickHandler = '';
+        if (project.projectUrl && !project.hasOverlay) {
+            clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
+        } else {
+            clickHandler = `onclick="openProjectOverlay(${originalIndex})"`;
+        }
+
+        // Custom folder colors
+        const formatColor = (color) => {
+            if (!color) return null;
+            if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) return color;
+            return `#${color}`;
+        };
+        const tabColor = formatColor(project.folderTabColor);
+        const bodyColor = formatColor(project.folderBodyColor);
+        const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
+        const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
+
+        return `
+            <div class="mac-folder" ${clickHandler}>
+                <div class="folder-wrapper">
+                    <div class="popup-images">
+                        ${imageHtml}
+                    </div>
+                    <div class="folder-icon">
+                        <div class="folder-tab" ${tabStyle}></div>
+                        <div class="folder-body" ${bodyStyle}></div>
+                    </div>
+                </div>
+                <h3 class="folder-name">${project.title}</h3>
+                <div class="folder-info">
+                    <span class="folder-duration">${project.duration || ''}</span>
+                    <span class="folder-date">${project.date || ''}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+};
 
 // Select blog post in list view (same as canvas)
 window.selectListBlogPost = function(index) {

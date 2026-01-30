@@ -381,15 +381,15 @@ a {
     position: relative;
 }
 
-.zoom-btn.view-toggle .icon-list {
-    display: none;
-}
-
-.zoom-btn.view-toggle.active .icon-canvas {
+.zoom-btn.view-toggle .icon-canvas {
     display: none;
 }
 
 .zoom-btn.view-toggle.active .icon-list {
+    display: none;
+}
+
+.zoom-btn.view-toggle.active .icon-canvas {
     display: block;
 }
 

@@ -1525,6 +1525,11 @@ async function initSanityContent() {
     window.contactInfo = contactInfo;
     window.sanityImageUrl = sanityImageUrl;
 
+    // Update list view if it's open
+    if (typeof window.populateListView === 'function') {
+      window.populateListView();
+    }
+
     // Check for deep link after content is loaded
     checkAboutDeepLink();
 

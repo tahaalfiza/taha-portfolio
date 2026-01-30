@@ -626,9 +626,20 @@ function initZoomControls() {
 let listViewInitialized = false;
 
 function initListViewContent() {
-    if (listViewInitialized) return;
-    listViewInitialized = true;
+    // Always try to populate if data is available (retry on each toggle)
+    populateListView();
 
+    // If data isn't loaded yet, wait for it
+    if (!listViewInitialized && (!window.projectsData || window.projectsData.length === 0)) {
+        // Check again after a short delay (Sanity data might still be loading)
+        setTimeout(populateListView, 500);
+        setTimeout(populateListView, 1500);
+    }
+
+    listViewInitialized = true;
+}
+
+function populateListView() {
     // Populate about section
     if (window.aboutInfo) {
         const bioEl = document.getElementById('listAboutBio');
@@ -641,7 +652,7 @@ function initListViewContent() {
         if (locationEl && window.aboutInfo.location) {
             locationEl.textContent = window.aboutInfo.location;
         }
-        if (skillsEl && window.aboutInfo.skills) {
+        if (skillsEl && window.aboutInfo.skills && window.aboutInfo.skills.length > 0) {
             skillsEl.innerHTML = window.aboutInfo.skills.map(skill =>
                 `<span class="list-skill-tag">${skill}</span>`
             ).join('');
@@ -668,6 +679,11 @@ function initListViewContent() {
                     </div>
                 `;
             }).join('');
+        }
+    } else {
+        const projectsGrid = document.getElementById('listProjectsGrid');
+        if (projectsGrid && projectsGrid.querySelector('.list-loading')) {
+            // Still loading, keep the loading message
         }
     }
 
@@ -725,11 +741,12 @@ function initListViewContent() {
     }
 }
 
-// Make data available globally for list view
+// Make data and functions available globally for list view
 window.aboutInfo = null;
 window.contactInfo = null;
 window.projectsData = [];
 window.blogPostsData = [];
+window.populateListView = populateListView;
 
 /* ==========================================
    MINIMAP - Draggable and accurate

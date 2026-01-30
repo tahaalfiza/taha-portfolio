@@ -457,9 +457,32 @@ function initCanvas() {
     };
 
     window.resetZoom = function () {
-        state.scale = 1;
-        navigateToSection('home');
+        const isMobile = window.innerWidth <= 768;
+        state.scale = isMobile ? 0.6 : 1;
+
+        // Properly center on home section
+        const homeSection = document.getElementById('section-home');
+        if (homeSection) {
+            // Get section position
+            const sectionX = parseFloat(homeSection.style.left) / 100 * 2800;
+            const sectionY = parseFloat(homeSection.style.top) / 100 * 2000;
+
+            // Get section dimensions to find center
+            const sectionWidth = homeSection.offsetWidth;
+            const sectionHeight = homeSection.offsetHeight;
+
+            // Calculate the center of the section
+            const centerX = sectionX + sectionWidth / 2;
+            const centerY = sectionY + sectionHeight / 2;
+
+            // Calculate pan to center section on screen
+            state.panX = -centerX * state.scale + window.innerWidth / 2;
+            state.panY = -centerY * state.scale + window.innerHeight / 2;
+        }
+
+        updateTransform();
         updateZoomLevel();
+        updateMinimap();
     };
 }
 
@@ -537,6 +560,53 @@ function initZoomControls() {
     document.getElementById('zoomIn')?.addEventListener('click', () => window.zoomIn?.());
     document.getElementById('zoomOut')?.addEventListener('click', () => window.zoomOut?.());
     document.getElementById('zoomReset')?.addEventListener('click', () => window.resetZoom?.());
+
+    // View toggle button
+    const viewToggle = document.getElementById('viewToggle');
+    const overviewPanel = document.getElementById('overviewPanel');
+    const canvasContainer = document.getElementById('canvasContainer');
+    const minimap = document.getElementById('minimap');
+
+    if (viewToggle && overviewPanel) {
+        viewToggle.addEventListener('click', () => {
+            const isOverviewActive = overviewPanel.classList.contains('active');
+
+            if (isOverviewActive) {
+                // Switch to canvas view
+                overviewPanel.classList.remove('active');
+                canvasContainer.style.display = 'block';
+                minimap?.style.setProperty('display', 'block');
+                viewToggle.classList.remove('active');
+            } else {
+                // Switch to overview view
+                overviewPanel.classList.add('active');
+                canvasContainer.style.display = 'none';
+                minimap?.style.setProperty('display', 'none');
+                viewToggle.classList.add('active');
+            }
+        });
+    }
+}
+
+// Switch to canvas and navigate to section
+window.switchToCanvasAndNavigate = function(sectionId) {
+    const overviewPanel = document.getElementById('overviewPanel');
+    const canvasContainer = document.getElementById('canvasContainer');
+    const minimap = document.getElementById('minimap');
+    const viewToggle = document.getElementById('viewToggle');
+
+    // Switch to canvas view
+    overviewPanel?.classList.remove('active');
+    if (canvasContainer) canvasContainer.style.display = 'block';
+    minimap?.style.setProperty('display', 'block');
+    viewToggle?.classList.remove('active');
+
+    // Navigate to section
+    setTimeout(() => {
+        if (window.navigateToSection) {
+            window.navigateToSection(sectionId);
+        }
+    }, 100);
 }
 
 /* ==========================================

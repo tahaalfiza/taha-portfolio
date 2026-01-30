@@ -33,6 +33,13 @@ export default {
       description: 'Short preview text shown in the notes list',
     },
     {
+      name: 'mainImage',
+      title: 'Main Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Thumbnail image shown in the blog list',
+    },
+    {
       name: 'content',
       title: 'Content',
       type: 'array',
@@ -166,8 +173,9 @@ export default {
       title: 'title',
       date: 'publishedAt',
       category: 'category',
+      media: 'mainImage',
     },
-    prepare({ title, date, category }) {
+    prepare({ title, date, category, media }) {
       const formattedDate = date
         ? new Date(date).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -178,6 +186,7 @@ export default {
       return {
         title: title,
         subtitle: `${category || 'Uncategorized'} • ${formattedDate}`,
+        media: media,
       }
     },
   },

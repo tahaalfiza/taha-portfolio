@@ -148,39 +148,15 @@
                             <span class="notes-btn yellow"></span>
                             <span class="notes-btn green"></span>
                         </div>
-                        <div class="notes-title">Notes</div>
+                        <div class="notes-title">Blogs</div>
                         <div class="notes-actions">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <path d="M9 3v18"/>
-                            </svg>
+                            <span class="blog-count-badge" id="blogCount">0</span>
                         </div>
                     </div>
 
-                    <!-- Notes Body -->
+                    <!-- Notes Body - Two Column Layout -->
                     <div class="notes-body">
-                        <!-- Sidebar -->
-                        <div class="notes-sidebar">
-                            <div class="notes-sidebar-header">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                    <polyline points="9 22 9 12 15 12 15 22"/>
-                                </svg>
-                                <span>iCloud</span>
-                            </div>
-                            <ul class="notes-folders" id="blogFoldersList">
-                                <li class="notes-folder-item active" data-folder="all">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <polyline points="14 2 14 8 20 8"/>
-                                    </svg>
-                                    <span>All Notes</span>
-                                    <span class="notes-count" id="blogCount">0</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Notes List -->
+                        <!-- Blog List - Left Side -->
                         <div class="notes-list">
                             <div class="notes-search">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -195,7 +171,7 @@
                             </div>
                         </div>
 
-                        <!-- Note Preview -->
+                        <!-- Blog Preview - Right Side -->
                         <div class="notes-preview" id="blogPreview">
                             <div class="notes-preview-empty">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -205,7 +181,7 @@
                                     <line x1="16" y1="17" x2="8" y2="17"/>
                                     <polyline points="10 9 9 9 8 9"/>
                                 </svg>
-                                <p>Select a note to read</p>
+                                <p>Select a blog to read</p>
                             </div>
                         </div>
                     </div>

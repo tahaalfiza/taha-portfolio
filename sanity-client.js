@@ -236,7 +236,8 @@ async function fetchBlogPosts() {
     content,
     category,
     featured,
-    order
+    order,
+    mainImage
   }`;
 
   try {
@@ -270,19 +271,30 @@ function renderBlogPosts(posts) {
   listEl.innerHTML = posts.map((post, index) => {
     const date = post.publishedAt
       ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
+          day: '2-digit',
+          month: '2-digit',
           year: 'numeric'
         })
       : '';
 
-    const preview = post.excerpt || 'No preview available...';
+    // Get thumbnail image if available
+    const thumbUrl = post.mainImage ? sanityImageUrl(post.mainImage, 100, 80) : null;
+    const thumbHtml = thumbUrl
+      ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
+      : `<div class="note-item-thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>`;
 
     return `
       <div class="note-item ${index === 0 ? 'active' : ''}" data-post-id="${post._id}" onclick="selectBlogPost('${post._id}')">
-        <div class="note-item-title">${post.title}</div>
-        <div class="note-item-date">${date}</div>
-        <div class="note-item-preview">${preview}</div>
+        <div class="note-item-info">
+          <div class="note-item-title">${post.title}</div>
+          <div class="note-item-date">${date}</div>
+        </div>
+        ${thumbHtml}
       </div>
     `;
   }).join('');
@@ -324,7 +336,20 @@ function selectBlogPost(postId) {
   // Convert Sanity block content to HTML
   const contentHtml = renderBlockContent(post.content);
 
+  // Build URL for single blog page
+  const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+
   previewEl.innerHTML = `
+    <div class="notes-preview-toolbar">
+      <a href="${blogUrl}" target="_blank" class="blog-open-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Open
+      </a>
+    </div>
     <div class="notes-preview-content">
       <div class="notes-preview-header">
         <h1 class="notes-preview-title">${post.title}</h1>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Project - Taha Work</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Project Page Specific Styles */
+        .project-page {
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .project-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .back-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .project-page-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+
+        .project-header {
+            margin-bottom: 48px;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .project-client {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            padding: 6px 14px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 20px;
+        }
+
+        .project-date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .project-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .project-description {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        .project-details {
+            display: flex;
+            gap: 48px;
+            padding: 32px 0;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .detail-tools {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tool-tag {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .project-loading {
+            text-align: center;
+            padding: 100px 20px;
+            color: var(--text-muted);
+        }
+
+        .project-not-found {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .project-not-found h2 {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .project-not-found p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .project-not-found a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .project-nav {
+                padding: 16px 20px;
+            }
+
+            .project-page-content {
+                padding: 100px 20px 60px;
+            }
+
+            .project-title {
+                font-size: 32px;
+            }
+
+            .project-description {
+                font-size: 16px;
+            }
+
+            .project-details {
+                gap: 24px;
+            }
+
+            .detail-tools {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="project-page">
+    <!-- Navigation -->
+    <nav class="project-nav">
+        <a href="/" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Portfolio
+        </a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Project Content -->
+    <main class="project-page-content" id="projectContent">
+        <div class="project-loading">Loading project...</div>
+    </main>
+
+    <script>
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Sanity configuration
+        const SANITY_PROJECT_ID = 'hsbvy0xe';
+        const SANITY_DATASET = 'production';
+        const SANITY_API_VERSION = '2024-01-01';
+
+        function sanityUrl(query) {
+            const encodedQuery = encodeURIComponent(query);
+            return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
+        }
+
+        function sanityImageUrl(imageRef, width = 800, quality = 90) {
+            if (!imageRef || !imageRef.asset || !imageRef.asset._ref) return '';
+            const ref = imageRef.asset._ref;
+            const [, id, dimensions, format] = ref.split('-');
+            return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&q=${quality}&auto=format&fit=max`;
+        }
+
+        function formatColor(color) {
+            if (!color) return null;
+            if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) {
+                return color;
+            }
+            return `#${color}`;
+        }
+
+        function generateSlug(title) {
+            if (!title) return '';
+            return title
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function renderContentBlocks(contentBlocks, projectTitle) {
+            if (!contentBlocks || contentBlocks.length === 0) return '';
+
+            return contentBlocks.map(block => {
+                if (block._type === 'imageBlock' && block.image) {
+                    const url = sanityImageUrl(block.image, 1600, 90);
+                    if (!url) return '';
+                    const widthClass = block.fullWidth !== false ? 'full-width' : 'contained-width';
+                    return `
+                        <div class="content-block image-block ${widthClass}">
+                            <div class="gallery-image">
+                                <img src="${url}" alt="${block.caption || projectTitle}" loading="lazy">
+                            </div>
+                            ${block.caption ? `<p class="block-caption">${block.caption}</p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (block._type === 'videoBlock' && block.embedCode) {
+                    return `
+                        <div class="content-block video-block">
+                            <div class="video-wrapper">
+                                ${block.embedCode}
+                            </div>
+                            ${block.caption ? `<p class="block-caption">${block.caption}</p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (block._type === 'textBlock' && block.text) {
+                    const align = block.textAlign || 'left';
+                    return `
+                        <div class="content-block text-block" style="text-align: ${align}">
+                            ${block.heading ? `<h3 class="text-block-heading">${block.heading}</h3>` : ''}
+                            <p class="text-block-content">${block.text}</p>
+                        </div>
+                    `;
+                }
+
+                return '';
+            }).join('');
+        }
+
+        async function loadProject() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            if (!slug) {
+                showNotFound();
+                return;
+            }
+
+            // Query by slug or by generated slug from title
+            const query = `*[_type == "project" && (slug.current == "${slug}" || lower(title) match "*${slug.replace(/-/g, '*')}*")][0] {
+                _id,
+                title,
+                slug,
+                description,
+                fullDescription,
+                duration,
+                date,
+                client,
+                role,
+                tools,
+                overlayBgColor,
+                images,
+                contentBlocks[] {
+                    _type,
+                    _key,
+                    image,
+                    embedCode,
+                    heading,
+                    text,
+                    textAlign,
+                    caption,
+                    fullWidth
+                },
+                galleryImages
+            }`;
+
+            try {
+                const response = await fetch(sanityUrl(query));
+                const data = await response.json();
+                const project = data.result;
+
+                if (!project) {
+                    showNotFound();
+                    return;
+                }
+
+                renderProject(project);
+            } catch (error) {
+                console.error('Error loading project:', error);
+                showNotFound();
+            }
+        }
+
+        function renderProject(project) {
+            // Update page title
+            document.title = `${project.title} - Taha Work`;
+
+            // Apply background color if set
+            const bgColor = formatColor(project.overlayBgColor);
+            if (bgColor) {
+                document.body.style.background = bgColor;
+            }
+
+            // Build gallery content
+            let galleryHtml = '';
+            if (project.contentBlocks && project.contentBlocks.length > 0) {
+                galleryHtml = renderContentBlocks(project.contentBlocks, project.title);
+            } else {
+                const galleryImages = project.galleryImages || project.images || [];
+                if (galleryImages.length > 0) {
+                    galleryHtml = galleryImages.map(img => {
+                        const url = sanityImageUrl(img, 1600, 90);
+                        return url ? `
+                            <div class="content-block image-block full-width">
+                                <div class="gallery-image">
+                                    <img src="${url}" alt="${project.title}" loading="lazy">
+                                </div>
+                            </div>
+                        ` : '';
+                    }).join('');
+                }
+            }
+
+            // Build tools HTML
+            const toolsHtml = project.tools && project.tools.length > 0
+                ? project.tools.map(tool => `<span class="tool-tag">${tool}</span>`).join('')
+                : '';
+
+            // Build details HTML
+            let detailsHtml = '';
+            if (project.role || project.duration || toolsHtml) {
+                detailsHtml = `
+                    <div class="project-details">
+                        ${project.role ? `
+                            <div class="detail-item">
+                                <span class="detail-label">Role</span>
+                                <span class="detail-value">${project.role}</span>
+                            </div>
+                        ` : ''}
+                        ${project.duration ? `
+                            <div class="detail-item">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">${project.duration}</span>
+                            </div>
+                        ` : ''}
+                        ${toolsHtml ? `
+                            <div class="detail-item detail-tools">
+                                <span class="detail-label">Tools</span>
+                                <div class="tools-list">${toolsHtml}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            const content = `
+                <div class="project-header">
+                    <div class="project-meta">
+                        ${project.client ? `<span class="project-client">${project.client}</span>` : ''}
+                        ${project.date ? `<span class="project-date">${project.date}</span>` : ''}
+                    </div>
+                    <h1 class="project-title">${project.title}</h1>
+                    ${project.fullDescription || project.description ? `
+                        <p class="project-description">${project.fullDescription || project.description}</p>
+                    ` : ''}
+                </div>
+                ${detailsHtml}
+                <div class="project-gallery">
+                    ${galleryHtml}
+                </div>
+            `;
+
+            document.getElementById('projectContent').innerHTML = content;
+        }
+
+        function showNotFound() {
+            document.getElementById('projectContent').innerHTML = `
+                <div class="project-not-found">
+                    <h2>Project Not Found</h2>
+                    <p>The project you're looking for doesn't exist or has been removed.</p>
+                    <a href="/">← Back to Portfolio</a>
+                </div>
+            `;
+        }
+
+        // Load project on page load
+        loadProject();
+    </script>
+</body>
+</html>

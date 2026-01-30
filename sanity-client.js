@@ -276,6 +276,15 @@ function renderContentBlocks(contentBlocks, projectTitle) {
   }).join('');
 }
 
+// Generate slug from title
+function generateSlug(title) {
+  if (!title) return '';
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 // Open project overlay
 function openProjectOverlay(projectIndex) {
   const project = projectsData[projectIndex];
@@ -291,6 +300,11 @@ function openProjectOverlay(projectIndex) {
   } else {
     overlayContainer.style.background = ''; // Reset to default CSS
   }
+
+  // Set the "Open in new page" link
+  const openPageLink = document.getElementById('overlayOpenPage');
+  const slug = project.slug?.current || generateSlug(project.title);
+  openPageLink.href = `/project.html?slug=${slug}`;
 
   // Populate overlay content
   document.getElementById('overlayTitle').textContent = project.title || '';

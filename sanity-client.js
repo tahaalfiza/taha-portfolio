@@ -182,9 +182,22 @@ function renderProjects(projects) {
       clickHandler = `onclick="openProjectOverlay(${index})"`;
     }
 
+    // Helper function to format color (adds # for hex codes if missing)
+    const formatColor = (color) => {
+      if (!color) return null;
+      // If it's a gradient or already has #, use as-is
+      if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) {
+        return color;
+      }
+      // Otherwise, assume it's a hex code and add #
+      return `#${color}`;
+    };
+
     // Custom folder colors - inline styles if provided
-    const tabStyle = project.folderTabColor ? `style="background: ${project.folderTabColor}"` : '';
-    const bodyStyle = project.folderBodyColor ? `style="background: ${project.folderBodyColor}"` : '';
+    const tabColor = formatColor(project.folderTabColor);
+    const bodyColor = formatColor(project.folderBodyColor);
+    const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
+    const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
 
     return `
       <div class="mac-folder" ${clickHandler}>

@@ -290,11 +290,11 @@ function renderProjects(projects) {
             <div class="folder-body" ${bodyStyle}></div>
           </div>
         </div>
+        <h3 class="folder-name">${project.title}</h3>
         <div class="folder-info">
           <span class="folder-duration">${project.duration || ''}</span>
           <span class="folder-date">${project.date || ''}</span>
         </div>
-        <h3 class="folder-name">${project.title}</h3>
       </div>
     `;
   }).join('');

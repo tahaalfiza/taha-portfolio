@@ -169,7 +169,7 @@ a {
 }
 
 /* ==========================================
-   BOTTOM NAVIGATION
+   BOTTOM NAVIGATION - Simple Icon Style
    ========================================== */
 .navbar {
     position: fixed;
@@ -178,51 +178,41 @@ a {
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 24px;
-    padding: 14px 28px;
+    gap: 4px;
+    padding: 8px;
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-light);
-    border-radius: 100px;
+    border-radius: 16px;
     z-index: 1000;
     transition: all var(--transition-medium);
 }
 
-.nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-right: 24px;
-    border-right: 1px solid var(--border-light);
-}
-
-.logo-symbol {
-    font-size: 20px;
-    color: var(--accent-primary);
-}
-
-.logo-text {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 6px;
+.nav-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-light);
+    margin: 0 4px;
 }
 
 .nav-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    font-family: var(--font-main);
-    font-size: 14px;
-    font-weight: 500;
-    padding: 10px 18px;
-    border-radius: 24px;
+    border-radius: 12px;
     cursor: none;
+    transition: all var(--transition-fast);
+}
+
+.nav-btn svg {
+    width: 20px;
+    height: 20px;
     transition: all var(--transition-fast);
 }
 
@@ -236,36 +226,54 @@ a {
     background: var(--accent-primary);
 }
 
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-left: 24px;
-    border-left: 1px solid var(--border-light);
+.nav-btn.active svg {
+    stroke: white;
+}
+
+/* Tooltip on hover */
+.nav-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    padding: 6px 12px;
+    background: var(--bg-card-solid);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    margin-bottom: 8px;
+}
+
+.nav-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--border-light);
+}
+
+.nav-btn:hover .nav-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
 /* Theme Toggle */
-.theme-toggle {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-hover);
-    border: 1px solid var(--border-light);
-    border-radius: 50%;
-    cursor: none;
-    transition: all var(--transition-fast);
+.nav-btn.theme-toggle {
     position: relative;
-}
-
-.theme-toggle:hover {
-    border-color: var(--accent-primary);
 }
 
 .theme-icon-light,
 .theme-icon-dark {
-    font-size: 18px;
     position: absolute;
     transition: all 0.3s ease;
 }
@@ -288,21 +296,6 @@ a {
 [data-theme="light"] .theme-icon-dark {
     opacity: 1;
     transform: rotate(0deg);
-}
-
-.nav-cta {
-    background: var(--accent-primary);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 24px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all var(--transition-fast);
-}
-
-.nav-cta:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 20px var(--shadow-color);
 }
 
 /* ==========================================
@@ -354,44 +347,49 @@ a {
 }
 
 /* ==========================================
-   MINI MAP
+   MINI MAP - Improved accuracy and control
    ========================================== */
 .minimap {
     position: fixed;
     top: 24px;
     right: 24px;
-    width: 150px;
-    height: 100px;
+    width: 160px;
+    height: 120px;
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-light);
     border-radius: 12px;
     z-index: 1000;
     overflow: hidden;
+    cursor: crosshair;
 }
 
 .minimap-viewport {
     position: absolute;
     border: 2px solid var(--accent-primary);
-    border-radius: 4px;
-    background: rgba(139, 92, 246, 0.1);
-    transition: all 0.1s ease;
+    border-radius: 3px;
+    background: rgba(139, 92, 246, 0.15);
+    pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3);
 }
 
 .minimap-marker {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     background: var(--accent-secondary);
+    border: 2px solid var(--bg-card-solid);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    cursor: none;
+    cursor: pointer;
     transition: all var(--transition-fast);
+    z-index: 2;
 }
 
 .minimap-marker:hover {
-    transform: translate(-50%, -50%) scale(1.5);
+    transform: translate(-50%, -50%) scale(1.4);
     background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-primary);
 }
 
 /* ==========================================

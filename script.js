@@ -31,8 +31,8 @@ function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
 
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    // Check for saved theme preference - default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
     html.setAttribute('data-theme', savedTheme);
 
     themeToggle.addEventListener('click', () => {
@@ -176,29 +176,34 @@ function initCanvas() {
         }
     }
 
-    // FIXED: Scroll now moves canvas in direction aligned with content
+    // Improved zoom and scroll handling
     function handleWheel(e) {
         e.preventDefault();
 
         if (e.ctrlKey || e.metaKey) {
-            // Zoom
+            // Zoom toward mouse position
+            const oldScale = state.scale;
             const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-            const newScale = Math.max(state.minScale, Math.min(state.maxScale, state.scale * zoomFactor));
+            const newScale = Math.max(state.minScale, Math.min(state.maxScale, oldScale * zoomFactor));
 
-            const rect = container.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            // Get mouse position relative to viewport
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
 
-            const scaleChange = newScale - state.scale;
-            state.panX -= mouseX * scaleChange / state.scale;
-            state.panY -= mouseY * scaleChange / state.scale;
+            // Calculate the point on canvas under mouse before zoom
+            const canvasX = (mouseX - state.panX) / oldScale;
+            const canvasY = (mouseY - state.panY) / oldScale;
 
+            // Update scale
             state.scale = newScale;
+
+            // Adjust pan so the same canvas point stays under mouse
+            state.panX = mouseX - canvasX * newScale;
+            state.panY = mouseY - canvasY * newScale;
+
             updateZoomLevel();
         } else {
-            // Pan - FIXED: direction aligned with scroll
-            // Scroll down = move canvas up (see content below)
-            // Scroll right = move canvas left (see content to the right)
+            // Pan - direction aligned with scroll
             state.panX -= e.deltaX * 1.5;
             state.panY -= e.deltaY * 1.5;
         }
@@ -302,17 +307,22 @@ function initCanvas() {
 
     window.zoomIn = function () {
         const oldScale = state.scale;
-        const newScale = Math.min(state.maxScale, state.scale + 0.1);
+        const newScale = Math.min(state.maxScale, oldScale * 1.2);
 
         // Zoom toward center of screen
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
 
-        const scaleChange = newScale - oldScale;
-        state.panX -= centerX * scaleChange / oldScale;
-        state.panY -= centerY * scaleChange / oldScale;
+        // Calculate canvas point at center
+        const canvasX = (centerX - state.panX) / oldScale;
+        const canvasY = (centerY - state.panY) / oldScale;
 
         state.scale = newScale;
+
+        // Keep center point fixed
+        state.panX = centerX - canvasX * newScale;
+        state.panY = centerY - canvasY * newScale;
+
         updateTransform();
         updateZoomLevel();
         updateMinimap();
@@ -320,17 +330,22 @@ function initCanvas() {
 
     window.zoomOut = function () {
         const oldScale = state.scale;
-        const newScale = Math.max(state.minScale, state.scale - 0.1);
+        const newScale = Math.max(state.minScale, oldScale / 1.2);
 
         // Zoom toward center of screen
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
 
-        const scaleChange = newScale - oldScale;
-        state.panX -= centerX * scaleChange / oldScale;
-        state.panY -= centerY * scaleChange / oldScale;
+        // Calculate canvas point at center
+        const canvasX = (centerX - state.panX) / oldScale;
+        const canvasY = (centerY - state.panY) / oldScale;
 
         state.scale = newScale;
+
+        // Keep center point fixed
+        state.panX = centerX - canvasX * newScale;
+        state.panY = centerY - canvasY * newScale;
+
         updateTransform();
         updateZoomLevel();
         updateMinimap();
@@ -420,16 +435,21 @@ function initZoomControls() {
 }
 
 /* ==========================================
-   MINIMAP
+   MINIMAP - Draggable and accurate
    ========================================== */
 function initMinimap() {
     const minimap = document.getElementById('minimap');
+    const viewport = document.getElementById('minimapViewport');
     const markers = minimap?.querySelectorAll('.minimap-marker');
 
     if (!minimap || !markers) return;
 
+    let isDragging = false;
+
+    // Click on markers to navigate
     markers.forEach(marker => {
-        marker.addEventListener('click', () => {
+        marker.addEventListener('click', (e) => {
+            e.stopPropagation();
             const section = marker.dataset.section;
             if (window.navigateToSection) {
                 window.navigateToSection(section);
@@ -437,22 +457,59 @@ function initMinimap() {
         });
     });
 
-    minimap.addEventListener('click', (e) => {
-        if (e.target.classList.contains('minimap-marker')) return;
-
+    // Navigate by clicking on minimap
+    function navigateToMinimapPoint(e) {
         const rect = minimap.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
         const y = (e.clientY - rect.top) / rect.height;
 
-        const targetX = -(x * 4000) + window.innerWidth / 2;
-        const targetY = -(y * 3000) + window.innerHeight / 2;
+        const state = window.canvasState;
+        if (!state) return;
 
-        if (window.canvasState) {
-            window.canvasState.panX = targetX;
-            window.canvasState.panY = targetY;
-            window.updateCanvasTransform?.();
-            window.updateMinimap?.();
-        }
+        // Calculate target pan position
+        const targetX = -(x * 4000 * state.scale) + window.innerWidth / 2;
+        const targetY = -(y * 3000 * state.scale) + window.innerHeight / 2;
+
+        state.panX = targetX;
+        state.panY = targetY;
+        window.updateCanvasTransform?.();
+        window.updateMinimap?.();
+    }
+
+    // Mouse down - start drag
+    minimap.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('minimap-marker')) return;
+        isDragging = true;
+        navigateToMinimapPoint(e);
+    });
+
+    // Mouse move - drag to pan
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        navigateToMinimapPoint(e);
+    });
+
+    // Mouse up - stop drag
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    // Touch support
+    minimap.addEventListener('touchstart', (e) => {
+        if (e.target.classList.contains('minimap-marker')) return;
+        isDragging = true;
+        const touch = e.touches[0];
+        navigateToMinimapPoint(touch);
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        navigateToMinimapPoint(touch);
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+        isDragging = false;
     });
 }
 
@@ -466,14 +523,26 @@ function updateMinimap() {
     const minimapWidth = minimap.offsetWidth;
     const minimapHeight = minimap.offsetHeight;
 
-    const viewportWidth = (window.innerWidth / state.scale) / 4000 * minimapWidth;
-    const viewportHeight = (window.innerHeight / state.scale) / 3000 * minimapHeight;
+    // Canvas dimensions
+    const canvasWidth = 4000;
+    const canvasHeight = 3000;
 
-    const viewportX = (-state.panX / state.scale) / 4000 * minimapWidth;
-    const viewportY = (-state.panY / state.scale) / 3000 * minimapHeight;
+    // Calculate viewport size based on visible area
+    const visibleWidth = window.innerWidth / state.scale;
+    const visibleHeight = window.innerHeight / state.scale;
 
-    viewport.style.width = viewportWidth + 'px';
-    viewport.style.height = viewportHeight + 'px';
+    const viewportWidth = (visibleWidth / canvasWidth) * minimapWidth;
+    const viewportHeight = (visibleHeight / canvasHeight) * minimapHeight;
+
+    // Calculate viewport position
+    const viewX = -state.panX / state.scale;
+    const viewY = -state.panY / state.scale;
+
+    const viewportX = (viewX / canvasWidth) * minimapWidth;
+    const viewportY = (viewY / canvasHeight) * minimapHeight;
+
+    viewport.style.width = Math.max(10, viewportWidth) + 'px';
+    viewport.style.height = Math.max(10, viewportHeight) + 'px';
     viewport.style.left = viewportX + 'px';
     viewport.style.top = viewportY + 'px';
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -266,25 +266,55 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation - Icon Only -->
     <nav class="navbar">
-        <div class="nav-logo">
-            <span class="logo-symbol">&#9670;</span>
-            <span class="logo-text">TAHA WORK</span>
-        </div>
-        <div class="nav-links">
-            <button class="nav-btn active" data-target="home">Home</button>
-            <button class="nav-btn" data-target="about">About</button>
-            <button class="nav-btn" data-target="projects">Projects</button>
-            <button class="nav-btn" data-target="contact">Contact</button>
-        </div>
-        <div class="nav-right">
-            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                <span class="theme-icon-light">&#9728;</span>
-                <span class="theme-icon-dark">&#9790;</span>
-            </button>
-            <a href="#contact" class="nav-cta">Let's Talk</a>
-        </div>
+        <button class="nav-btn active" data-target="home" title="Home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span class="nav-tooltip">Home</span>
+        </button>
+        <button class="nav-btn" data-target="about" title="About">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="nav-tooltip">About</span>
+        </button>
+        <button class="nav-btn" data-target="projects" title="Projects">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span class="nav-tooltip">Projects</span>
+        </button>
+        <button class="nav-btn" data-target="contact" title="Contact">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span class="nav-tooltip">Contact</span>
+        </button>
+        <div class="nav-divider"></div>
+        <button class="nav-btn theme-toggle" id="themeToggle" title="Toggle theme">
+            <svg class="theme-icon-light" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="theme-icon-dark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span class="nav-tooltip">Theme</span>
+        </button>
     </nav>
 
     <!-- Zoom Controls -->

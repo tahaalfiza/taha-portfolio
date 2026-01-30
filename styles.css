@@ -401,6 +401,9 @@ a {
 /* ==========================================
    LIST VIEW - Block Layout
    ========================================== */
+/* ==========================================
+   LIST VIEW - Block Layout (Same design as canvas)
+   ========================================== */
 .list-view {
     position: fixed;
     inset: 0;
@@ -418,309 +421,557 @@ a {
 
 /* Block Container */
 .block-container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 40px 24px;
+    padding: 100px 32px 60px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
 }
 
 /* Block Rows */
 .block-row {
     display: flex;
-    gap: 16px;
+    gap: 24px;
 }
 
 .block-row-2col > .block {
     flex: 1;
 }
 
-/* Base Block */
-.block {
-    background: #d4d4d4;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.block-inner {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 100%;
-}
-
-.block-inner h2 {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 16px;
-}
-
-/* Home Block */
-.block-home {
-    width: 100%;
-    min-height: 280px;
-}
-
-.block-greeting {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.block-title {
-    font-size: 48px;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1.1;
-    margin-bottom: 8px;
-}
-
-.block-title span {
-    color: var(--accent-secondary);
-}
-
-.block-subtitle {
-    font-size: 18px;
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-}
-
-.block-cta {
-    display: flex;
-    gap: 12px;
-}
-
-.block-btn-primary {
-    padding: 12px 28px;
-    background: var(--accent-primary);
-    color: white;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.block-btn-primary:hover {
-    background: var(--accent-secondary);
-}
-
-.block-btn-secondary {
-    padding: 12px 28px;
-    background: transparent;
-    color: var(--text-primary);
+/* ===== HOME BLOCK - Uses hero-section styling ===== */
+.list-view .block-home {
+    background: var(--bg-card);
+    backdrop-filter: blur(30px);
     border: 1px solid var(--border-light);
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s;
+    border-radius: 24px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 60px 40px;
+    text-align: center;
 }
 
-.block-btn-secondary:hover {
-    background: var(--bg-hover);
+.list-view .block-home .hero-logo {
+    margin: 0 auto 24px;
+    color: var(--text-primary);
 }
 
-/* About Block */
-.block-about {
-    min-height: 280px;
-}
-
-.block-about-photo {
+.list-view .block-home .hero-logo svg {
     width: 80px;
     height: 80px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 16px;
-    background: var(--bg-hover);
 }
 
-.block-about-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.block-about-bio {
-    font-size: 14px;
+.list-view .block-home .hero-greeting {
+    font-size: 18px;
+    font-weight: 400;
     color: var(--text-secondary);
-    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.list-view .block-home .hero-title {
     margin-bottom: 16px;
 }
 
-.block-link {
-    font-size: 14px;
-    font-weight: 600;
+.list-view .block-home .title-line {
+    display: block;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+}
+
+.list-view .block-home .title-line.accent {
     color: var(--accent-primary);
-    text-decoration: underline;
 }
 
-/* Projects Block */
-.block-projects {
-    min-height: 280px;
+.list-view .block-home .hero-subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
 }
 
-.block-projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    width: 100%;
-    margin-top: 8px;
+.list-view .block-home .hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
 }
 
-.block-project-thumb {
-    aspect-ratio: 1;
-    background: var(--bg-hover);
-    border-radius: 8px;
+/* ===== ABOUT BLOCK - Uses about-card-modern styling ===== */
+.list-view .block-about {
+    background: var(--bg-card);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border-light);
+    border-radius: 24px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 40px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list-view .block-about:hover {
+    box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+.list-view .block-about .about-photo-topleft {
+    width: 100px;
+    height: 100px;
+    border-radius: 16px;
     overflow: hidden;
-    cursor: pointer;
+    margin-bottom: 20px;
 }
 
-.block-project-thumb img {
+.list-view .block-about .about-photo-topleft img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
+    filter: grayscale(100%);
+    transition: filter 0.4s ease;
 }
 
-/* Blogs Block */
-.block-blogs {
-    min-height: 300px;
+.list-view .block-about:hover .about-photo-topleft img {
+    filter: grayscale(0%);
 }
 
-.block-blog-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    width: 100%;
+.list-view .block-about .about-bio-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.list-view .block-about .about-cta-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
     margin-top: 16px;
 }
 
-.block-blog-item {
-    background: var(--bg-card);
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
+.list-view .block-about .about-cta-outline:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-primary);
 }
 
-.block-blog-item img {
+/* ===== PROJECTS BLOCK - Uses finder-window styling ===== */
+.list-view .block-projects {
+    background: var(--bg-card);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    overflow: hidden;
+}
+
+.list-view .block-projects .finder-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.list-view .block-projects .finder-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.list-view .block-projects .finder-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.list-view .block-projects .finder-btn.red { background: #ff5f56; }
+.list-view .block-projects .finder-btn.yellow { background: #ffbd2e; }
+.list-view .block-projects .finder-btn.green { background: #27ca40; }
+
+.list-view .block-projects .finder-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.list-view .block-projects .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 20px;
+}
+
+.list-view .block-projects .project-folder {
+    background: var(--bg-hover);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.list-view .block-projects .project-folder:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.list-view .block-projects .project-folder img {
     width: 100%;
     aspect-ratio: 16/10;
     object-fit: cover;
 }
 
-.block-blog-item p {
-    padding: 8px;
-    font-size: 12px;
+.list-view .block-projects .project-folder-name {
+    padding: 12px;
+    font-size: 13px;
     font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* ===== BLOG BLOCK - Uses notes-app-window styling ===== */
+.list-view .block-blogs {
+    background: var(--bg-card);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    overflow: hidden;
+}
+
+.list-view .block-blogs .notes-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.list-view .block-blogs .notes-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.list-view .block-blogs .notes-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.list-view .block-blogs .notes-btn.red { background: #ff5f56; }
+.list-view .block-blogs .notes-btn.yellow { background: #ffbd2e; }
+.list-view .block-blogs .notes-btn.green { background: #27ca40; }
+
+.list-view .block-blogs .notes-title {
+    font-size: 13px;
+    font-weight: 600;
     color: var(--text-primary);
 }
 
-/* Testimonials */
-.block-testimonials-wrapper {
+.list-view .block-blogs .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px;
+}
+
+.list-view .block-blogs .blog-card {
+    background: var(--bg-hover);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.list-view .block-blogs .blog-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.list-view .block-blogs .blog-card img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+}
+
+.list-view .block-blogs .blog-card-content {
+    padding: 12px;
+}
+
+.list-view .block-blogs .blog-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.list-view .block-blogs .blog-card-date {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ===== TESTIMONIALS - Uses sticky-note styling ===== */
+.list-view .block-testimonials-wrapper {
     width: 100%;
 }
 
-.block-testimonials-grid {
+.list-view .block-testimonials-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
 }
 
-.block-testimonial {
-    background: #d4d4d4;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
+.list-view .block-testimonial {
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: rotate(-1deg);
+    transition: transform 0.3s ease;
 }
 
-.block-testimonial p {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
+.list-view .block-testimonial:nth-child(2) {
+    transform: rotate(1deg);
 }
 
-.block-testimonial span {
+.list-view .block-testimonial:nth-child(3) {
+    transform: rotate(-0.5deg);
+}
+
+.list-view .block-testimonial:nth-child(4) {
+    transform: rotate(0.5deg);
+}
+
+.list-view .block-testimonial:nth-child(5) {
+    transform: rotate(-1.5deg);
+}
+
+.list-view .block-testimonial:nth-child(6) {
+    transform: rotate(1.5deg);
+}
+
+.list-view .block-testimonial:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.list-view .block-testimonial.yellow {
+    background: #fff9c4;
+}
+
+.list-view .block-testimonial.pink {
+    background: #fce4ec;
+}
+
+.list-view .block-testimonial.blue {
+    background: #e3f2fd;
+}
+
+.list-view .block-testimonial.green {
+    background: #e8f5e9;
+}
+
+.list-view .block-testimonial.orange {
+    background: #fff3e0;
+}
+
+.list-view .block-testimonial.purple {
+    background: #f3e5f5;
+}
+
+.list-view .block-testimonial p {
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(0,0,0,0.7);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.list-view .block-testimonial .note-author {
     font-size: 12px;
     font-weight: 600;
+    color: rgba(0,0,0,0.5);
+}
+
+/* ===== CONTACT BLOCK - Uses contact-card styling ===== */
+.list-view .block-contact {
+    background: var(--bg-card);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border-light);
+    border-radius: 24px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 40px;
+}
+
+.list-view .block-contact h2 {
+    font-size: 28px;
+    font-weight: 700;
     color: var(--text-primary);
+    margin-bottom: 12px;
 }
 
-/* Contact Block */
-.block-contact {
-    min-height: 240px;
+.list-view .block-contact > p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
 }
 
-.block-contact-links {
+.list-view .block-contact .contact-links {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 16px;
 }
 
-.block-contact-links a {
-    font-size: 14px;
-    color: var(--text-secondary);
+.list-view .block-contact .contact-link {
     display: flex;
     align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.list-view .block-contact .contact-link:hover {
+    color: var(--accent-primary);
+}
+
+.list-view .block-contact .contact-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* ===== FORM BLOCK - Uses hire-form-window styling ===== */
+.list-view .block-form {
+    background: var(--bg-card);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    overflow: hidden;
+}
+
+.list-view .block-form .hire-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.list-view .block-form .hire-buttons {
+    display: flex;
     gap: 8px;
 }
 
-.block-contact-links svg {
-    width: 18px;
-    height: 18px;
+.list-view .block-form .hire-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
 }
 
-/* Form Block */
-.block-form {
-    min-height: 240px;
+.list-view .block-form .hire-btn.red { background: #ff5f56; }
+.list-view .block-form .hire-btn.yellow { background: #ffbd2e; }
+.list-view .block-form .hire-btn.green { background: #27ca40; }
+
+.list-view .block-form .hire-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
-.block-contact-form {
+.list-view .block-form .hire-form-content {
+    padding: 24px;
+}
+
+.list-view .block-form .hire-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.list-view .block-form .hire-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.list-view .block-form .hire-form {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    width: 100%;
-    margin-top: 16px;
 }
 
-.block-contact-form input,
-.block-contact-form textarea {
-    padding: 12px;
-    background: var(--bg-card);
+.list-view .block-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.list-view .block-form .form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.list-view .block-form .form-group input,
+.list-view .block-form .form-group select,
+.list-view .block-form .form-group textarea {
+    padding: 12px 14px;
+    background: var(--bg-hover);
     border: 1px solid var(--border-light);
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 14px;
     color: var(--text-primary);
     font-family: inherit;
+    transition: all var(--transition-fast);
 }
 
-.block-contact-form input:focus,
-.block-contact-form textarea:focus {
+.list-view .block-form .form-group input:focus,
+.list-view .block-form .form-group select:focus,
+.list-view .block-form .form-group textarea:focus {
     outline: none;
     border-color: var(--accent-primary);
+    background: var(--bg-card);
 }
 
-.block-submit-btn {
-    padding: 12px 24px;
+.list-view .block-form .hire-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
     background: var(--accent-primary);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-top: 8px;
 }
 
-.block-submit-btn:hover {
-    background: var(--accent-secondary);
+.list-view .block-form .hire-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.list-view .block-form .hire-submit-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 /* Loading */
 .list-loading {
-    padding: 20px;
+    padding: 40px;
     text-align: center;
     color: var(--text-muted);
     font-size: 14px;
@@ -729,23 +980,48 @@ a {
 /* Mobile Responsive for Block Layout */
 @media (max-width: 768px) {
     .block-container {
-        padding: 24px 16px;
+        padding: 80px 16px 60px;
+        gap: 16px;
+    }
+
+    .block-row {
+        gap: 16px;
     }
 
     .block-row-2col {
         flex-direction: column;
     }
 
-    .block-title {
-        font-size: 36px;
+    .list-view .block-home {
+        padding: 40px 24px;
     }
 
-    .block-testimonials-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .list-view .block-home .title-line {
+        font-size: 40px;
     }
 
-    .block-blog-grid {
+    .list-view .block-testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .list-view .block-blogs .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .list-view .block-projects .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .list-view .block-testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .list-view .block-blogs .blog-grid {
+        grid-template-columns: 1fr;
     }
 }
 

@@ -653,88 +653,73 @@ function initListViewContent() {
 }
 
 function populateListView() {
-    // Populate about section
+    // Populate about section bio
     if (window.aboutInfo) {
         const bioEl = document.getElementById('listAboutBio');
         if (bioEl && window.aboutInfo.shortBio) {
-            bioEl.textContent = window.aboutInfo.shortBio;
+            bioEl.innerHTML = window.aboutInfo.shortBio;
         }
     }
 
-    // Populate projects (show first 4 as thumbnails)
+    // Populate projects (show first 4 with finder-style folders)
     if (window.projectsData && window.projectsData.length > 0) {
         const projectsGrid = document.getElementById('listProjectsGrid');
         if (projectsGrid) {
             const displayProjects = window.projectsData.slice(0, 4);
             projectsGrid.innerHTML = displayProjects.map((project, index) => {
                 const imageUrl = project.images && project.images[0]
-                    ? window.sanityImageUrl?.(project.images[0], 200, 85) || ''
+                    ? window.sanityImageUrl?.(project.images[0], 300, 85) || ''
                     : '';
                 return `
-                    <div class="block-project-thumb" onclick="openProjectOverlay(${index})">
-                        ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : ''}
+                    <div class="project-folder" onclick="openProjectOverlay(${index})">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" loading="lazy">` : '<div style="height:100px;background:var(--bg-hover);"></div>'}
+                        <div class="project-folder-name">${project.title || 'Project'}</div>
                     </div>
                 `;
             }).join('');
         }
     }
 
-    // Populate blog posts (show first 3)
+    // Populate blog posts (show first 3 with notes-style cards)
     if (window.blogPostsData && window.blogPostsData.length > 0) {
         const blogGrid = document.getElementById('listBlogGrid');
+        const blogCount = document.getElementById('listBlogCount');
         if (blogGrid) {
             const displayPosts = window.blogPostsData.slice(0, 3);
             blogGrid.innerHTML = displayPosts.map(post => {
                 const imageUrl = post.mainImage
-                    ? window.sanityImageUrl?.(post.mainImage, 300, 85) || ''
+                    ? window.sanityImageUrl?.(post.mainImage, 400, 85) || ''
                     : '';
                 const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+                const dateStr = post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
                 return `
-                    <a href="${blogUrl}" class="block-blog-item" target="_blank">
-                        ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" loading="lazy">` : ''}
-                        <p>${post.title}</p>
+                    <a href="${blogUrl}" class="blog-card" target="_blank">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" loading="lazy">` : '<div style="height:100px;background:var(--bg-hover);"></div>'}
+                        <div class="blog-card-content">
+                            <div class="blog-card-title">${post.title}</div>
+                            <div class="blog-card-date">${dateStr}</div>
+                        </div>
                     </a>
                 `;
             }).join('');
         }
-    }
-
-    // Populate contact links
-    if (window.contactInfo) {
-        const contactLinksEl = document.getElementById('listContactLinks');
-        if (contactLinksEl) {
-            let linksHtml = '';
-            if (window.contactInfo.email) {
-                linksHtml += `<a href="mailto:${window.contactInfo.email}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
-                    Email
-                </a>`;
-            }
-            if (window.contactInfo.linkedinUrl) {
-                linksHtml += `<a href="${window.contactInfo.linkedinUrl}" target="_blank">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                    LinkedIn
-                </a>`;
-            }
-            contactLinksEl.innerHTML = linksHtml;
+        if (blogCount) {
+            blogCount.textContent = window.blogPostsData.length;
         }
     }
 
-    // Populate testimonials (show first 6)
+    // Populate testimonials (show first 6 with sticky note colors)
     if (window.testimonialsData && window.testimonialsData.length > 0) {
         const testimonialsGrid = document.getElementById('listTestimonialsGrid');
         if (testimonialsGrid) {
+            const colors = ['yellow', 'pink', 'blue', 'green', 'orange', 'purple'];
             const displayTestimonials = window.testimonialsData.slice(0, 6);
             testimonialsGrid.innerHTML = displayTestimonials.map((testimonial, index) => {
+                const color = colors[index % colors.length];
                 return `
-                    <div class="block-testimonial">
+                    <div class="block-testimonial ${color}">
                         <p>"${testimonial.quote || ''}"</p>
-                        <span>- ${testimonial.name || ''}</span>
+                        <span class="note-author">- ${testimonial.name || ''}${testimonial.role ? ', ' + testimonial.role : ''}</span>
                     </div>
                 `;
             }).join('');

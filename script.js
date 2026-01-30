@@ -872,12 +872,18 @@ function populateListView() {
         if (testimonialsGrid) {
             const displayTestimonials = window.testimonialsData.slice(0, 6);
             testimonialsGrid.innerHTML = displayTestimonials.map((testimonial) => {
-                const color = testimonial.color || 'yellow';
+                const color = testimonial.color || '#fef08a'; // Default yellow
                 const authorText = testimonial.role
                     ? `- ${testimonial.author}, ${testimonial.role}`
                     : `- ${testimonial.author}`;
+
+                // Check if color is a hex code or a class name
+                const isHexColor = color.startsWith('#');
+                const stickyClass = isHexColor ? '' : color;
+                const inlineStyle = isHexColor ? `background: ${color}; color: #1a1a1a;` : '';
+
                 return `
-                    <div class="sticky-note ${color}">
+                    <div class="sticky-note ${stickyClass}" style="${inlineStyle}">
                         <p>"${testimonial.quote || ''}"</p>
                         <span class="note-author">${authorText}</span>
                     </div>

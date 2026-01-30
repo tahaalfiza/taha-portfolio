@@ -1249,7 +1249,7 @@ function renderTestimonials(testimonials) {
 
   testimonials.forEach((testimonial, i) => {
     const pos = positions[i % positions.length];
-    const color = testimonial.color || 'yellow';
+    const color = testimonial.color || '#fef08a'; // Default yellow
 
     const note = document.createElement('div');
     note.className = `canvas-section floating-note note-${i + 1} draggable-note`;
@@ -1260,8 +1260,13 @@ function renderTestimonials(testimonials) {
       ? `- ${testimonial.author}, ${testimonial.role}`
       : `- ${testimonial.author}`;
 
+    // Check if color is a hex code or a class name
+    const isHexColor = color.startsWith('#');
+    const stickyClass = isHexColor ? '' : color;
+    const inlineStyle = isHexColor ? `background: ${color}; color: #1a1a1a;` : '';
+
     note.innerHTML = `
-      <div class="sticky-note ${color}">
+      <div class="sticky-note ${stickyClass}" style="${inlineStyle}">
         <p>"${testimonial.quote}"</p>
         <span class="note-author">${authorText}</span>
       </div>

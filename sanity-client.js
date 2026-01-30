@@ -939,38 +939,50 @@ function renderTestimonials(testimonials) {
   });
 }
 
+// Get current canvas scale from transform
+function getCanvasScale() {
+  const canvas = document.getElementById('canvas');
+  if (!canvas) return 1;
+  const transform = window.getComputedStyle(canvas).transform;
+  if (transform === 'none') return 1;
+  const matrix = new DOMMatrix(transform);
+  return matrix.a; // scale factor
+}
+
 // Make a testimonial note draggable
 function makeNoteDraggable(note) {
   let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
+  let startLeft = 0;
+  let startTop = 0;
+  let startMouseX = 0;
+  let startMouseY = 0;
 
   const onMouseDown = (e) => {
     if (e.target.tagName === 'A') return;
     e.preventDefault();
+    e.stopPropagation();
 
     isDragging = true;
     note.classList.add('dragging');
 
-    // Calculate offset from mouse to note's top-left corner
-    const rect = note.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+    // Store starting positions
+    startMouseX = e.clientX;
+    startMouseY = e.clientY;
+    startLeft = note.offsetLeft;
+    startTop = note.offsetTop;
   };
 
   const onMouseMove = (e) => {
     if (!isDragging) return;
 
-    // Get canvas for bounds
-    const canvas = document.getElementById('canvas');
-    const canvasRect = canvas.getBoundingClientRect();
+    const scale = getCanvasScale();
 
-    // Calculate new position relative to canvas
-    const newLeft = e.clientX - canvasRect.left - offsetX;
-    const newTop = e.clientY - canvasRect.top - offsetY;
+    // Calculate delta movement, accounting for zoom scale
+    const deltaX = (e.clientX - startMouseX) / scale;
+    const deltaY = (e.clientY - startMouseY) / scale;
 
-    note.style.left = newLeft + 'px';
-    note.style.top = newTop + 'px';
+    note.style.left = (startLeft + deltaX) + 'px';
+    note.style.top = (startTop + deltaY) + 'px';
   };
 
   const onMouseUp = () => {
@@ -983,14 +995,16 @@ function makeNoteDraggable(note) {
   // Touch handlers
   const onTouchStart = (e) => {
     if (e.target.tagName === 'A') return;
+    e.stopPropagation();
 
     const touch = e.touches[0];
     isDragging = true;
     note.classList.add('dragging');
 
-    const rect = note.getBoundingClientRect();
-    offsetX = touch.clientX - rect.left;
-    offsetY = touch.clientY - rect.top;
+    startMouseX = touch.clientX;
+    startMouseY = touch.clientY;
+    startLeft = note.offsetLeft;
+    startTop = note.offsetTop;
   };
 
   const onTouchMove = (e) => {
@@ -998,14 +1012,14 @@ function makeNoteDraggable(note) {
     e.preventDefault();
 
     const touch = e.touches[0];
-    const canvas = document.getElementById('canvas');
-    const canvasRect = canvas.getBoundingClientRect();
+    const scale = getCanvasScale();
 
-    const newLeft = touch.clientX - canvasRect.left - offsetX;
-    const newTop = touch.clientY - canvasRect.top - offsetY;
+    // Calculate delta movement, accounting for zoom scale
+    const deltaX = (touch.clientX - startMouseX) / scale;
+    const deltaY = (touch.clientY - startMouseY) / scale;
 
-    note.style.left = newLeft + 'px';
-    note.style.top = newTop + 'px';
+    note.style.left = (startLeft + deltaX) + 'px';
+    note.style.top = (startTop + deltaY) + 'px';
   };
 
   const onTouchEnd = () => {

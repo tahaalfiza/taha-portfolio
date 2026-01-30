@@ -458,26 +458,30 @@ function initCanvas() {
 
     window.resetZoom = function () {
         const isMobile = window.innerWidth <= 768;
-        state.scale = isMobile ? 0.6 : 1;
 
-        // Properly center on home section
+        // Center on home section and show it fully
         const homeSection = document.getElementById('section-home');
         if (homeSection) {
-            // Get section position
+            // Get section dimensions
+            const sectionHeight = homeSection.offsetHeight;
+
+            // Calculate scale to fit the home section with padding
+            const viewportHeight = window.innerHeight;
+            const padding = 100; // Extra padding around the card
+            const idealScale = (viewportHeight - padding) / sectionHeight;
+
+            // Clamp scale between reasonable bounds
+            state.scale = isMobile
+                ? Math.min(0.8, Math.max(0.5, idealScale))
+                : Math.min(1.2, Math.max(0.7, idealScale));
+
+            // Get section position (it uses transform: translate(-50%, -50%) so center is at left/top)
             const sectionX = parseFloat(homeSection.style.left) / 100 * 2800;
             const sectionY = parseFloat(homeSection.style.top) / 100 * 2000;
 
-            // Get section dimensions to find center
-            const sectionWidth = homeSection.offsetWidth;
-            const sectionHeight = homeSection.offsetHeight;
-
-            // Calculate the center of the section
-            const centerX = sectionX + sectionWidth / 2;
-            const centerY = sectionY + sectionHeight / 2;
-
             // Calculate pan to center section on screen
-            state.panX = -centerX * state.scale + window.innerWidth / 2;
-            state.panY = -centerY * state.scale + window.innerHeight / 2;
+            state.panX = -sectionX * state.scale + window.innerWidth / 2;
+            state.panY = -sectionY * state.scale + window.innerHeight / 2;
         }
 
         updateTransform();

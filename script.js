@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initZoomControls();
     initMinimap();
-    initParticles();
 });
 
 /* ==========================================
@@ -251,11 +250,13 @@ function initCanvas() {
         const section = document.getElementById(`section-${sectionId}`);
         if (!section) return;
 
+        // Get section position in canvas coordinates
         const sectionX = parseFloat(section.style.left) / 100 * 4000;
         const sectionY = parseFloat(section.style.top) / 100 * 3000;
 
-        const targetX = -sectionX + window.innerWidth / 2;
-        const targetY = -sectionY + window.innerHeight / 2;
+        // Calculate pan to center section on screen (accounting for scale)
+        const targetX = -sectionX * state.scale + window.innerWidth / 2;
+        const targetY = -sectionY * state.scale + window.innerHeight / 2;
 
         animateToPosition(targetX, targetY);
     };

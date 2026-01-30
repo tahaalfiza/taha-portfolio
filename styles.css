@@ -55,6 +55,20 @@ body {
     color: var(--text-primary);
     cursor: none;
     transition: background 0.3s ease, color 0.3s ease;
+    /* Crisp rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Keep canvas content crisp at any zoom */
+.canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+svg {
+    shape-rendering: geometricPrecision;
 }
 
 a {
@@ -499,8 +513,10 @@ a {
 }
 
 .hero-logo svg {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
+    /* Keep SVG crisp at any zoom */
+    shape-rendering: geometricPrecision;
 }
 
 .hero-title {

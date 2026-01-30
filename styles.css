@@ -447,12 +447,53 @@ a {
 .list-view .hero-section {
     min-width: 280px;
     max-width: 280px;
+    padding: 32px;
+}
+
+.list-view .hero-section .hero-logo svg {
+    width: 80px;
+    height: 80px;
+}
+
+.list-view .hero-section .hero-greeting {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.list-view .hero-section .title-line {
+    font-size: 48px;
+}
+
+.list-view .hero-section .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.list-view .hero-section .hero-cta {
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list-view .hero-section .hero-cta .btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 24px;
+}
+
+.list-view .hero-section .scroll-indicator {
+    display: none;
 }
 
 /* About Card in block view */
 .list-view .about-card-modern {
     max-width: 320px;
     width: 100%;
+}
+
+.list-view .about-card-modern .about-photo-topleft {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
 }
 
 /* Finder Window in block view */

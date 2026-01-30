@@ -4455,3 +4455,124 @@ a {
         border-radius: 12px;
     }
 }
+
+/* ==========================================
+   TOUCH DEVICE - Disable hover effects
+   ========================================== */
+@media (hover: none) and (pointer: coarse) {
+    /* Disable all hover transforms and effects on touch devices */
+    .nav-btn:hover,
+    .zoom-btn:hover,
+    .canvas-section:hover,
+    .section-content:hover,
+    .btn-primary:hover,
+    .btn-ghost:hover,
+    .about-card-modern:hover,
+    .about-modern:hover,
+    .about-cta-inline:hover,
+    .about-cta-outline:hover,
+    .download-cv-btn:hover,
+    .skill-tag:hover,
+    .exp-card-expand:hover,
+    .experience-item:hover,
+    .note-item:hover,
+    .blog-open-btn:hover,
+    .notes-read-more:hover,
+    .sidebar-item:hover,
+    .mac-folder:hover,
+    .career-item:hover,
+    .floating-note:hover,
+    .contact-link:hover,
+    .hire-submit-btn:hover,
+    .overlay-open-page:hover,
+    .overlay-close:hover,
+    .tool-tag:hover,
+    .gallery-image:hover,
+    .more-project-card:hover,
+    .flag-item:hover,
+    .flag-inline:hover {
+        transform: none !important;
+        background: inherit;
+    }
+
+    /* Reset specific hover background colors */
+    .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .zoom-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .note-item:hover {
+        background: transparent;
+    }
+
+    .sidebar-item:hover {
+        background: transparent;
+    }
+
+    .experience-item:hover {
+        background: transparent;
+    }
+
+    .career-item:hover {
+        background: transparent;
+        transform: none;
+    }
+
+    /* Disable folder popup images on hover */
+    .mac-folder:hover .popup-img {
+        opacity: 0 !important;
+        transform: none !important;
+    }
+
+    /* Disable image zoom on hover */
+    .gallery-image:hover img,
+    .more-project-card:hover .more-project-image img,
+    .exp-card-images img:hover {
+        transform: none !important;
+    }
+
+    /* Disable tooltip on hover */
+    .nav-btn:hover .nav-tooltip {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    /* Disable sticky note hover */
+    .testimonials-grid-block .sticky-note:hover {
+        transform: none !important;
+    }
+
+    /* Disable about photo hover effects */
+    .about-card-modern:hover .about-photo-topleft img,
+    .about-modern:hover .about-photo-modern img {
+        transform: none !important;
+    }
+
+    /* Ensure tap targets are properly sized */
+    .nav-btn,
+    .zoom-btn,
+    .btn-primary,
+    .btn-ghost,
+    .mac-folder,
+    .note-item,
+    .sidebar-item,
+    .contact-link {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Add active states for touch feedback */
+    .nav-btn:active,
+    .zoom-btn:active,
+    .btn-primary:active,
+    .btn-ghost:active,
+    .mac-folder:active,
+    .note-item:active,
+    .sidebar-item:active {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
+}

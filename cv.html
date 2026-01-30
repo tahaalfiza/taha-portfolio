@@ -433,11 +433,11 @@
                 about: `*[_type == "aboutInfo"][0] {
                     name, title, location, bio, email, phone, linkedin, website
                 }`,
-                experience: `*[_type == "workExperience"] | order(startDate desc) {
-                    _id, company, role, location, startDate, endDate, current, description, highlights
+                experience: `*[_type == "workExperience"] | order(startYear desc) {
+                    _id, company, role, location, startYear, endYear, startDate, endDate, isCurrent, description, achievements
                 }`,
-                education: `*[_type == "education"] | order(startDate desc) {
-                    _id, institution, degree, field, startDate, endDate, description
+                education: `*[_type == "education"] | order(startYear desc) {
+                    _id, institution, degree, field, location, startYear, endYear, startDate, endDate, description
                 }`,
                 contact: `*[_type == "contactInfo"][0] {
                     email, phone, linkedin, location
@@ -524,23 +524,29 @@
                 ${experience.length > 0 ? `
                 <section class="cv-section">
                     <h2 class="cv-section-title">Professional Experience</h2>
-                    ${experience.map(job => `
+                    ${experience.map(job => {
+                        // Handle date display - prefer display dates, fallback to years
+                        const startDisplay = job.startDate || (job.startYear ? job.startYear.toString() : '');
+                        const endDisplay = job.isCurrent ? 'Present' : (job.endDate || (job.endYear ? job.endYear.toString() : ''));
+                        const dateRange = startDisplay && endDisplay ? `${startDisplay} - ${endDisplay}` : (startDisplay || endDisplay || '');
+
+                        return `
                         <div class="cv-item">
                             <div class="cv-item-header">
                                 <span class="cv-item-title">${job.role || 'Role'}</span>
-                                <span class="cv-item-date">${formatDate(job.startDate)} - ${job.current ? 'Present' : formatDate(job.endDate)}</span>
+                                <span class="cv-item-date">${dateRange}</span>
                             </div>
                             <div class="cv-item-subtitle">${job.company || 'Company'}${job.location ? `, ${job.location}` : ''}</div>
                             ${job.description ? `<div class="cv-item-description">${job.description}</div>` : ''}
-                            ${job.highlights && job.highlights.length > 0 ? `
+                            ${job.achievements && job.achievements.length > 0 ? `
                                 <div class="cv-item-description">
                                     <ul>
-                                        ${job.highlights.map(h => `<li>${h}</li>`).join('')}
+                                        ${job.achievements.map(a => `<li>${a}</li>`).join('')}
                                     </ul>
                                 </div>
                             ` : ''}
                         </div>
-                    `).join('')}
+                    `}).join('')}
                 </section>
                 ` : ''}
 
@@ -559,16 +565,22 @@
                 ${education.length > 0 ? `
                 <section class="cv-section">
                     <h2 class="cv-section-title">Education</h2>
-                    ${education.map(edu => `
+                    ${education.map(edu => {
+                        // Handle date display - prefer display dates, fallback to years
+                        const startDisplay = edu.startDate || (edu.startYear ? edu.startYear.toString() : '');
+                        const endDisplay = edu.endDate || (edu.endYear ? edu.endYear.toString() : '');
+                        const dateRange = startDisplay && endDisplay ? `${startDisplay} - ${endDisplay}` : (startDisplay || endDisplay || '');
+
+                        return `
                         <div class="cv-item cv-education-item">
                             <div class="cv-item-header">
                                 <span class="cv-item-title">${edu.degree || 'Degree'}${edu.field ? ` in ${edu.field}` : ''}</span>
-                                <span class="cv-item-date">${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}</span>
+                                <span class="cv-item-date">${dateRange}</span>
                             </div>
-                            <div class="cv-item-subtitle">${edu.institution || 'Institution'}</div>
+                            <div class="cv-item-subtitle">${edu.institution || 'Institution'}${edu.location ? `, ${edu.location}` : ''}</div>
                             ${edu.description ? `<div class="cv-item-description">${edu.description}</div>` : ''}
                         </div>
-                    `).join('')}
+                    `}).join('')}
                 </section>
                 ` : ''}
             `;

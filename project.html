@@ -34,33 +34,29 @@
             background: var(--bg-primary);
         }
 
-        .project-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-light);
-        }
-
         .back-link {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 1000;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
             color: var(--text-secondary);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s ease;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .back-link:hover {
             color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: translateX(-2px);
         }
 
         .back-link svg {
@@ -71,7 +67,7 @@
         .project-page-content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 120px 40px 80px;
+            padding: 80px 40px 80px;
         }
 
         .project-header {
@@ -227,32 +223,13 @@
     </style>
 </head>
 <body class="project-page">
-    <!-- Navigation -->
-    <nav class="project-nav">
-        <a href="/" class="back-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            Back to Portfolio
-        </a>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-        </button>
-    </nav>
+    <!-- Back Button -->
+    <a href="#" onclick="history.back(); return false;" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
 
     <!-- Project Content -->
     <main class="project-page-content" id="projectContent">

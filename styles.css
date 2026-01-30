@@ -1829,9 +1829,9 @@ a {
     background: #f5f5f7;
     border-radius: 12px;
     border: 1px solid #d1d1d6;
-    overflow: hidden;
-    min-width: 680px;
-    max-width: 800px;
+    overflow: visible;
+    min-width: 850px;
+    max-width: 950px;
 }
 
 /* Finder Title Bar */
@@ -1891,8 +1891,9 @@ a {
 /* Finder Body */
 .finder-body {
     display: flex;
-    min-height: 400px;
-    max-height: 500px;
+    min-height: 480px;
+    max-height: 600px;
+    overflow: visible;
 }
 
 /* Finder Sidebar */
@@ -1962,7 +1963,8 @@ a {
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
+    border-radius: 0 0 12px 0;
 }
 
 .finder-toolbar {
@@ -2001,9 +2003,9 @@ a {
 .folders-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px 30px;
-    padding: 24px;
-    overflow-y: auto;
+    gap: 50px 40px;
+    padding: 40px 30px 60px;
+    overflow: visible;
     flex: 1;
     align-content: start;
 }

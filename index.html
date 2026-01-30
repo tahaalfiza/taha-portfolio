@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Taha Work - UX Design Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader">
+            <div class="loader-icon">&#9670;</div>
+            <p>LOADING CANVAS.</p>
+        </div>
+    </div>
+
+    <!-- Infinite Canvas -->
+    <div class="canvas-container" id="canvasContainer">
+        <div class="canvas" id="canvas">
+            <!-- Background Grid -->
+            <div class="canvas-grid"></div>
+
+            <!-- Floating Particles -->
+            <div class="particles" id="particles"></div>
+
+            <!-- ==================== HOME SECTION ==================== -->
+            <div class="canvas-section home" id="section-home" style="left: 50%; top: 30%; transform: translate(-50%, -50%);">
+                <div class="section-content hero-section">
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        Available for work
+                    </div>
+
+                    <div class="hero-icon draggable" data-drag="true">
+                        <span>&#9670;</span>
+                        <small class="drag-label">drag me!</small>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="title-line">Taha</span>
+                        <span class="title-line accent">Work</span>
+                    </h1>
+
+                    <p class="hero-subtitle">UX Designer & Creative Problem Solver</p>
+
+                    <div class="hero-tagline">
+                        <span class="tagline-text">The world is your canvas.</span>
+                    </div>
+
+                    <div class="hero-cta">
+                        <a href="#" class="btn btn-primary">View Projects</a>
+                        <a href="#" class="btn btn-ghost">Download Resume</a>
+                    </div>
+
+                    <div class="scroll-indicator">
+                        <span>&#8595;</span>
+                        <small>Scroll or drag to explore</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== ABOUT SECTION ==================== -->
+            <div class="canvas-section about" id="section-about" style="left: 15%; top: 55%;">
+                <div class="section-content about-section">
+                    <div class="section-label">
+                        <span class="label-number">01</span>
+                        <span class="label-text">ABOUT</span>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="about-photo">
+                            <div class="photo-placeholder">
+                                <span>Your Photo</span>
+                            </div>
+                            <div class="photo-frame"></div>
+                        </div>
+
+                        <div class="about-info">
+                            <h2>Hello, I'm Taha</h2>
+                            <p class="about-bio">
+                                I'm a UX Designer passionate about creating
+                                intuitive digital experiences that make
+                                people's lives easier and more enjoyable.
+                            </p>
+                            <div class="about-stats">
+                                <div class="stat">
+                                    <span class="stat-number">3+</span>
+                                    <span class="stat-label">Years Exp</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">20+</span>
+                                    <span class="stat-label">Projects</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">15+</span>
+                                    <span class="stat-label">Clients</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skills-cloud">
+                        <span class="skill-tag">Figma</span>
+                        <span class="skill-tag">UI Design</span>
+                        <span class="skill-tag">Prototyping</span>
+                        <span class="skill-tag">User Research</span>
+                        <span class="skill-tag">Design Systems</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== PROJECTS SECTION ==================== -->
+            <div class="canvas-section projects" id="section-projects" style="left: 75%; top: 45%;">
+                <div class="section-content projects-section">
+                    <div class="section-label">
+                        <span class="label-number">02</span>
+                        <span class="label-text">PROJECTS</span>
+                    </div>
+
+                    <div class="projects-grid">
+                        <div class="project-card" data-tilt>
+                            <div class="project-image color-1">
+                                <div class="project-overlay">
+                                    <span>View Project &#8599;</span>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>Project Alpha</h3>
+                                <p>Mobile App Design</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card" data-tilt>
+                            <div class="project-image color-2">
+                                <div class="project-overlay">
+                                    <span>View Project &#8599;</span>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>Dream Line</h3>
+                                <p>Web Platform</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card" data-tilt>
+                            <div class="project-image color-3">
+                                <div class="project-overlay">
+                                    <span>View Project &#8599;</span>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>Torus</h3>
+                                <p>Dashboard Design</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="see-all-link">See all projects &#8594;</a>
+                </div>
+            </div>
+
+            <!-- ==================== EXPERIENCE SECTION ==================== -->
+            <div class="canvas-section experience" id="section-experience" style="left: 25%; top: 80%;">
+                <div class="section-content experience-section">
+                    <div class="section-label">
+                        <span class="label-number">03</span>
+                        <span class="label-text">EXPERIENCE</span>
+                    </div>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-date">2024 - Present</span>
+                                <h3>UX Designer</h3>
+                                <p>@ Company Name</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-date">2023 - 2024</span>
+                                <h3>UI/UX Intern</h3>
+                                <p>@ Previous Company</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-date">2022 - 2023</span>
+                                <h3>Freelance Designer</h3>
+                                <p>@ Self Employed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== TESTIMONIALS (Floating Notes) ==================== -->
+            <div class="canvas-section floating-note note-1" style="left: 45%; top: 60%;">
+                <div class="sticky-note yellow">
+                    <p>"Amazing work ethic and creative solutions!"</p>
+                    <span class="note-author">- Alex, Manager</span>
+                </div>
+            </div>
+
+            <div class="canvas-section floating-note note-2" style="left: 60%; top: 70%;">
+                <div class="sticky-note pink">
+                    <p>"A true UX rockstar. Highly recommend!"</p>
+                    <span class="note-author">- Sarah, Designer</span>
+                </div>
+            </div>
+
+            <div class="canvas-section floating-note note-3" style="left: 85%; top: 25%;">
+                <div class="sticky-note blue">
+                    <p>"Exceptional attention to detail."</p>
+                    <span class="note-author">- Mike, Developer</span>
+                </div>
+            </div>
+
+            <!-- ==================== CONTACT SECTION ==================== -->
+            <div class="canvas-section contact" id="section-contact" style="left: 65%; top: 85%;">
+                <div class="section-content contact-section">
+                    <div class="section-label">
+                        <span class="label-number">04</span>
+                        <span class="label-text">CONTACT</span>
+                    </div>
+
+                    <div class="contact-card">
+                        <h2>Let's Create Something Amazing</h2>
+                        <p>I'm always open to discussing new projects and opportunities.</p>
+
+                        <div class="contact-links">
+                            <a href="mailto:your.email@gmail.com" class="contact-link">
+                                <span class="contact-icon">&#9993;</span>
+                                <span>your.email@gmail.com</span>
+                            </a>
+                            <a href="#" class="contact-link">
+                                <span class="contact-icon">&#128101;</span>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="#" class="contact-link">
+                                <span class="contact-icon">&#128247;</span>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#" class="contact-link">
+                                <span class="contact-icon">&#128187;</span>
+                                <span>GitHub</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== DECORATIVE ELEMENTS ==================== -->
+            <div class="deco-element circle-1" style="left: 10%; top: 20%;"></div>
+            <div class="deco-element circle-2" style="left: 90%; top: 60%;"></div>
+            <div class="deco-element line-1" style="left: 5%; top: 40%;"></div>
+            <div class="deco-element dots-1" style="left: 95%; top: 30%;"></div>
+            <div class="deco-element square-1" style="left: 8%; top: 75%;"></div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <span class="logo-symbol">&#9670;</span>
+            <span class="logo-text">TAHA WORK</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-target="home">Home</button>
+            <button class="nav-btn" data-target="about">About</button>
+            <button class="nav-btn" data-target="projects">Projects</button>
+            <button class="nav-btn" data-target="contact">Contact</button>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                <span class="theme-icon-light">&#9728;</span>
+                <span class="theme-icon-dark">&#9790;</span>
+            </button>
+            <a href="#contact" class="nav-cta">Let's Talk</a>
+        </div>
+    </nav>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomOut">-</button>
+        <button class="zoom-btn reset" id="zoomReset">&#8634;</button>
+    </div>
+
+    <!-- Mini Map -->
+    <div class="minimap" id="minimap">
+        <div class="minimap-viewport" id="minimapViewport"></div>
+        <div class="minimap-marker" data-section="home" style="left: 50%; top: 30%;"></div>
+        <div class="minimap-marker" data-section="about" style="left: 20%; top: 50%;"></div>
+        <div class="minimap-marker" data-section="projects" style="left: 80%; top: 50%;"></div>
+        <div class="minimap-marker" data-section="experience" style="left: 30%; top: 70%;"></div>
+        <div class="minimap-marker" data-section="contact" style="left: 70%; top: 80%;"></div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="custom-cursor" id="cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

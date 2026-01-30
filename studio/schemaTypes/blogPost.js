@@ -18,7 +18,7 @@ export default {
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
-      description: 'Click "Generate" to create from title. Full URL: blog.html?slug=[this-value]',
+      description: 'Click "Generate" to create from title, or enter custom. Full URL: /blogs/[this-value]',
     },
     {
       name: 'publishedAt',

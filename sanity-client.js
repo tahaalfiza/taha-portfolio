@@ -344,8 +344,8 @@ function selectBlogPost(postId) {
   // Convert Sanity block content to HTML
   const contentHtml = renderBlockContent(post.content);
 
-  // Build URL for single blog page
-  const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+  // Build URL for single blog page (clean URL format)
+  const blogUrl = post.slug?.current ? `/blogs/${post.slug.current}` : '#';
 
   previewEl.innerHTML = `
     <div class="notes-preview-toolbar">
@@ -709,10 +709,10 @@ function openProjectOverlay(projectIndex) {
     overlayContainer.style.background = ''; // Reset to default CSS
   }
 
-  // Set the "Open in new page" link
+  // Set the "Open in new page" link (clean URL format)
   const openPageLink = document.getElementById('overlayOpenPage');
   const slug = project.slug?.current || generateSlug(project.title);
-  openPageLink.href = `/project.html?slug=${slug}`;
+  openPageLink.href = `/projects/${slug}`;
 
   // Populate overlay content
   document.getElementById('overlayTitle').textContent = project.title || '';

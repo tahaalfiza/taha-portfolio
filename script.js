@@ -10,7 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initZoomControls();
     initMinimap();
+    checkViewFromUrl();
 });
+
+/* ==========================================
+   CHECK URL FOR VIEW PARAMETER
+   ========================================== */
+function checkViewFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get('view');
+
+    if (view === 'list') {
+        // Switch to list view after a small delay (after canvas init)
+        setTimeout(() => {
+            const viewToggle = document.getElementById('viewToggle');
+            if (viewToggle) {
+                viewToggle.click();
+            }
+        }, 100);
+    }
+    // 'canvas' is the default view, no action needed
+}
 
 /* ==========================================
    LOADING SCREEN WITH PROGRESS
@@ -645,6 +665,8 @@ function initZoomControls() {
                 navbar?.style.setProperty('display', 'flex');
                 viewToggle.classList.remove('active');
                 document.body.style.overflow = 'hidden';
+                // Update URL to clean URL format
+                history.pushState({}, '', '/view_1/');
             } else {
                 // Switch to list view
                 listView.classList.add('active');
@@ -656,6 +678,8 @@ function initZoomControls() {
                 document.body.style.overflow = 'auto';
                 // Load list view content if not already loaded
                 initListViewContent();
+                // Update URL to clean URL format
+                history.pushState({}, '', '/view_2/');
             }
         });
     }
@@ -1034,8 +1058,8 @@ window.selectListBlogPost = function(postId) {
         // Convert Sanity block content to HTML (same as canvas)
         const contentHtml = window.renderBlockContentForList ? window.renderBlockContentForList(post.content) : `<p>${post.excerpt || 'No content available.'}</p>`;
 
-        // Build URL for single blog page
-        const blogUrl = post.slug?.current ? `blog.html?slug=${post.slug.current}` : '#';
+        // Build URL for single blog page (clean URL format)
+        const blogUrl = post.slug?.current ? `/blogs/${post.slug.current}` : '#';
 
         preview.innerHTML = `
             <div class="notes-preview-toolbar">

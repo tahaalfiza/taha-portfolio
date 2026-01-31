@@ -1832,7 +1832,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initDragToScroll() {
-  const scrollableAreas = document.querySelectorAll('.notes-items, .notes-preview-content');
+  const scrollableAreas = document.querySelectorAll('.notes-items, .notes-preview-content, .folders-grid');
 
   scrollableAreas.forEach(el => {
     let isDragging = false;
@@ -1844,8 +1844,8 @@ function initDragToScroll() {
 
     // Mouse events
     el.addEventListener('mousedown', (e) => {
-      // Don't start drag on links or buttons
-      if (e.target.closest('a, button')) return;
+      // Don't start drag on links, buttons, or clickable folders
+      if (e.target.closest('a, button, .mac-folder')) return;
 
       isDragging = true;
       startY = e.clientY;
@@ -1875,7 +1875,7 @@ function initDragToScroll() {
 
     // Touch events for mobile
     el.addEventListener('touchstart', (e) => {
-      if (e.target.closest('a, button')) return;
+      if (e.target.closest('a, button, .mac-folder')) return;
 
       isDragging = true;
       startY = e.touches[0].clientY;

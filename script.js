@@ -346,6 +346,23 @@ function initCanvas() {
 
     // Improved zoom and scroll handling
     function handleWheel(e) {
+        // Check if scrolling inside a scrollable area (notes, folders grid)
+        const scrollableArea = e.target.closest('.notes-items, .notes-preview-content, .folders-grid');
+        if (scrollableArea) {
+            // Let the scrollable area handle the scroll
+            // Only prevent default if we're at scroll boundaries and should pan instead
+            const atTop = scrollableArea.scrollTop === 0;
+            const atBottom = scrollableArea.scrollTop + scrollableArea.clientHeight >= scrollableArea.scrollHeight - 1;
+
+            // If scrolling up at top, or scrolling down at bottom, let canvas pan
+            if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+                // At boundary, allow canvas to pan
+            } else {
+                // Inside scroll range, don't pan canvas
+                return;
+            }
+        }
+
         e.preventDefault();
 
         if (e.ctrlKey || e.metaKey) {

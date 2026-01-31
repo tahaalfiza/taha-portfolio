@@ -461,15 +461,22 @@
             /* Hide entire navbar on mobile, show floating share button */
             .project-nav {
                 display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                height: 0 !important;
+                overflow: hidden !important;
             }
 
             .project-page-content {
-                padding-top: 40px !important;
+                padding-top: 24px !important;
             }
 
             /* Floating share button on mobile */
             .mobile-share-btn {
                 display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
         }
     </style>

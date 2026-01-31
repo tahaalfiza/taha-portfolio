@@ -771,6 +771,13 @@ a {
     animation: stageSlideIn 0.4s ease;
 }
 
+/* No background container for hire section */
+.stage-content.no-bg {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
 @keyframes stageSlideIn {
     from {
         opacity: 0;

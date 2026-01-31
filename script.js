@@ -990,6 +990,13 @@ function setActiveStageSection(section) {
 
     currentStageSection = section;
 
+    // Remove background for hire section, add it back for others
+    if (section === 'hire') {
+        stageContent.classList.add('no-bg');
+    } else {
+        stageContent.classList.remove('no-bg');
+    }
+
     // Generate content based on section
     let content = '';
 

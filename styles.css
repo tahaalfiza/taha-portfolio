@@ -1216,14 +1216,15 @@ a {
         width: 100%;
         min-width: 100%;
         height: auto;
-        max-height: 100px;
+        max-height: 70px;
         flex-direction: row;
-        padding: 12px 12px 20px; /* More padding at bottom for safe area */
-        padding-bottom: max(20px, env(safe-area-inset-bottom)); /* iOS safe area */
-        gap: 8px;
+        padding: 8px 16px;
+        padding-bottom: max(8px, env(safe-area-inset-bottom)); /* iOS safe area */
+        gap: 6px;
         overflow-x: auto;
         overflow-y: hidden;
         justify-content: flex-start;
+        align-items: center;
         border-right: none;
         border-bottom: none;
         border-top: 1px solid var(--border-light); /* Border on top instead */
@@ -1239,39 +1240,47 @@ a {
     }
 
     .stage-thumb {
-        min-width: 70px;
+        min-width: auto;
         flex-shrink: 0;
+        gap: 4px;
     }
 
     .thumb-preview {
-        width: 60px;
-        height: 45px;
+        width: 44px;
+        height: 32px;
+        border-radius: 6px;
     }
 
     .thumb-label {
-        font-size: 8px;
+        font-size: 9px;
+        max-width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .thumb-icon-badge {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
+        top: -4px;
+        right: -4px;
     }
 
     .thumb-icon-badge svg {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
     }
 
     .stage-main {
-        padding: 16px;
-        padding-top: 70px; /* Space for top navbar */
+        padding: 12px;
+        padding-top: 60px; /* Space for top navbar */
         flex: 1;
         min-height: 0;
     }
 
     .stage-content {
-        border-radius: 16px;
-        max-height: calc(100vh - 180px);
+        border-radius: 12px;
+        max-height: calc(100vh - 140px);
     }
 
     .stage-content-inner {
@@ -1413,8 +1422,8 @@ a {
 /* Stage View Scroll to Start Button - for sidebar horizontal scroll */
 .stage-scroll-start {
     position: fixed;
-    bottom: 110px; /* Position above the bottom sidebar */
-    bottom: calc(110px + env(safe-area-inset-bottom)); /* iOS safe area */
+    bottom: 80px; /* Position above the bottom sidebar */
+    bottom: calc(80px + env(safe-area-inset-bottom)); /* iOS safe area */
     left: 12px;
     width: 28px;
     height: 28px;

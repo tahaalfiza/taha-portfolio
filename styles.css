@@ -4771,24 +4771,25 @@ a {
         cursor: grabbing;
     }
 
-    /* Navigation - Bottom bar optimized for thumb - BIGGER for mobile */
+    /* Navigation - Floating bottom bar for mobile */
     .navbar {
-        padding: 16px 24px;
-        gap: 16px;
-        bottom: 24px;
-        border-radius: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: calc(100% - 48px);
-        background: rgba(255, 255, 255, 0.85) !important;
+        position: fixed !important;
+        bottom: 24px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 9999 !important;
+        padding: 12px 32px !important;
+        gap: 40px !important;
+        border-radius: 24px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(0, 0, 0, 0.1) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
     }
 
     [data-theme="dark"] .navbar {
-        background: rgba(30, 30, 30, 0.85) !important;
+        background: rgba(30, 30, 30, 0.95) !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
@@ -4800,19 +4801,37 @@ a {
         display: none !important;
     }
 
+    /* Nav buttons with labels */
     .nav-btn {
-        width: 70px;
-        height: 70px;
-        border-radius: 20px;
+        width: auto !important;
+        height: auto !important;
+        padding: 8px 0 !important;
+        border-radius: 12px !important;
+        flex-direction: column !important;
+        gap: 4px !important;
+        background: transparent !important;
     }
 
     .nav-btn svg {
-        width: 32px;
-        height: 32px;
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    /* Show labels on mobile */
+    .nav-btn::after {
+        content: attr(data-target);
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: capitalize;
+        color: var(--text-secondary);
+    }
+
+    .nav-btn.active::after {
+        color: var(--text-primary);
     }
 
     .nav-tooltip {
-        display: none;
+        display: none !important;
     }
 
     /* Zoom controls - Compact for mobile */
@@ -4874,9 +4893,9 @@ a {
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
         max-height: none !important;
-        height: calc(100vh - 140px) !important;
+        height: 100vh !important;
         border-radius: 0 !important;
-        background: transparent !important;
+        background: var(--bg-primary) !important;
         box-shadow: none !important;
     }
 
@@ -4885,8 +4904,8 @@ a {
         overflow-x: hidden !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
-        height: calc(100vh - 140px) !important;
-        padding-bottom: 150px !important;
+        height: 100vh !important;
+        padding-bottom: 120px !important;
         touch-action: pan-y !important;
     }
 

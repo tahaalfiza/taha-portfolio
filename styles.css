@@ -5219,13 +5219,6 @@ a {
     background: var(--bg-hover);
     border: 1px solid var(--border-light);
     border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.tool-tag:hover {
-    background: var(--accent-primary);
-    border-color: var(--accent-primary);
-    color: white;
 }
 
 .overlay-gallery {

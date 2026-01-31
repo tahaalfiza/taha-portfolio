@@ -638,12 +638,21 @@ a {
     width: 300px;
     min-width: 300px;
     height: 100%;
-    padding: 100px 100px 40px 40px;
+    padding: 100px 140px 40px 40px;
     display: flex;
     flex-direction: column;
     gap: 24px;
     overflow-y: auto;
+    overflow-x: visible;
     background: transparent;
+    /* Hide scrollbar but keep scroll functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari */
+.stage-sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 /* Stage Thumb - macOS Stage Manager Style with Mini Preview */

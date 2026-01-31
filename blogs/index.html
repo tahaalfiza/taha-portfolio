@@ -265,9 +265,9 @@
             font-style: italic;
         }
 
-        /* Blog Body - Medium Typography */
+        /* Blog Body - Medium Typography with SF Pro */
         .blog-body {
-            font-family: 'Charter', Georgia, 'Times New Roman', serif;
+            font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
             font-size: 20px;
             line-height: 1.75;
             color: var(--text-primary);
@@ -279,7 +279,7 @@
         }
 
         .blog-body h2 {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 28px;
             font-weight: 700;
             color: var(--text-primary);
@@ -289,13 +289,37 @@
         }
 
         .blog-body h3 {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 22px;
             font-weight: 600;
             color: var(--text-primary);
             margin: 40px 0 16px;
             letter-spacing: -0.3px;
             line-height: 1.4;
+        }
+
+        /* Arabic blog content support */
+        .blog-body[dir="rtl"],
+        .blog-body.rtl,
+        .blog-body[lang="ar"] {
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.9;
+        }
+
+        .blog-body[dir="rtl"] h2,
+        .blog-body[dir="rtl"] h3,
+        .blog-body[lang="ar"] h2,
+        .blog-body[lang="ar"] h3 {
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+        }
+
+        .blog-title[dir="rtl"],
+        .blog-title[lang="ar"] {
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            direction: rtl;
+            text-align: right;
         }
 
         .blog-body figure {

@@ -215,6 +215,7 @@
         }
 
         .project-title {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
             font-size: 48px;
             font-weight: 700;
             color: var(--text-primary);
@@ -224,6 +225,7 @@
         }
 
         .project-description {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
             font-size: 20px;
             color: var(--text-secondary);
             line-height: 1.6;
@@ -478,6 +480,22 @@
                 visibility: visible !important;
                 opacity: 1 !important;
             }
+        }
+
+        /* Arabic support for projects */
+        .project-title[dir="rtl"],
+        .project-title[lang="ar"] {
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .project-description[dir="rtl"],
+        .project-description[lang="ar"] {
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.8;
         }
     </style>
 </head>

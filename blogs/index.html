@@ -6,7 +6,7 @@
     <title>Blog - Taha Alfiza</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Charter:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
     <style>
         /* Override main styles for blog page */
@@ -265,9 +265,9 @@
             font-style: italic;
         }
 
-        /* Blog Body - Medium Typography with SF Pro */
+        /* Blog Body - Medium Typography with SF Pro / Inter */
         .blog-body {
-            font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+            font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
             font-size: 20px;
             line-height: 1.75;
             color: var(--text-primary);
@@ -279,7 +279,7 @@
         }
 
         .blog-body h2 {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
             font-size: 28px;
             font-weight: 700;
             color: var(--text-primary);
@@ -289,7 +289,7 @@
         }
 
         .blog-body h3 {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
             font-size: 22px;
             font-weight: 600;
             color: var(--text-primary);
@@ -298,11 +298,11 @@
             line-height: 1.4;
         }
 
-        /* Arabic blog content support */
+        /* Arabic blog content support - SF Arabic on Apple, Noto Sans Arabic on others */
         .blog-body[dir="rtl"],
         .blog-body.rtl,
         .blog-body[lang="ar"] {
-            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
             direction: rtl;
             text-align: right;
             line-height: 1.9;
@@ -312,14 +312,28 @@
         .blog-body[dir="rtl"] h3,
         .blog-body[lang="ar"] h2,
         .blog-body[lang="ar"] h3 {
-            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
+        }
+
+        .blog-body[dir="rtl"] p,
+        .blog-body[lang="ar"] p {
+            line-height: 2;
+            margin-bottom: 24px;
         }
 
         .blog-title[dir="rtl"],
         .blog-title[lang="ar"] {
-            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', sans-serif;
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
             direction: rtl;
             text-align: right;
+        }
+
+        .blog-subtitle[dir="rtl"],
+        .blog-subtitle[lang="ar"] {
+            font-family: 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.8;
         }
 
         .blog-body figure {
@@ -903,6 +917,26 @@
             return Math.max(1, Math.ceil(wordCount / 200));
         }
 
+        // Detect if text contains Arabic characters
+        function containsArabic(text) {
+            const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+            return arabicRegex.test(text);
+        }
+
+        // Get plain text from block content for language detection
+        function getPlainText(content) {
+            if (!content || !Array.isArray(content)) return '';
+            let text = '';
+            content.forEach(block => {
+                if (block._type === 'block' && block.children) {
+                    block.children.forEach(child => {
+                        if (child.text) text += child.text + ' ';
+                    });
+                }
+            });
+            return text;
+        }
+
         // Render blog post
         function renderBlogPost(post) {
             const contentEl = document.getElementById('blogContent');
@@ -924,14 +958,20 @@
 
             const contentHtml = renderBlockContent(post.content);
 
+            // Detect if content is Arabic
+            const plainText = getPlainText(post.content);
+            const isArabic = containsArabic(post.title) || containsArabic(plainText);
+            const dirAttr = isArabic ? 'dir="rtl" lang="ar"' : '';
+            const titleDirAttr = containsArabic(post.title) ? 'dir="rtl" lang="ar"' : '';
+
             // Get initials for avatar
             const initials = 'TA';
 
             contentEl.innerHTML = `
                 <header class="blog-header">
                     ${post.category ? `<span class="blog-category">${post.category}</span>` : ''}
-                    <h1 class="blog-title">${post.title}</h1>
-                    ${post.excerpt ? `<p class="blog-subtitle">${post.excerpt}</p>` : ''}
+                    <h1 class="blog-title" ${titleDirAttr}>${post.title}</h1>
+                    ${post.excerpt ? `<p class="blog-subtitle" ${containsArabic(post.excerpt) ? 'dir="rtl" lang="ar"' : ''}>${post.excerpt}</p>` : ''}
                 </header>
 
                 <div class="blog-author">
@@ -948,7 +988,7 @@
 
                 ${featuredImageHtml}
 
-                <article class="blog-body">
+                <article class="blog-body" ${dirAttr}>
                     ${contentHtml}
                 </article>
 

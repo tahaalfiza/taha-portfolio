@@ -1170,16 +1170,14 @@ a {
     overflow: hidden;
 }
 
+/* Stage View folders grid - compact layout with scroll */
 .stage-view .stage-projects .folders-grid {
     height: 100%;
     overflow-y: auto;
-}
-
-/* Stage View folders grid - more compact layout for desktop */
-.stage-view .stage-projects .folders-grid {
+    overflow-x: hidden;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 40px 30px;
-    padding: 40px 30px 60px;
+    padding: 40px 30px 80px;
 }
 
 .stage-view .stage-projects .folder-wrapper {

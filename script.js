@@ -1035,6 +1035,9 @@ function initStageView() {
 
     // Initialize swipe navigation for mobile
     initSwipeNavigation();
+
+    // Initialize wheel scroll navigation for desktop
+    initStageWheelNavigation();
 }
 
 // Swipe Navigation for Mobile Stage View - Vertical (up/down) scrolling
@@ -1117,6 +1120,85 @@ function initSwipeNavigation() {
             animateStageTransition(targetSection, direction);
         }
     }
+}
+
+// Wheel Scroll Navigation for Stage View (Desktop)
+function initStageWheelNavigation() {
+    const stageContent = document.getElementById('stageContent');
+    if (!stageContent) return;
+
+    const sections = ['home', 'about', 'projects', 'blog', 'hire', 'contact'];
+    let isScrolling = false;
+    let scrollCooldown = 600; // ms between section changes
+    let accumulatedDelta = 0;
+    let scrollTimeout = null;
+    const scrollThreshold = 100; // Accumulated scroll needed to trigger section change
+
+    stageContent.addEventListener('wheel', (e) => {
+        // Check if scrolling inside a scrollable area
+        const scrollableArea = e.target.closest('.folders-grid, .notes-items, .notes-preview-content, .about-main-content');
+
+        if (scrollableArea) {
+            const atTop = scrollableArea.scrollTop === 0;
+            const atBottom = scrollableArea.scrollTop + scrollableArea.clientHeight >= scrollableArea.scrollHeight - 1;
+
+            // If not at boundary, let the element scroll normally
+            if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
+                return;
+            }
+        }
+
+        e.preventDefault();
+
+        if (isScrolling) return;
+
+        // Accumulate scroll delta
+        accumulatedDelta += e.deltaY;
+
+        // Clear previous timeout
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+
+        // Reset accumulated delta after a pause
+        scrollTimeout = setTimeout(() => {
+            accumulatedDelta = 0;
+        }, 150);
+
+        // Check if we've accumulated enough scroll
+        if (Math.abs(accumulatedDelta) < scrollThreshold) return;
+
+        const currentIndex = sections.indexOf(currentStageSection);
+        let targetSection = null;
+        let direction = '';
+
+        if (accumulatedDelta > 0) {
+            // Scroll down - go to next section
+            const nextIndex = currentIndex + 1;
+            if (nextIndex < sections.length) {
+                targetSection = sections[nextIndex];
+                direction = 'up';
+            }
+        } else {
+            // Scroll up - go to previous section
+            const prevIndex = currentIndex - 1;
+            if (prevIndex >= 0) {
+                targetSection = sections[prevIndex];
+                direction = 'down';
+            }
+        }
+
+        if (targetSection) {
+            isScrolling = true;
+            accumulatedDelta = 0;
+            animateStageTransition(targetSection, direction);
+
+            // Cooldown period
+            setTimeout(() => {
+                isScrolling = false;
+            }, scrollCooldown);
+        }
+    }, { passive: false });
 }
 
 // Animate stage transition with vertical slide effect

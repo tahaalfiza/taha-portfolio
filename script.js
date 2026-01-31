@@ -1258,87 +1258,27 @@ function initStageSidebarClicks() {
             sidebarItems.forEach(si => si.classList.remove('active'));
             item.classList.add('active');
 
-            // Filter projects - get filtered list
-            const allProjects = window.projectsData || [];
-            const filtered = category === 'all'
-                ? allProjects
-                : allProjects.filter(p =>
-                    p.category?.name?.toLowerCase() === category.toLowerCase()
-                );
-
-            // Re-render folders in Stage View
-            const foldersGrid = stageProjects.querySelector('.folders-grid');
-            if (foldersGrid) {
-                renderStageFolders(foldersGrid, filtered);
+            // Call the global filterByCategory to update View 1's data
+            if (typeof filterByCategory === 'function') {
+                filterByCategory(category);
             }
 
-            // Update count
-            const countEl = stageProjects.querySelector('.finder-count');
-            if (countEl) {
-                countEl.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
-            }
+            // Now re-clone the updated finder content from View 1 to Stage View
+            setTimeout(() => {
+                const updatedFolders = document.querySelector('#section-projects .folders-grid');
+                const stageFolders = stageProjects.querySelector('.folders-grid');
+                const stageCount = stageProjects.querySelector('.finder-count');
+                const sourceCount = document.querySelector('#section-projects .finder-count');
+
+                if (updatedFolders && stageFolders) {
+                    stageFolders.innerHTML = updatedFolders.innerHTML;
+                }
+                if (sourceCount && stageCount) {
+                    stageCount.textContent = sourceCount.textContent;
+                }
+            }, 50);
         });
     });
-}
-
-// Render folders in Stage View
-function renderStageFolders(container, projects) {
-    if (!container) return;
-
-    if (!projects || projects.length === 0) {
-        container.innerHTML = `
-            <div class="finder-empty-state">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                </svg>
-                <p>No projects in this category</p>
-                <span>Try selecting a different category</span>
-            </div>
-        `;
-        return;
-    }
-
-    container.innerHTML = projects.map((project) => {
-        // Find the real index in the full projectsData array for overlay
-        const realIndex = window.projectsData ? window.projectsData.findIndex(p => p._id === project._id) : 0;
-
-        const images = project.images || [];
-        const imageHtml = images.slice(0, 3).map((img, i) => {
-            const url = window.sanityImageUrl?.(img, 400, 85) || '';
-            return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
-        }).join('');
-
-        let clickHandler = '';
-        if (project.projectUrl && !project.hasOverlay) {
-            clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
-        } else {
-            clickHandler = `onclick="openProjectOverlay(${realIndex})"`;
-        }
-
-        const formatColor = (color) => {
-            if (!color) return null;
-            if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) return color;
-            return `#${color}`;
-        };
-        const tabColor = formatColor(project.folderTabColor);
-        const bodyColor = formatColor(project.folderBodyColor);
-        const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
-        const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
-
-        return `
-            <div class="mac-folder" ${clickHandler}>
-                <div class="folder-wrapper">
-                    ${imageHtml}
-                    <div class="folder-icon">
-                        <div class="folder-tab" ${tabStyle}></div>
-                        <div class="folder-body" ${bodyStyle}></div>
-                    </div>
-                </div>
-                <span class="folder-name">${project.title || 'Untitled'}</span>
-                <span class="folder-info">${project.category?.name || ''}</span>
-            </div>
-        `;
-    }).join('');
 }
 
 // Stage View Scroll to Start Button - For sidebar thumbnail horizontal scroll on mobile

@@ -1959,15 +1959,19 @@ function populateListView() {
     if (window.projectsData && window.projectsData.length > 0) {
         const projectsGrid = document.getElementById('listProjectsGrid');
         const finderCount = document.getElementById('listFinderCount');
-        if (projectsGrid) {
-            projectsGrid.innerHTML = window.projectsData.map((project, index) => {
-                // Get up to 3 images for popup preview
-                const images = project.images || [];
-                const imageHtml = images.slice(0, 3).map((img, i) => {
-                    const url = window.sanityImageUrl?.(img, 400, 85) || '';
-                    return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
-                }).join('');
 
+        // Get current view mode from global state
+        const viewMode = window.projectViewMode || 'folders';
+
+        if (projectsGrid) {
+            // Toggle image view class
+            if (viewMode === 'images') {
+                projectsGrid.classList.add('image-view');
+            } else {
+                projectsGrid.classList.remove('image-view');
+            }
+
+            projectsGrid.innerHTML = window.projectsData.map((project, index) => {
                 // Determine click behavior
                 let clickHandler = '';
                 if (project.projectUrl && !project.hasOverlay) {
@@ -1975,6 +1979,45 @@ function populateListView() {
                 } else {
                     clickHandler = `onclick="openProjectOverlay(${index})"`;
                 }
+
+                // IMAGE VIEW - stacked images like mobile
+                if (viewMode === 'images') {
+                    const mainImg = project.mainImage || (project.images && project.images[0]);
+                    const imgUrl = mainImg ? (window.sanityImageUrl?.(mainImg, 600, 90) || '') : '';
+
+                    const lockIcon = project.password ? `
+                        <div class="project-card-lock">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </div>
+                    ` : '';
+
+                    return `
+                        <div class="project-image-card ${project.password ? 'protected' : ''}" ${clickHandler}>
+                            <div class="project-image-wrapper">
+                                ${imgUrl ? `<img src="${imgUrl}" alt="${project.title}">` : '<div class="project-image-placeholder"></div>'}
+                                ${lockIcon}
+                            </div>
+                            <div class="project-image-info">
+                                <h3 class="project-image-title">${project.title}</h3>
+                                <div class="project-image-meta">
+                                    ${project.category ? `<span class="project-image-category">${project.category}</span>` : ''}
+                                    ${project.date ? `<span class="project-image-date">${project.date}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // FOLDER VIEW - default macOS folder style
+                // Get up to 3 images for popup preview
+                const images = project.images || [];
+                const imageHtml = images.slice(0, 3).map((img, i) => {
+                    const url = window.sanityImageUrl?.(img, 400, 85) || '';
+                    return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
+                }).join('');
 
                 // Custom folder colors
                 const formatColor = (color) => {

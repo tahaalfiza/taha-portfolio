@@ -1090,10 +1090,8 @@ function setActiveStageSection(section) {
         case 'hire':
             const hireHtml = document.querySelector('#section-hire .hire-form-window')?.outerHTML || '';
             content = `
-                <div class="stage-content-inner">
-                    <div class="stage-section stage-hire">
-                        ${hireHtml}
-                    </div>
+                <div class="stage-content-inner" style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                    ${hireHtml}
                 </div>
             `;
             break;

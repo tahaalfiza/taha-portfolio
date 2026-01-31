@@ -112,7 +112,7 @@ let educationData = [];
 
 // Fetch all work experiences (only visible ones)
 async function fetchWorkExperience() {
-  const query = `*[_type == "workExperience" && isVisible != false] | order(order asc) {
+  const query = `*[_type == "workExperience" && coalesce(isVisible, true) == true] | order(order asc) {
     _id,
     role,
     company,

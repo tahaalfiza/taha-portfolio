@@ -1663,13 +1663,13 @@ function setActiveStageSection(section) {
                             <div class="mobile-about-content">
                                 <!-- Profile Header -->
                                 <div class="mobile-about-header">
-                                    <div class="mobile-profile-photo">
-                                        <img src="taha-photo.jpg" alt="Taha Alfiza">
+                                    <div class="mobile-profile-photo" id="mobileProfilePhoto">
+                                        <img src="taha-photo.jpg" alt="Taha Alfiza" onerror="this.style.display='none'">
                                     </div>
                                     <div class="mobile-profile-info">
-                                        <h1 class="mobile-profile-name">Taha Alfiza</h1>
-                                        <p class="mobile-profile-title">Brand & Product Designer</p>
-                                        <p class="mobile-profile-location">Istanbul, Turkey</p>
+                                        <h1 class="mobile-profile-name" id="mobileProfileName">Taha Alfiza</h1>
+                                        <p class="mobile-profile-title" id="mobileProfileTitle">Brand & Product Designer</p>
+                                        <p class="mobile-profile-location" id="mobileProfileLocation">Istanbul, Turkey</p>
                                     </div>
                                 </div>
 
@@ -2782,10 +2782,36 @@ document.head.appendChild(style);
 // Populate mobile about section with experience and education data
 function populateMobileAboutData() {
     // Populate bio from Sanity data if available
+    // Populate profile info from Sanity data if available
     if (window.aboutInfo) {
         const bioEl = document.getElementById('mobileBioText');
         if (bioEl && window.aboutInfo.shortBio) {
             bioEl.innerHTML = window.aboutInfo.shortBio;
+        }
+
+        // Update profile photo if available from Sanity
+        const photoContainer = document.getElementById('mobileProfilePhoto');
+        if (photoContainer && window.aboutInfo.photo && window.sanityImageUrl) {
+            const photoUrl = window.sanityImageUrl(window.aboutInfo.photo, 200, 90);
+            if (photoUrl) {
+                photoContainer.innerHTML = `<img src="${photoUrl}" alt="${window.aboutInfo.name || 'Profile'}" onerror="this.style.display='none'">`;
+            }
+        }
+
+        // Update name, title, location
+        const nameEl = document.getElementById('mobileProfileName');
+        if (nameEl && window.aboutInfo.name) {
+            nameEl.textContent = window.aboutInfo.name;
+        }
+
+        const titleEl = document.getElementById('mobileProfileTitle');
+        if (titleEl && window.aboutInfo.title) {
+            titleEl.textContent = window.aboutInfo.title;
+        }
+
+        const locationEl = document.getElementById('mobileProfileLocation');
+        if (locationEl && window.aboutInfo.location) {
+            locationEl.textContent = window.aboutInfo.location;
         }
     }
 

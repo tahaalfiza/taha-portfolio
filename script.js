@@ -1089,6 +1089,10 @@ function setActiveStageSection(section) {
                             <p class="about-bio-text" contenteditable="true" id="stageBioText2">
                                 Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
                             </p>
+
+                            <button class="about-cta-outline" onclick="openAboutOverlay();">
+                                <span>See More</span>
+                            </button>
                         </div>
                     </div>
                 </div>

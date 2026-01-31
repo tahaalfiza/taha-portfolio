@@ -4842,6 +4842,18 @@ a {
         height: 100%;
     }
 
+    /* Stage content wrapper - allow scrolling on mobile */
+    .stage-content {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+        max-height: none !important;
+        height: calc(100vh - 140px) !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
     /* Stage content - scrollable */
     #stageContent {
         overflow-x: hidden !important;
@@ -4854,6 +4866,8 @@ a {
 
     #stageContent .stage-content-inner {
         transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.25s ease;
+        overflow: visible !important;
+        height: auto !important;
     }
 
     #stageContent.transitioning .stage-content-inner {
@@ -5210,8 +5224,8 @@ a {
         margin: 0 !important;
         position: relative !important;
         border-radius: 12px !important;
-        overflow: hidden !important;
-        background: var(--bg-secondary, #f0f0f0) !important;
+        overflow: visible !important;
+        background: transparent !important;
     }
 
     /* Hide the folder icon on mobile */
@@ -5219,23 +5233,51 @@ a {
         display: none !important;
     }
 
-    /* Show first popup image as thumbnail */
-    .popup-img {
-        display: none !important;
-    }
-
-    .popup-img-1 {
-        display: block !important;
+    /* Popup images container for stacked cards */
+    .popup-images {
         position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        object-fit: cover !important;
-        border-radius: 12px !important;
-        opacity: 1 !important;
         transform: none !important;
+    }
+
+    /* Stacked card effect for thumbnails */
+    .popup-img {
+        display: block !important;
+        position: absolute !important;
+        width: 90% !important;
+        height: 85% !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+        opacity: 1 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* Back card - bottom of stack */
+    .popup-img.img-3 {
+        top: 0 !important;
+        left: 5% !important;
         z-index: 1 !important;
+        transform: rotate(-2deg) !important;
+    }
+
+    /* Middle card */
+    .popup-img.img-2 {
+        top: 4% !important;
+        left: 2.5% !important;
+        z-index: 2 !important;
+        transform: rotate(1deg) !important;
+    }
+
+    /* Front card - top of stack */
+    .popup-img.img-1 {
+        top: 8% !important;
+        left: 0 !important;
+        z-index: 3 !important;
+        transform: rotate(-1deg) !important;
     }
 
     /* Project name below thumbnail */
@@ -5736,31 +5778,10 @@ a {
        MOBILE GENERAL - Bigger touch targets
        ============================================= */
 
-    /* Make project items bigger - no hover effects */
-    .mac-folder {
-        padding: 20px !important;
-        gap: 18px !important;
-    }
-
+    /* Mac folder hover effects disabled on mobile */
     .mac-folder:hover,
     .mac-folder:active {
         transform: none !important;
-        background: transparent !important;
-    }
-
-    .folder-wrapper {
-        width: 60px !important;
-        height: 55px !important;
-    }
-
-    .folder-icon {
-        width: 60px !important;
-        height: 50px !important;
-    }
-
-    .folder-name {
-        font-size: 18px !important;
-        font-weight: 600 !important;
     }
 
     /* Make blog items bigger - no hover effects */
@@ -6399,11 +6420,7 @@ a {
         transform: none;
     }
 
-    /* Disable folder popup images on hover */
-    .mac-folder:hover .popup-img {
-        opacity: 0 !important;
-        transform: none !important;
-    }
+    /* Note: Popup images visible on mobile as thumbnails - no hover effects needed */
 
     /* Disable image zoom on hover */
     .gallery-image:hover img,

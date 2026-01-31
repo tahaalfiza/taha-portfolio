@@ -2765,29 +2765,43 @@ function populateMobileAboutData() {
     // Populate experience
     const expList = document.getElementById('mobileExperienceList');
     if (expList && window.experienceData && window.experienceData.length > 0) {
-        expList.innerHTML = window.experienceData.map(exp => `
-            <div class="mobile-exp-item">
-                <div class="mobile-exp-header">
-                    <h3 class="mobile-exp-role">${exp.role || ''}</h3>
-                    <span class="mobile-exp-date">${exp.duration || ''}</span>
+        expList.innerHTML = window.experienceData.map(exp => {
+            // Format date range
+            const dateRange = exp.endDate
+                ? `${exp.startDate} — ${exp.endDate}`
+                : exp.startDate ? `${exp.startDate} — Present` : '';
+
+            return `
+                <div class="mobile-exp-item">
+                    <div class="mobile-exp-header">
+                        <h3 class="mobile-exp-role">${exp.role || ''}</h3>
+                        <span class="mobile-exp-date">${dateRange}</span>
+                    </div>
+                    <p class="mobile-exp-company">${exp.company || ''}</p>
                 </div>
-                <p class="mobile-exp-company">${exp.company || ''}</p>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     // Populate education
     const eduList = document.getElementById('mobileEducationList');
     if (eduList && window.educationData && window.educationData.length > 0) {
-        eduList.innerHTML = window.educationData.map(edu => `
-            <div class="mobile-edu-item">
-                <div class="mobile-edu-header">
-                    <h3 class="mobile-edu-degree">${edu.degree || ''}</h3>
-                    <span class="mobile-edu-date">${edu.year || ''}</span>
+        eduList.innerHTML = window.educationData.map(edu => {
+            // Format date range
+            const dateRange = edu.endDate
+                ? `${edu.startDate} — ${edu.endDate}`
+                : edu.startDate || '';
+
+            return `
+                <div class="mobile-edu-item">
+                    <div class="mobile-edu-header">
+                        <h3 class="mobile-edu-degree">${edu.degree || ''}</h3>
+                        <span class="mobile-edu-date">${dateRange}</span>
+                    </div>
+                    <p class="mobile-edu-school">${edu.institution || ''}</p>
                 </div>
-                <p class="mobile-edu-school">${edu.school || ''}</p>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 }
 

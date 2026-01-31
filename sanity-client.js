@@ -113,6 +113,10 @@ async function fetchAboutInfo() {
 let experienceData = [];
 let educationData = [];
 
+// Expose to window for mobile about section
+window.experienceData = experienceData;
+window.educationData = educationData;
+
 // Fetch all work experiences (only visible ones)
 async function fetchWorkExperience() {
   const query = `*[_type == "workExperience" && coalesce(isVisible, true) == true] | order(order asc) {
@@ -139,6 +143,7 @@ async function fetchWorkExperience() {
     const response = await fetch(sanityUrl(query));
     const data = await response.json();
     experienceData = data.result || [];
+    window.experienceData = experienceData; // Expose to window for mobile
     return experienceData;
   } catch (error) {
     console.error('Error fetching work experience:', error);
@@ -167,6 +172,7 @@ async function fetchEducation() {
     const response = await fetch(sanityUrl(query));
     const data = await response.json();
     educationData = data.result || [];
+    window.educationData = educationData; // Expose to window for mobile
     return educationData;
   } catch (error) {
     console.error('Error fetching education:', error);

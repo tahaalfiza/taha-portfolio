@@ -1020,7 +1020,7 @@ function initStageView() {
     initSwipeNavigation();
 }
 
-// Swipe Navigation for Mobile Stage View with smooth animations
+// Swipe Navigation for Mobile Stage View - Vertical (up/down) scrolling
 function initSwipeNavigation() {
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) return;
@@ -1029,15 +1029,12 @@ function initSwipeNavigation() {
     if (!stageContent) return;
 
     const sections = ['home', 'about', 'projects', 'blog', 'hire', 'contact'];
-    let touchStartX = 0;
     let touchStartY = 0;
-    let touchEndX = 0;
     let touchEndY = 0;
     let isSwiping = false;
-    const minSwipeDistance = 50;
+    const minSwipeDistance = 60;
 
     stageContent.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
         touchStartY = e.changedTouches[0].screenY;
         isSwiping = true;
     }, { passive: true });
@@ -1045,23 +1042,15 @@ function initSwipeNavigation() {
     stageContent.addEventListener('touchmove', (e) => {
         if (!isSwiping) return;
 
-        const currentX = e.changedTouches[0].screenX;
         const currentY = e.changedTouches[0].screenY;
-        const diffX = currentX - touchStartX;
         const diffY = currentY - touchStartY;
 
-        // If vertical scroll is greater, don't interfere
-        if (Math.abs(diffY) > Math.abs(diffX)) {
-            isSwiping = false;
-            return;
-        }
-
-        // Visual feedback during swipe - subtle transform
+        // Visual feedback during swipe - subtle vertical transform
         const maxOffset = 30;
-        const offset = Math.max(-maxOffset, Math.min(maxOffset, diffX * 0.3));
+        const offset = Math.max(-maxOffset, Math.min(maxOffset, diffY * 0.3));
         const contentInner = stageContent.querySelector('.stage-content-inner');
         if (contentInner) {
-            contentInner.style.transform = `translateX(${offset}px)`;
+            contentInner.style.transform = `translateY(${offset}px)`;
             contentInner.style.transition = 'none';
         }
     }, { passive: true });
@@ -1069,7 +1058,6 @@ function initSwipeNavigation() {
     stageContent.addEventListener('touchend', (e) => {
         if (!isSwiping) return;
 
-        touchEndX = e.changedTouches[0].screenX;
         touchEndY = e.changedTouches[0].screenY;
 
         // Reset visual transform
@@ -1084,11 +1072,8 @@ function initSwipeNavigation() {
     }, { passive: true });
 
     function handleSwipe() {
-        const swipeDistance = touchEndX - touchStartX;
-        const verticalDistance = Math.abs(touchEndY - touchStartY);
+        const swipeDistance = touchEndY - touchStartY;
 
-        // Ignore if vertical scroll was dominant
-        if (verticalDistance > Math.abs(swipeDistance)) return;
         if (Math.abs(swipeDistance) < minSwipeDistance) return;
 
         const currentIndex = sections.indexOf(currentStageSection);
@@ -1096,18 +1081,18 @@ function initSwipeNavigation() {
         let direction = '';
 
         if (swipeDistance < 0) {
-            // Swipe left - go to next section
+            // Swipe up - go to next section
             const nextIndex = currentIndex + 1;
             if (nextIndex < sections.length) {
                 targetSection = sections[nextIndex];
-                direction = 'left';
+                direction = 'up';
             }
         } else {
-            // Swipe right - go to previous section
+            // Swipe down - go to previous section
             const prevIndex = currentIndex - 1;
             if (prevIndex >= 0) {
                 targetSection = sections[prevIndex];
-                direction = 'right';
+                direction = 'down';
             }
         }
 
@@ -1117,7 +1102,7 @@ function initSwipeNavigation() {
     }
 }
 
-// Animate stage transition with slide effect
+// Animate stage transition with vertical slide effect
 function animateStageTransition(targetSection, direction) {
     const stageContent = document.getElementById('stageContent');
     if (!stageContent) return;
@@ -1134,12 +1119,12 @@ function animateStageTransition(targetSection, direction) {
 
         // Remove slide-out, add slide-in from opposite side
         stageContent.classList.remove(`slide-${direction}`);
-        stageContent.classList.add(`slide-in-${direction === 'left' ? 'right' : 'left'}`);
+        stageContent.classList.add(`slide-in-${direction === 'up' ? 'down' : 'up'}`);
 
         // Clean up classes after animation
         setTimeout(() => {
             stageContent.classList.remove('transitioning');
-            stageContent.classList.remove(`slide-in-${direction === 'left' ? 'right' : 'left'}`);
+            stageContent.classList.remove(`slide-in-${direction === 'up' ? 'down' : 'up'}`);
         }, 250);
     }, 100);
 }

@@ -161,6 +161,69 @@
             }
         }
 
+        /* Nav Actions Container */
+        .nav-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-container .navbar {
+            position: static;
+            transform: none;
+        }
+
+        /* Action Buttons (Back & Share) */
+        .nav-action-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card, rgba(255, 255, 255, 0.95));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .nav-action-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover, var(--bg-secondary));
+            transform: scale(1.05);
+        }
+
+        .nav-action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                bottom: 16px;
+                gap: 8px;
+            }
+
+            .nav-action-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .nav-action-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
         /* Main Content */
         .content {
             max-width: 680px;
@@ -499,45 +562,67 @@
 <body>
     <div class="project-page">
         <!-- Bottom Navigation - View 1 Style with Filled Icons -->
-        <nav class="navbar" id="navbar">
-            <a href="/" class="nav-btn" title="Home">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z" fill="currentColor"/>
+        <div class="nav-container">
+            <!-- Back Button -->
+            <button class="nav-action-btn" onclick="history.back()" title="Go Back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"/>
+                    <path d="M12 19l-7-7 7-7"/>
                 </svg>
-                <span class="nav-tooltip">Home</span>
-            </a>
-            <a href="/#about" class="nav-btn" title="About">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="8" r="4" fill="currentColor"/>
-                    <path d="M12 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" fill="currentColor"/>
-                </svg>
-                <span class="nav-tooltip">About</span>
-            </a>
-            <a href="/#blog" class="nav-btn" title="Blog">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/>
-                </svg>
-                <span class="nav-tooltip">Blog</span>
-            </a>
-            <a href="/#projects" class="nav-btn active" title="Projects">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="currentColor"/>
-                </svg>
-                <span class="nav-tooltip">Projects</span>
-            </a>
-            <a href="/#contact" class="nav-btn" title="Contact">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
-                </svg>
-                <span class="nav-tooltip">Contact</span>
-            </a>
-            <button class="nav-btn" data-target="hire" title="New Project" onclick="window.location.href='/#hire'">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
-                </svg>
-                <span class="nav-tooltip">New Project</span>
             </button>
-        </nav>
+
+            <!-- Main Navigation -->
+            <nav class="navbar" id="navbar">
+                <a href="/" class="nav-btn" title="Home">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z" fill="currentColor"/>
+                    </svg>
+                    <span class="nav-tooltip">Home</span>
+                </a>
+                <a href="/#about" class="nav-btn" title="About">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                        <path d="M12 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" fill="currentColor"/>
+                    </svg>
+                    <span class="nav-tooltip">About</span>
+                </a>
+                <a href="/#blog" class="nav-btn" title="Blog">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/>
+                    </svg>
+                    <span class="nav-tooltip">Blog</span>
+                </a>
+                <a href="/#projects" class="nav-btn active" title="Projects">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="currentColor"/>
+                    </svg>
+                    <span class="nav-tooltip">Projects</span>
+                </a>
+                <a href="/#contact" class="nav-btn" title="Contact">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
+                    </svg>
+                    <span class="nav-tooltip">Contact</span>
+                </a>
+                <button class="nav-btn" data-target="hire" title="New Project" onclick="window.location.href='/#hire'">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+                    </svg>
+                    <span class="nav-tooltip">New Project</span>
+                </button>
+            </nav>
+
+            <!-- Share Button -->
+            <button class="nav-action-btn" onclick="shareProject()" title="Share">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"/>
+                    <circle cx="6" cy="12" r="3"/>
+                    <circle cx="18" cy="19" r="3"/>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+            </button>
+        </div>
 
         <!-- Main Content -->
         <main class="content" id="content">
@@ -850,6 +935,42 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 2500);
+        }
+
+        // Share project
+        function shareProject() {
+            const url = window.location.href;
+            const title = document.title;
+
+            // Try native share API first (mobile)
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    url: url
+                }).catch(() => {
+                    // User cancelled or error, fall back to clipboard
+                    copyToClipboard(url);
+                });
+            } else {
+                // Fall back to clipboard
+                copyToClipboard(url);
+            }
+        }
+
+        // Copy to clipboard helper
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Link copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Link copied to clipboard!');
+            });
         }
 
         // Initialize

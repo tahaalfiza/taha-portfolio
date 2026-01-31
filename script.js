@@ -1258,27 +1258,99 @@ function initStageSidebarClicks() {
             sidebarItems.forEach(si => si.classList.remove('active'));
             item.classList.add('active');
 
-            // Call the global filterByCategory to update View 1's data
-            if (typeof filterByCategory === 'function') {
-                filterByCategory(category);
-            }
-
-            // Now re-clone the updated finder content from View 1 to Stage View
-            setTimeout(() => {
-                const updatedFolders = document.querySelector('#section-projects .folders-grid');
-                const stageFolders = stageProjects.querySelector('.folders-grid');
-                const stageCount = stageProjects.querySelector('.finder-count');
-                const sourceCount = document.querySelector('#section-projects .finder-count');
-
-                if (updatedFolders && stageFolders) {
-                    stageFolders.innerHTML = updatedFolders.innerHTML;
-                }
-                if (sourceCount && stageCount) {
-                    stageCount.textContent = sourceCount.textContent;
-                }
-            }, 50);
+            // Filter and render projects directly in Stage View
+            filterStageProjects(category, stageProjects);
         });
     });
+}
+
+// Filter and render projects in Stage View
+function filterStageProjects(category, stageProjects) {
+    const projects = window.projectsData || [];
+    const stageFolders = stageProjects.querySelector('.folders-grid');
+    const stageCount = stageProjects.querySelector('.finder-count');
+    const stagePath = stageProjects.querySelector('.finder-path');
+
+    if (!stageFolders) return;
+
+    // Filter projects by category
+    const filteredProjects = category === 'all'
+        ? projects
+        : projects.filter(p => (p.category || '').toLowerCase() === category.toLowerCase());
+
+    // Update path and count
+    if (stagePath) {
+        stagePath.textContent = category === 'all' ? 'All Projects' : category;
+    }
+    if (stageCount) {
+        stageCount.textContent = `${filteredProjects.length} item${filteredProjects.length !== 1 ? 's' : ''}`;
+    }
+
+    // Render empty state if no projects
+    if (filteredProjects.length === 0) {
+        stageFolders.innerHTML = `
+            <div class="finder-empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                <p>No projects in this category</p>
+                <span>Try selecting a different category</span>
+            </div>
+        `;
+        return;
+    }
+
+    // Render filtered projects
+    stageFolders.innerHTML = filteredProjects.map((project) => {
+        // Find original index for overlay
+        const originalIndex = projects.findIndex(p => p._id === project._id);
+
+        // Get up to 3 images for popup preview
+        const images = project.images || [];
+        const imageHtml = images.slice(0, 3).map((img, i) => {
+            const url = window.sanityImageUrl?.(img, 400, 85) || '';
+            return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
+        }).join('');
+
+        // Determine click behavior: overlay or external link
+        let clickHandler = '';
+        if (project.projectUrl && !project.hasOverlay) {
+            clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
+        } else {
+            clickHandler = `onclick="openProjectOverlay(${originalIndex})"`;
+        }
+
+        // Custom folder colors
+        const formatColor = (color) => {
+            if (!color) return '';
+            if (color.hex) return color.hex;
+            if (typeof color === 'string') return color;
+            return '';
+        };
+        const tabColor = formatColor(project.folderTabColor);
+        const bodyColor = formatColor(project.folderBodyColor);
+        const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
+        const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
+
+        return `
+            <div class="mac-folder" ${clickHandler}>
+                <div class="folder-wrapper">
+                    <div class="popup-images">
+                        ${imageHtml}
+                    </div>
+                    <div class="folder-icon">
+                        <div class="folder-tab" ${tabStyle}></div>
+                        <div class="folder-body" ${bodyStyle}></div>
+                    </div>
+                </div>
+                <h3 class="folder-name">${project.title}</h3>
+                <div class="folder-info">
+                    <span class="folder-duration">${project.duration || ''}</span>
+                    <span class="folder-date">${project.date || ''}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 // Stage View Scroll to Start Button - For sidebar thumbnail horizontal scroll on mobile

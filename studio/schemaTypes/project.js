@@ -40,9 +40,18 @@ export default {
     },
     {
       name: 'date',
-      title: 'Date',
+      title: 'Date (Display)',
       type: 'string',
-      description: 'e.g., "2024"',
+      description: 'e.g., "2024" - shown on the folder',
+    },
+    {
+      name: 'projectDate',
+      title: 'Project Date (For Sorting)',
+      type: 'date',
+      description: 'Used to sort projects by date (newest first). Set to the project completion or start date.',
+      options: {
+        dateFormat: 'MMMM YYYY',
+      },
     },
     {
       name: 'client',
@@ -235,11 +244,34 @@ export default {
       initialValue: true,
     },
     {
+      name: 'isVisible',
+      title: 'Visible',
+      type: 'boolean',
+      description: 'Uncheck to hide this project without deleting it',
+      initialValue: true,
+    },
+    {
       name: 'order',
-      title: 'Display Order',
+      title: 'Manual Order (Override)',
       type: 'number',
+      description: 'Leave empty to sort by date. Set a number to manually position this project (lower = first).',
     },
   ],
+  preview: {
+    select: {
+      title: 'title',
+      category: 'category.name',
+      media: 'images.0',
+      isVisible: 'isVisible',
+    },
+    prepare({ title, category, media, isVisible }) {
+      return {
+        title: title,
+        subtitle: `${category || 'No category'}${isVisible === false ? ' [Hidden]' : ''}`,
+        media: media,
+      }
+    },
+  },
   orderings: [
     {
       title: 'Display Order',

@@ -28,9 +28,10 @@ function sanityImageUrl(imageRef, width = 800, quality = 90) {
 // Store projects globally for overlay access
 let projectsData = [];
 
-// Fetch all projects
+// Fetch all projects (only visible ones)
+// Sort by manual order first (if set), then by project date (newest first)
 async function fetchProjects() {
-  const query = `*[_type == "project"] | order(order asc) {
+  const query = `*[_type == "project" && coalesce(isVisible, true) == true] | order(coalesce(order, 9999) asc, projectDate desc) {
     _id,
     title,
     slug,
@@ -38,6 +39,7 @@ async function fetchProjects() {
     fullDescription,
     duration,
     date,
+    projectDate,
     client,
     role,
     tools,

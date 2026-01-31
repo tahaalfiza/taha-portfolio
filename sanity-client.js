@@ -302,8 +302,8 @@ function renderBlogPosts(posts) {
         })
       : '';
 
-    // Get thumbnail image if available
-    const thumbUrl = post.mainImage ? sanityImageUrl(post.mainImage, 100, 80) : null;
+    // Get thumbnail image if available - square aspect ratio
+    const thumbUrl = post.mainImage ? sanityImageUrl(post.mainImage, 140, 80) : null;
     const thumbHtml = thumbUrl
       ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
       : `<div class="note-item-thumb-placeholder">

@@ -3504,7 +3504,7 @@ a {
 }
 
 .note-item-thumb {
-    width: 100px;
+    width: 70px;
     height: 70px;
     border-radius: 8px;
     flex-shrink: 0;
@@ -5840,7 +5840,7 @@ a {
     /* Show blog thumbnail on mobile */
     .note-item-thumb {
         display: block !important;
-        width: 70px !important;
+        width: 50px !important;
         height: 50px !important;
         border-radius: 8px !important;
         overflow: hidden;
@@ -6071,7 +6071,7 @@ a {
     }
 
     .note-item-thumb {
-        width: 80px !important;
+        width: 60px !important;
         height: 60px !important;
         border-radius: 10px !important;
     }

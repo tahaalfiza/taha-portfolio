@@ -389,7 +389,7 @@
                 about: `*[_type == "aboutInfo"][0] {
                     name, title, location, shortBio, fullBio, skills, email, phone, linkedin, website
                 }`,
-                experience: `*[_type == "workExperience"] | order(order asc) {
+                experience: `*[_type == "workExperience" && coalesce(isVisible, true) == true] | order(order asc) {
                     _id, role, company, companyUrl, location, startYear, endYear, startDate, endDate, isCurrent, description, achievements, order
                 }`,
                 education: `*[_type == "education"] | order(order asc) {

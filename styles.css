@@ -1196,70 +1196,23 @@ a {
 .highlight-orange { background: #FFCC80; padding: 2px 4px; border-radius: 3px; }
 .highlight-purple { background: #CE93D8; padding: 2px 4px; border-radius: 3px; }
 
-/* Stage Projects Section */
+/* Stage Projects Section - Use same finder-window as View 1 */
 .stage-view .stage-projects {
     height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
+/* Let finder-window use its default styling from View 1 */
 .stage-view .stage-projects .finder-window {
-    height: 100%;
-    max-height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.stage-view .stage-projects .finder-window .finder-body {
-    height: calc(100% - 52px);
-    overflow: hidden;
-}
-
-.stage-view .stage-projects .finder-window .finder-content {
-    height: 100%;
-    overflow: hidden;
-}
-
-/* Stage View folders grid - compact layout with scroll */
-.stage-view .stage-projects .folders-grid {
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 30px 20px;
-    padding: 30px 40px 80px 30px;
-    justify-items: center;
-}
-
-.stage-view .stage-projects .folder-wrapper {
-    width: 90px;
-    height: 110px;
-}
-
-.stage-view .stage-projects .folder-icon {
-    width: 80px;
-    height: 75px;
-}
-
-.stage-view .stage-projects .folder-tab {
-    height: 16px;
-}
-
-.stage-view .stage-projects .folder-body {
-    height: 52px;
-}
-
-.stage-view .stage-projects .popup-img {
-    width: 50px;
-    height: 65px;
-}
-
-.stage-view .stage-projects .folder-name {
-    font-size: 11px;
-}
-
-.stage-view .stage-projects .folder-info {
-    font-size: 10px;
+    width: 100%;
+    max-width: 900px;
+    min-width: auto;
+    height: auto;
+    max-height: calc(100vh - 220px);
 }
 
 /* Stage Blog Section */
@@ -1419,22 +1372,12 @@ a {
     }
 
     /* Stage Projects mobile */
+    .stage-view .stage-projects {
+        padding: 10px;
+    }
+
     .stage-view .stage-projects .finder-window {
-        border-radius: 12px;
-    }
-
-    .stage-view .stage-projects .finder-sidebar {
-        display: none;
-    }
-
-    .stage-view .stage-projects .finder-content {
-        width: 100%;
-    }
-
-    .stage-view .stage-projects .folders-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        padding: 12px;
+        max-height: calc(100vh - 180px);
     }
 
     /* Stage Blog mobile */

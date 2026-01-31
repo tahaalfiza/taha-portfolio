@@ -863,33 +863,31 @@ function cloneSectionForThumb(section) {
         clone.style.margin = '0';
         clone.style.boxShadow = 'none';
 
-        // Special handling for About section - remove photo and adjust text
+        // Special handling for About section - remove photo and fit text
         if (section === 'about') {
             const photo = clone.querySelector('.about-photo-topleft');
             if (photo) photo.style.display = 'none';
-            // Make text smaller to fit in thumbnail
-            clone.style.fontSize = '10px';
-            clone.style.padding = '10px';
+            // Scale down the entire about card to fit
+            clone.style.transform = 'scale(0.5)';
+            clone.style.transformOrigin = 'top left';
+            clone.style.width = '200%';
         }
 
         thumbContent.appendChild(clone);
 
-        // Use consistent scale for all thumbnails
+        // Use consistent scale for all thumbnails - same container size
         const scale = 0.35;
+        const maxWidth = 160;
+        const maxHeight = 120;
 
-        // For Home, scale the content smaller inside but keep container same size
+        // For Home, use smaller content scale to fit everything
         if (section === 'home') {
-            thumbContent.style.transform = 'scale(0.22)';
-            // Use a standard container size similar to other thumbs
-            thumbPreview.style.width = '180px';
-            thumbPreview.style.height = '140px';
-        } else {
-            const originalWidth = originalSection.offsetWidth || 400;
-            const originalHeight = originalSection.offsetHeight || 300;
-            // Set the preview container to match scaled dimensions
-            thumbPreview.style.width = (originalWidth * scale) + 'px';
-            thumbPreview.style.height = (originalHeight * scale) + 'px';
+            thumbContent.style.transform = 'scale(0.18)';
         }
+
+        // Set consistent container size for all thumbs
+        thumbPreview.style.width = maxWidth + 'px';
+        thumbPreview.style.height = maxHeight + 'px';
     }
 }
 

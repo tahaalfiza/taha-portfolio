@@ -635,10 +635,10 @@ a {
 
 /* Stage Sidebar - Left thumbnails */
 .stage-sidebar {
-    width: 280px;
-    min-width: 280px;
+    width: 300px;
+    min-width: 300px;
     height: 100%;
-    padding: 40px 100px 40px 40px;
+    padding: 100px 100px 40px 40px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -669,7 +669,7 @@ a {
 
 /* Mini section content - scaled down keeping exact original structure */
 .thumb-content {
-    transform: scale(0.28);
+    transform: scale(0.35);
     transform-origin: top left;
     pointer-events: none;
 }

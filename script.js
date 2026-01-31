@@ -780,7 +780,8 @@ const sectionSelectors = {
     about: '#section-about .about-card-modern',
     projects: '#section-projects .finder-window',
     blog: '#section-blog .notes-app-window',
-    contact: '#section-contact .contact-section'
+    contact: '#section-contact .contact-section',
+    hire: '#section-hire .hire-form-window'
 };
 
 const sectionNames = {
@@ -788,7 +789,8 @@ const sectionNames = {
     about: 'About',
     projects: 'Projects',
     blog: 'Blog',
-    contact: 'Contact'
+    contact: 'Contact',
+    hire: 'New Project'
 };
 
 function initStageView() {
@@ -808,7 +810,7 @@ function initStageView() {
 }
 
 function generateStageThumbnails(sidebar) {
-    const sections = ['home', 'about', 'projects', 'blog', 'contact'];
+    const sections = ['home', 'about', 'projects', 'blog', 'contact', 'hire'];
 
     sidebar.innerHTML = sections.map((section, index) => `
         <div class="stage-thumb ${index === 0 ? 'active' : ''}" data-section="${section}">
@@ -861,10 +863,23 @@ function cloneSectionForThumb(section) {
         clone.style.margin = '0';
         clone.style.boxShadow = 'none';
 
+        // Special handling for About section - remove photo
+        if (section === 'about') {
+            const photo = clone.querySelector('.about-photo-topleft');
+            if (photo) photo.style.display = 'none';
+        }
+
         thumbContent.appendChild(clone);
 
         // Calculate the scaled dimensions to size the preview container
-        const scale = 0.28;
+        let scale = 0.35;
+
+        // Use smaller scale for Home to fit content without cropping
+        if (section === 'home') {
+            scale = 0.22;
+            thumbContent.style.transform = `scale(${scale})`;
+        }
+
         const originalWidth = originalSection.offsetWidth || 400;
         const originalHeight = originalSection.offsetHeight || 300;
 
@@ -972,6 +987,17 @@ function setActiveStageSection(section) {
                                 </a>
                             </div>
                         </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'hire':
+            const hireHtml = document.querySelector('#section-hire .hire-form-window')?.outerHTML || '';
+            content = `
+                <div class="stage-content-inner">
+                    <div class="stage-section stage-hire">
+                        ${hireHtml}
                     </div>
                 </div>
             `;

@@ -3491,12 +3491,27 @@ a {
 }
 
 .note-item-thumb {
-    width: 50px;
-    height: 50px;
-    border-radius: 6px;
-    object-fit: cover;
+    width: 100px;
+    height: 70px;
+    border-radius: 8px;
     flex-shrink: 0;
     background: #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.note-item-thumb svg {
+    width: 24px;
+    height: 24px;
+    color: #aaa;
 }
 
 .note-item-thumb-placeholder {
@@ -3528,9 +3543,11 @@ a {
     font-size: 14px;
     font-weight: 600;
     color: #1d1d1f;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.3;
 }
 
 .note-item-date {

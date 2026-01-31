@@ -577,8 +577,8 @@ function initCustomCursor() {
     });
 
     function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
+        cursorX += (mouseX - cursorX) * 0.5;
+        cursorY += (mouseY - cursorY) * 0.5;
 
         cursor.style.left = cursorX + 'px';
         cursor.style.top = cursorY + 'px';

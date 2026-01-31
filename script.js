@@ -1013,6 +1013,64 @@ function initStageView() {
 
     // Initialize scroll to top button for mobile
     initStageScrollTop();
+
+    // Initialize swipe navigation for mobile
+    initSwipeNavigation();
+}
+
+// Swipe Navigation for Mobile Stage View
+function initSwipeNavigation() {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+
+    const stageContent = document.getElementById('stageContent');
+    if (!stageContent) return;
+
+    const sections = ['home', 'about', 'projects', 'blog', 'hire', 'contact'];
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 50;
+
+    stageContent.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    stageContent.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        const swipeDistance = touchEndX - touchStartX;
+
+        if (Math.abs(swipeDistance) < minSwipeDistance) return;
+
+        const currentIndex = sections.indexOf(currentStageSection);
+
+        if (swipeDistance < 0) {
+            // Swipe left - go to next section
+            const nextIndex = currentIndex + 1;
+            if (nextIndex < sections.length) {
+                setActiveStageSection(sections[nextIndex]);
+                updateStageThumbnails(sections[nextIndex]);
+            }
+        } else {
+            // Swipe right - go to previous section
+            const prevIndex = currentIndex - 1;
+            if (prevIndex >= 0) {
+                setActiveStageSection(sections[prevIndex]);
+                updateStageThumbnails(sections[prevIndex]);
+            }
+        }
+    }
+}
+
+// Update thumbnails active state after swipe
+function updateStageThumbnails(section) {
+    const thumbs = document.querySelectorAll('.stage-thumb');
+    thumbs.forEach(thumb => {
+        thumb.classList.toggle('active', thumb.dataset.section === section);
+    });
 }
 
 // Stage View Scroll to Start Button - For sidebar thumbnail horizontal scroll on mobile

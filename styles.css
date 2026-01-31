@@ -4730,6 +4730,17 @@ a {
         display: flex !important;
     }
 
+    /* Hide stage sidebar thumbnails on mobile - navigation via navbar only */
+    .stage-sidebar {
+        display: none !important;
+    }
+
+    /* Make stage main take full width on mobile */
+    .stage-main {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
     /* Hide minimap on mobile */
     .minimap {
         display: none !important;

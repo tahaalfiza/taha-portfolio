@@ -3580,7 +3580,8 @@ a {
 .note-item-thumb img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 
 .note-item-thumb svg {
@@ -5914,7 +5915,8 @@ a {
     .note-item-thumb img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
+        object-position: center;
     }
 
     .note-item-info {

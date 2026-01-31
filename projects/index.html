@@ -104,6 +104,60 @@
             letter-spacing: -0.5px;
         }
 
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Share Toast */
+        .share-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .share-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Project Content Container */
         .project-page-content {
             max-width: 1200px;
@@ -387,7 +441,19 @@
                 </button>
                 <a href="/" class="nav-logo">Taha Alfiza</a>
             </div>
+            <div class="nav-actions">
+                <button class="action-btn" onclick="shareProject()" title="Share">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                        <polyline points="16 6 12 2 8 6"/>
+                        <line x1="12" y1="2" x2="12" y2="15"/>
+                    </svg>
+                </button>
+            </div>
         </nav>
+
+        <!-- Share Toast -->
+        <div class="share-toast" id="shareToast">Link copied to clipboard!</div>
 
         <!-- Project Content -->
         <div class="project-page-content" id="projectContent">
@@ -679,6 +745,33 @@
             } else {
                 window.location.href = '/';
             }
+        }
+
+        // Share project
+        function shareProject() {
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: currentProject?.title || 'Project',
+                    url: url
+                }).catch(() => {
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+            }
+        }
+
+        // Copy to clipboard helper
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('shareToast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
         }
 
         // Initialize

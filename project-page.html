@@ -44,7 +44,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Bottom Navigation Bar - Canvas Style */
+        /* Bottom Navigation Bar - View 1 Style */
         .navbar {
             position: fixed;
             bottom: 24px;
@@ -54,23 +54,13 @@
             align-items: center;
             gap: 4px;
             padding: 8px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-card);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-light);
             border-radius: 16px;
             z-index: 1000;
-        }
-
-        [data-theme="dark"] .navbar {
-            background: rgba(17, 17, 17, 0.95);
-        }
-
-        .nav-divider {
-            width: 1px;
-            height: 24px;
-            background: var(--border-light);
-            margin: 0 4px;
+            transition: all 0.3s ease;
         }
 
         .nav-btn {
@@ -86,22 +76,23 @@
             border-radius: 12px;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .nav-btn svg {
             width: 22px;
             height: 22px;
+            transition: all 0.15s ease;
         }
 
         .nav-btn:hover {
             color: var(--text-primary);
-            background: var(--bg-secondary);
+            background: var(--bg-hover);
         }
 
         .nav-btn.active {
-            color: #fff;
-            background: var(--text-primary);
+            color: white;
+            background: var(--accent-primary);
         }
 
         /* Tooltip */
@@ -507,70 +498,45 @@
 </head>
 <body>
     <div class="project-page">
-        <!-- Bottom Navigation - Canvas Style -->
+        <!-- Bottom Navigation - View 1 Style with Filled Icons -->
         <nav class="navbar" id="navbar">
-            <!-- Back Button -->
-            <a href="/" class="nav-btn" title="Back">
-                <span class="nav-tooltip">Back</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-            </a>
-
-            <!-- Share Button -->
-            <button class="nav-btn" onclick="shareProject()" title="Share">
-                <span class="nav-tooltip">Share</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                    <polyline points="16 6 12 2 8 6"/>
-                    <line x1="12" y1="2" x2="12" y2="15"/>
-                </svg>
-            </button>
-
-            <div class="nav-divider"></div>
-
-            <!-- Navigation Links -->
             <a href="/" class="nav-btn" title="Home">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z" fill="currentColor"/>
+                </svg>
                 <span class="nav-tooltip">Home</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
             </a>
-
             <a href="/#about" class="nav-btn" title="About">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                    <path d="M12 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" fill="currentColor"/>
+                </svg>
                 <span class="nav-tooltip">About</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
             </a>
-
-            <a href="/#projects" class="nav-btn active" title="Projects">
-                <span class="nav-tooltip">Projects</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                </svg>
-            </a>
-
             <a href="/#blog" class="nav-btn" title="Blog">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/>
+                </svg>
                 <span class="nav-tooltip">Blog</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                    <polyline points="10 9 9 9 8 9"/>
-                </svg>
             </a>
-
+            <a href="/#projects" class="nav-btn active" title="Projects">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="currentColor"/>
+                </svg>
+                <span class="nav-tooltip">Projects</span>
+            </a>
             <a href="/#contact" class="nav-btn" title="Contact">
-                <span class="nav-tooltip">Contact</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
                 </svg>
+                <span class="nav-tooltip">Contact</span>
             </a>
+            <button class="nav-btn" data-target="hire" title="New Project" onclick="window.location.href='/#hire'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+                </svg>
+                <span class="nav-tooltip">New Project</span>
+            </button>
         </nav>
 
         <!-- Main Content -->

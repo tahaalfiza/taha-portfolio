@@ -29,19 +29,18 @@ function checkViewFromUrl() {
                 listViewBtn.click();
             }
         }, 100);
-    } else if (view === 'stage' || isMobile) {
-        // Switch to stage view - default for mobile, or explicitly requested
+    } else if (view === 'canvas' && !isMobile) {
+        // Explicitly requested canvas view (desktop only)
+        // Canvas view - no action needed as it's the initial HTML state
+    } else {
+        // Stage view is default for both mobile and desktop
         setTimeout(() => {
             const stageViewBtn = document.getElementById('stageViewBtn');
             if (stageViewBtn) {
                 stageViewBtn.click();
             }
         }, 100);
-    } else if (view === 'canvas') {
-        // Explicitly requested canvas view (desktop only)
-        // Canvas is already default, no action needed
     }
-    // No view specified on desktop - Canvas view is default
 }
 
 // Mobile uses Stage View with the main Canvas-style navbar

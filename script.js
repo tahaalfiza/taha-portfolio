@@ -21,16 +21,16 @@ function checkViewFromUrl() {
     const view = params.get('view');
     const isMobile = window.innerWidth <= 768;
 
-    if (view === 'list') {
-        // Switch to list view after a small delay (after canvas init)
+    if (view === 'list' && !isMobile) {
+        // Switch to list view after a small delay (desktop only)
         setTimeout(() => {
             const listViewBtn = document.getElementById('listViewBtn');
             if (listViewBtn) {
                 listViewBtn.click();
             }
         }, 100);
-    } else if (view === 'stage') {
-        // Switch to stage view after a small delay
+    } else if (view === 'stage' || isMobile) {
+        // Switch to stage view - default for mobile, or explicitly requested
         setTimeout(() => {
             const stageViewBtn = document.getElementById('stageViewBtn');
             if (stageViewBtn) {
@@ -38,121 +38,14 @@ function checkViewFromUrl() {
             }
         }, 100);
     } else if (view === 'canvas') {
-        // Explicitly requested canvas view
+        // Explicitly requested canvas view (desktop only)
         // Canvas is already default, no action needed
-    } else {
-        // No view specified - Canvas view is default for both mobile and desktop
-        // Mobile only supports Canvas view, desktop can switch between views
     }
+    // No view specified on desktop - Canvas view is default
 }
 
-// Initialize mobile navigation
-function initMobileNav() {
-    const isMobile = window.innerWidth <= 768;
-    if (!isMobile) return;
-
-    // Create mobile nav if it doesn't exist
-    if (!document.getElementById('mobileNav')) {
-        const mobileNav = document.createElement('div');
-        mobileNav.id = 'mobileNav';
-        mobileNav.className = 'mobile-nav';
-        mobileNav.innerHTML = `
-            <a href="#" class="mobile-nav-item active" data-section="home">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                <span>Home</span>
-            </a>
-            <a href="#" class="mobile-nav-item" data-section="about">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                <span>About</span>
-            </a>
-            <a href="#" class="mobile-nav-item" data-section="projects">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                </svg>
-                <span>Projects</span>
-            </a>
-            <a href="#" class="mobile-nav-item" data-section="blog">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                </svg>
-                <span>Blog</span>
-            </a>
-            <a href="#" class="mobile-nav-item" data-section="contact">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                <span>Contact</span>
-            </a>
-        `;
-        document.body.appendChild(mobileNav);
-
-        // Add click handlers
-        mobileNav.querySelectorAll('.mobile-nav-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const sectionId = item.dataset.section;
-                navigateToSection(sectionId);
-
-                // Update active state
-                mobileNav.querySelectorAll('.mobile-nav-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-    }
-}
-
-// Navigate to section (for mobile nav)
-function navigateToSection(sectionId) {
-    const section = document.getElementById(`section-${sectionId}`);
-    if (!section) return;
-
-    const canvas = document.getElementById('canvas');
-    const container = document.getElementById('canvasContainer');
-    if (!canvas || !container) return;
-
-    // Get canvas dimensions
-    const canvasWidth = 2800;
-    const canvasHeight = 2400;
-
-    // Get section position from its style
-    const sectionLeft = parseFloat(section.style.left) / 100 * canvasWidth;
-    const sectionTop = parseFloat(section.style.top) / 100 * canvasHeight;
-
-    // Get container dimensions
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
-
-    // Calculate scale to fit section nicely
-    const scale = 0.7;
-
-    // Calculate pan to center section
-    const panX = containerWidth / 2 - sectionLeft * scale;
-    const panY = containerHeight / 2 - sectionTop * scale;
-
-    // Apply transform with animation
-    canvas.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-    canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-
-    // Remove transition after animation
-    setTimeout(() => {
-        canvas.style.transition = '';
-    }, 500);
-}
-
-// Call mobile nav init after DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    initMobileNav();
-});
+// Mobile uses Stage View with the main Canvas-style navbar
+// No separate mobile nav needed - the main navbar handles navigation
 
 // Handle window resize to suggest view change
 let lastWindowWidth = window.innerWidth;

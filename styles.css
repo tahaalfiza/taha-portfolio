@@ -4704,86 +4704,64 @@ a {
         gap: 4px;
     }
 
-    /* Hide zoom controls completely on mobile - only Canvas view available */
-    .zoom-controls {
-        display: none;
-    }
-
-    /* Hide list and stage views on mobile */
-    .list-view,
-    .stage-view {
+    /* Hide loading screen on mobile */
+    .loading-screen {
         display: none !important;
     }
 
-    /* Ensure canvas view is always visible on mobile */
+    /* Hide zoom controls on mobile */
+    .zoom-controls {
+        display: none !important;
+    }
+
+    /* Hide view switcher on mobile - Stage View only */
+    .view-switcher {
+        display: none !important;
+    }
+
+    /* Hide list and canvas views on mobile - Stage View is default */
+    .list-view,
     .canvas-view {
-        display: block !important;
+        display: none !important;
     }
 
-    /* Hide minimap on mobile - use nav instead */
+    /* Ensure stage view is always visible on mobile */
+    .stage-view {
+        display: flex !important;
+    }
+
+    /* Hide minimap on mobile */
     .minimap {
-        display: none;
+        display: none !important;
     }
 
-    /* Mobile Navigation Bar */
+    /* Hide separate mobile nav - use main navbar */
     .mobile-nav {
+        display: none !important;
+    }
+
+    /* Ensure main navbar shows on mobile - floating style */
+    .navbar {
+        display: flex !important;
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 70px;
-        background: var(--bg-primary);
-        border-top: 1px solid var(--border-light);
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 0 8px;
-        padding-bottom: env(safe-area-inset-bottom);
-        z-index: 1000;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-light);
+        border-radius: 16px;
+        z-index: 1000;
     }
 
-    [data-theme="dark"] .mobile-nav {
-        background: rgba(0, 0, 0, 0.95);
+    [data-theme="dark"] .navbar {
+        background: rgba(17, 17, 17, 0.95);
     }
 
-    .mobile-nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        text-decoration: none;
-        color: var(--text-muted);
-        transition: all 0.2s ease;
-        min-width: 56px;
-    }
-
-    .mobile-nav-item svg {
-        width: 22px;
-        height: 22px;
-    }
-
-    .mobile-nav-item span {
-        font-size: 10px;
-        font-weight: 500;
-    }
-
-    .mobile-nav-item.active {
-        color: var(--text-primary);
-        background: var(--bg-secondary);
-    }
-
-    .mobile-nav-item:active {
-        transform: scale(0.95);
-    }
-
-    /* Add bottom padding to canvas container for mobile nav */
+    /* No extra padding needed for canvas container */
     #canvasContainer {
-        padding-bottom: 70px;
+        padding-bottom: 0;
     }
 
     /* Canvas sections - Mobile optimized */
@@ -5195,7 +5173,7 @@ a {
 .overlay-close {
     width: 44px;
     height: 44px;
-    background: var(--bg-hover);
+    background: transparent;
     border: 1px solid var(--border-light);
     border-radius: 12px;
     display: flex;
@@ -5203,7 +5181,7 @@ a {
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--text-primary);
+    color: var(--text-secondary);
     text-decoration: none;
 }
 

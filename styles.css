@@ -377,25 +377,104 @@ a {
     margin: 0 4px;
 }
 
-.zoom-btn.view-toggle {
-    position: relative;
-}
-
-.zoom-btn.view-toggle .icon-canvas {
-    display: none;
-}
-
-.zoom-btn.view-toggle.active .icon-list {
-    display: none;
-}
-
-.zoom-btn.view-toggle.active .icon-canvas {
-    display: block;
-}
-
 .zoom-btn svg {
     width: 16px;
     height: 16px;
+}
+
+/* View Sprites */
+.view-sprites {
+    display: flex;
+    gap: 6px;
+}
+
+.view-sprite {
+    width: 44px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-light);
+    border-radius: 6px;
+    cursor: none;
+    transition: all var(--transition-fast);
+    padding: 4px;
+}
+
+.view-sprite:hover {
+    border-color: var(--accent-primary);
+    transform: scale(1.05);
+}
+
+.view-sprite.active {
+    border-color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.sprite-preview {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Canvas sprite - scattered dots like infinite canvas */
+.canvas-sprite {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.canvas-sprite .sprite-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--text-muted);
+    border-radius: 50%;
+}
+
+.view-sprite.active .canvas-sprite .sprite-dot {
+    background: var(--accent-primary);
+}
+
+.view-sprite:hover .canvas-sprite .sprite-dot {
+    background: var(--accent-primary);
+}
+
+/* List sprite - horizontal lines */
+.list-sprite {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 2px;
+}
+
+.list-sprite .sprite-line {
+    height: 3px;
+    background: var(--text-muted);
+    border-radius: 2px;
+}
+
+.list-sprite .sprite-line:nth-child(1) {
+    width: 100%;
+}
+
+.list-sprite .sprite-line:nth-child(2) {
+    width: 80%;
+}
+
+.list-sprite .sprite-line:nth-child(3) {
+    width: 60%;
+}
+
+.view-sprite.active .list-sprite .sprite-line {
+    background: var(--accent-primary);
+}
+
+.view-sprite:hover .list-sprite .sprite-line {
+    background: var(--accent-primary);
 }
 
 /* ==========================================

@@ -23,9 +23,9 @@ function checkViewFromUrl() {
     if (view === 'list') {
         // Switch to list view after a small delay (after canvas init)
         setTimeout(() => {
-            const viewToggle = document.getElementById('viewToggle');
-            if (viewToggle) {
-                viewToggle.click();
+            const listViewBtn = document.getElementById('listViewBtn');
+            if (listViewBtn) {
+                listViewBtn.click();
             }
         }, 100);
     }
@@ -645,43 +645,52 @@ function initZoomControls() {
     document.getElementById('zoomOut')?.addEventListener('click', () => window.zoomOut?.());
     document.getElementById('zoomReset')?.addEventListener('click', () => window.resetZoom?.());
 
-    // View toggle button
-    const viewToggle = document.getElementById('viewToggle');
+    // View sprite buttons
+    const canvasViewBtn = document.getElementById('canvasViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
     const listView = document.getElementById('listView');
     const canvasContainer = document.getElementById('canvasContainer');
     const minimap = document.getElementById('minimap');
     const navbar = document.querySelector('.navbar');
     const zoomControls = document.querySelector('.zoom-controls');
 
-    if (viewToggle && listView) {
-        viewToggle.addEventListener('click', () => {
-            const isListViewActive = listView.classList.contains('active');
+    // Function to switch to canvas view
+    function switchToCanvasView() {
+        listView?.classList.remove('active');
+        canvasContainer.style.display = 'block';
+        minimap?.style.setProperty('display', 'block');
+        navbar?.style.setProperty('display', 'flex');
+        canvasViewBtn?.classList.add('active');
+        listViewBtn?.classList.remove('active');
+        document.body.style.overflow = 'hidden';
+        // Update URL to clean URL format
+        history.pushState({}, '', '/view_1/');
+    }
 
-            if (isListViewActive) {
-                // Switch to canvas view
-                listView.classList.remove('active');
-                canvasContainer.style.display = 'block';
-                minimap?.style.setProperty('display', 'block');
-                navbar?.style.setProperty('display', 'flex');
-                viewToggle.classList.remove('active');
-                document.body.style.overflow = 'hidden';
-                // Update URL to clean URL format
-                history.pushState({}, '', '/view_1/');
-            } else {
-                // Switch to list view
-                listView.classList.add('active');
-                canvasContainer.style.display = 'none';
-                minimap?.style.setProperty('display', 'none');
-                // Keep navbar visible in list view
-                navbar?.style.setProperty('display', 'flex');
-                viewToggle.classList.add('active');
-                document.body.style.overflow = 'auto';
-                // Load list view content if not already loaded
-                initListViewContent();
-                // Update URL to clean URL format
-                history.pushState({}, '', '/view_2/');
-            }
-        });
+    // Function to switch to list view
+    function switchToListView() {
+        listView?.classList.add('active');
+        canvasContainer.style.display = 'none';
+        minimap?.style.setProperty('display', 'none');
+        // Keep navbar visible in list view
+        navbar?.style.setProperty('display', 'flex');
+        listViewBtn?.classList.add('active');
+        canvasViewBtn?.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        // Load list view content if not already loaded
+        initListViewContent();
+        // Update URL to clean URL format
+        history.pushState({}, '', '/view_2/');
+    }
+
+    // Canvas view button click
+    if (canvasViewBtn) {
+        canvasViewBtn.addEventListener('click', switchToCanvasView);
+    }
+
+    // List view button click
+    if (listViewBtn && listView) {
+        listViewBtn.addEventListener('click', switchToListView);
     }
 
     // List view form submission

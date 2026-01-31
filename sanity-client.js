@@ -1536,14 +1536,16 @@ function renderContactInfo(contact) {
   }
 }
 
-// Fetch site settings (favicon, title, OG image)
+// Fetch site settings (favicon, title, OG image, avatar)
 async function fetchSiteSettings() {
   const query = `*[_type == "siteSettings"][0] {
     title,
     description,
     ogImage,
     favicon,
-    appleTouchIcon
+    appleTouchIcon,
+    avatar,
+    avatarAlt
   }`;
 
   try {
@@ -1619,6 +1621,51 @@ function applySiteSettings(settings) {
       document.head.appendChild(ogImage);
     }
     ogImage.content = ogImageUrl;
+  }
+
+  // Update avatar across all pages
+  if (settings.avatar && settings.avatar.asset) {
+    const avatarUrl = sanityImageUrl(settings.avatar, 200, 100);
+    const avatarAlt = settings.avatarAlt || 'Avatar';
+
+    // Update all avatar elements (loader, hero logos, etc.)
+    const avatarSelectors = [
+      '.loader-logo img',           // Loader avatar
+      '.hero-logo img',             // Canvas view hero avatar
+      '.list-hero-logo img',        // List view hero avatar
+      '.stage-hero-logo img',       // Stage view hero avatar
+      '[data-avatar]'               // Any element with data-avatar attribute
+    ];
+
+    avatarSelectors.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(el => {
+        if (el.tagName === 'IMG') {
+          el.src = avatarUrl;
+          el.alt = avatarAlt;
+        }
+      });
+    });
+
+    // For SVG containers, replace with image
+    const svgAvatarContainers = document.querySelectorAll('.loader-logo, .hero-logo, .list-hero-logo, .stage-hero-logo');
+    svgAvatarContainers.forEach(container => {
+      // Check if it contains an SVG (default avatar)
+      const svg = container.querySelector('svg');
+      if (svg) {
+        // Create image element to replace SVG
+        const img = document.createElement('img');
+        img.src = avatarUrl;
+        img.alt = avatarAlt;
+        img.style.width = svg.getAttribute('width') ? svg.getAttribute('width') + 'px' : '80px';
+        img.style.height = svg.getAttribute('height') ? svg.getAttribute('height') + 'px' : '80px';
+        img.style.borderRadius = '50%';
+        img.style.objectFit = 'cover';
+        svg.replaceWith(img);
+      }
+    });
+
+    console.log('Avatar applied to all pages');
   }
 
   console.log('Site settings applied:', settings.title);

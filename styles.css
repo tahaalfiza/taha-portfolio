@@ -4792,10 +4792,11 @@ a {
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
-    /* Hide Home, Blog, and Hire buttons on mobile - only show About, Projects, Contact */
+    /* Hide Home, Blog, Hire, and Contact buttons on mobile - only show About and Projects */
     .nav-btn[data-target="home"],
     .nav-btn[data-target="blog"],
-    .nav-btn[data-target="hire"] {
+    .nav-btn[data-target="hire"],
+    .nav-btn[data-target="contact"] {
         display: none !important;
     }
 
@@ -5321,6 +5322,44 @@ a {
     .mobile-cv-btn svg {
         width: 18px;
         height: 18px;
+    }
+
+    /* Mobile Contact Links */
+    .mobile-contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 24px;
+        padding-bottom: 100px;
+    }
+
+    .mobile-contact-link {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 20px;
+        background: var(--bg-secondary, #f5f5f5);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.2s ease;
+    }
+
+    .mobile-contact-link:active {
+        transform: scale(0.98);
+        opacity: 0.8;
+    }
+
+    .mobile-contact-link svg {
+        width: 22px;
+        height: 22px;
+        color: var(--text-secondary);
+        flex-shrink: 0;
+    }
+
+    .mobile-contact-link span {
+        font-size: 16px;
+        font-weight: 500;
     }
 
     /* =============================================

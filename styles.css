@@ -1196,7 +1196,14 @@ a {
 .highlight-orange { background: #FFCC80; padding: 2px 4px; border-radius: 3px; }
 .highlight-purple { background: #CE93D8; padding: 2px 4px; border-radius: 3px; }
 
-/* Stage Projects Section - Use same finder-window as View 1 */
+/* Stage Projects Section - transparent background, just show finder */
+.stage-content:has(.stage-projects) {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
 .stage-view .stage-projects {
     height: 100%;
     display: flex;
@@ -1204,15 +1211,16 @@ a {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    overflow: visible;
 }
 
-/* Let finder-window use its default styling from View 1 */
+/* Finder window in Stage View - same as View 1 */
 .stage-view .stage-projects .finder-window {
-    width: 100%;
-    max-width: 900px;
-    min-width: auto;
-    height: auto;
-    max-height: calc(100vh - 220px);
+    width: auto;
+    min-width: 900px;
+    max-width: 1000px;
+    height: 580px;
+    max-height: calc(100vh - 200px);
 }
 
 /* Stage Blog Section */
@@ -1377,7 +1385,15 @@ a {
     }
 
     .stage-view .stage-projects .finder-window {
-        max-height: calc(100vh - 180px);
+        min-width: auto;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: calc(100vh - 160px);
+    }
+
+    .stage-view .stage-projects .finder-sidebar {
+        display: none;
     }
 
     /* Stage Blog mobile */

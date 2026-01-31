@@ -701,7 +701,7 @@ function initZoomControls() {
     function switchToStageView() {
         clearAllViews();
         stageView?.classList.add('active');
-        navbar?.style.setProperty('display', 'flex');
+        navbar?.style.setProperty('display', 'none'); // Hide navbar in stage view
         stageViewBtn?.classList.add('active');
         document.body.style.overflow = 'hidden';
         initStageView();
@@ -754,13 +754,75 @@ function initZoomControls() {
 let stageViewInitialized = false;
 let currentStageSection = 'home';
 
+// Section icons - EXACT same as navbar (filled style)
+const sectionIcons = {
+    home: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z" fill="currentColor"/>
+    </svg>`,
+    about: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="4" fill="currentColor"/>
+        <path d="M12 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" fill="currentColor"/>
+    </svg>`,
+    projects: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="currentColor"/>
+    </svg>`,
+    blog: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/>
+    </svg>`,
+    contact: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
+    </svg>`
+};
+
+// Map sections to their canvas element selectors for cloning
+const sectionSelectors = {
+    home: '#section-home .hero-section',
+    about: '#section-about .about-card-modern',
+    projects: '#section-projects .finder-window',
+    blog: '#section-blog .notes-app-window',
+    contact: '#section-contact .contact-section'
+};
+
+const sectionNames = {
+    home: 'Home',
+    about: 'About',
+    projects: 'Projects',
+    blog: 'Blog',
+    contact: 'Contact'
+};
+
 function initStageView() {
     const stageContent = document.getElementById('stageContent');
-    const stageThumbs = document.querySelectorAll('.stage-thumb');
+    const stageSidebar = document.getElementById('stageSidebar');
 
-    if (!stageContent) return;
+    if (!stageContent || !stageSidebar) return;
 
-    // Set up thumbnail click handlers
+    // Generate sidebar thumbnails with mini previews
+    generateStageThumbnails(stageSidebar);
+
+    // Load initial section
+    if (!stageViewInitialized) {
+        setActiveStageSection('home');
+        stageViewInitialized = true;
+    }
+}
+
+function generateStageThumbnails(sidebar) {
+    const sections = ['home', 'about', 'projects', 'blog', 'contact'];
+
+    sidebar.innerHTML = sections.map((section, index) => `
+        <div class="stage-thumb ${index === 0 ? 'active' : ''}" data-section="${section}">
+            <div class="thumb-preview">
+                <div class="thumb-content" id="thumbContent-${section}">
+                    <!-- Mini preview will be rendered here -->
+                </div>
+            </div>
+            <div class="thumb-tooltip">${sectionNames[section]}</div>
+        </div>
+    `).join('');
+
+    // Set up click handlers
+    const stageThumbs = sidebar.querySelectorAll('.stage-thumb');
     stageThumbs.forEach(thumb => {
         thumb.addEventListener('click', () => {
             const section = thumb.dataset.section;
@@ -772,10 +834,43 @@ function initStageView() {
         });
     });
 
-    // Load initial section
-    if (!stageViewInitialized) {
-        setActiveStageSection('home');
-        stageViewInitialized = true;
+    // Clone actual section content for each thumbnail
+    sections.forEach(section => {
+        cloneSectionForThumb(section);
+    });
+}
+
+function cloneSectionForThumb(section) {
+    const thumbContent = document.getElementById(`thumbContent-${section}`);
+    const thumbPreview = thumbContent?.parentElement;
+    if (!thumbContent || !thumbPreview) return;
+
+    const selector = sectionSelectors[section];
+    const originalSection = document.querySelector(selector);
+
+    if (originalSection) {
+        // Clone the actual section content
+        const clone = originalSection.cloneNode(true);
+
+        // Reset positioning but keep original structure
+        clone.style.pointerEvents = 'none';
+        clone.style.transform = 'none';
+        clone.style.position = 'relative';
+        clone.style.left = 'auto';
+        clone.style.top = 'auto';
+        clone.style.margin = '0';
+        clone.style.boxShadow = 'none';
+
+        thumbContent.appendChild(clone);
+
+        // Calculate the scaled dimensions to size the preview container
+        const scale = 0.28;
+        const originalWidth = originalSection.offsetWidth || 400;
+        const originalHeight = originalSection.offsetHeight || 300;
+
+        // Set the preview container to match scaled dimensions
+        thumbPreview.style.width = (originalWidth * scale) + 'px';
+        thumbPreview.style.height = (originalHeight * scale) + 'px';
     }
 }
 

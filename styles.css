@@ -626,7 +626,7 @@ a {
     background: var(--bg-primary);
     z-index: 900;
     display: none;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .stage-view.active {
@@ -635,59 +635,112 @@ a {
 
 /* Stage Sidebar - Left thumbnails */
 .stage-sidebar {
-    width: 140px;
-    min-width: 140px;
+    width: 280px;
+    min-width: 280px;
     height: 100%;
-    padding: 100px 16px 100px 16px;
+    padding: 40px 100px 40px 40px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 24px;
     overflow-y: auto;
     background: transparent;
 }
 
+/* Stage Thumb - macOS Stage Manager Style with Mini Preview */
 .stage-thumb {
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: var(--bg-card);
-    border-radius: 12px;
-    border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
+    overflow: visible;
+}
+
+/* Mini Preview Container - Keeps original aspect ratio */
+.thumb-preview {
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: perspective(800px) rotateY(-8deg) translateX(6px);
+    transform-origin: left center;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.stage-thumb:hover {
-    transform: scale(1.05);
+/* Mini section content - scaled down keeping exact original structure */
+.thumb-content {
+    transform: scale(0.28);
+    transform-origin: top left;
+    pointer-events: none;
+}
+
+/* Remove shadows from cloned elements to keep it clean */
+.thumb-content > * {
+    box-shadow: none !important;
+}
+
+/* Icon Badge - Hidden */
+.thumb-icon-badge {
+    display: none;
+}
+
+/* Tooltip - Shows section name on hover */
+.thumb-tooltip {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 16px;
+    background: rgba(30, 30, 30, 0.95);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+    pointer-events: none;
+}
+
+.thumb-tooltip::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-right-color: rgba(30, 30, 30, 0.95);
+}
+
+/* Hover state */
+.stage-thumb:hover .thumb-preview {
+    transform: perspective(800px) rotateY(-4deg) translateX(4px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.stage-thumb:hover .thumb-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Active state */
+.stage-thumb.active .thumb-preview {
+    transform: perspective(800px) rotateY(0deg) translateX(0) scale(1.05);
     border-color: var(--accent-primary);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
 }
 
-.stage-thumb.active {
-    border-color: var(--accent-primary);
-    background: rgba(99, 102, 241, 0.1);
-    transform: scale(1.02);
+.stage-thumb.active .thumb-icon-badge {
+    background: var(--accent-primary);
 }
 
-.thumb-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.stage-thumb.active .thumb-label {
-    color: var(--accent-primary);
-}
-
-.stage-thumb:hover .thumb-label {
-    color: var(--accent-primary);
+.stage-thumb.active .thumb-icon-badge svg {
+    color: white;
 }
 
 /* Stage Main - Center content */

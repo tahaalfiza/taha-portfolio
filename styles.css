@@ -4778,19 +4778,19 @@ a {
         left: 50% !important;
         transform: translateX(-50%) !important;
         z-index: 9999 !important;
-        padding: 12px 32px !important;
-        gap: 40px !important;
-        border-radius: 24px !important;
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(20px) !important;
-        -webkit-backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(0, 0, 0, 0.08) !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.98) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border: none !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15) !important;
     }
 
     [data-theme="dark"] .navbar {
-        background: rgba(30, 30, 30, 0.95) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background: rgba(40, 40, 40, 0.98) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
     }
 
     /* Hide Home, Blog, Hire, and Contact buttons on mobile - only show About and Projects */
@@ -4801,33 +4801,43 @@ a {
         display: none !important;
     }
 
-    /* Nav buttons with labels */
+    /* Nav buttons with icon + label side by side */
     .nav-btn {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
         width: auto !important;
         height: auto !important;
-        padding: 8px 0 !important;
-        border-radius: 12px !important;
-        flex-direction: column !important;
-        gap: 4px !important;
+        padding: 12px 20px !important;
+        border-radius: 14px !important;
         background: transparent !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .nav-btn.active {
+        background: var(--bg-secondary, #f0f0f0) !important;
+    }
+
+    [data-theme="dark"] .nav-btn.active {
+        background: rgba(255, 255, 255, 0.1) !important;
     }
 
     .nav-btn svg {
-        width: 26px !important;
-        height: 26px !important;
+        width: 22px !important;
+        height: 22px !important;
+        flex-shrink: 0 !important;
     }
 
-    /* Show labels on mobile */
+    /* Show labels next to icons on mobile */
     .nav-btn::after {
         content: attr(data-target);
-        font-size: 11px;
-        font-weight: 500;
+        font-size: 15px;
+        font-weight: 600;
         text-transform: capitalize;
-        color: var(--text-secondary);
-    }
-
-    .nav-btn.active::after {
         color: var(--text-primary);
+        letter-spacing: -0.01em;
     }
 
     .nav-tooltip {
@@ -4887,30 +4897,34 @@ a {
         background: transparent !important;
     }
 
-    /* Stage content wrapper - allow scrolling on mobile */
+    /* Stage content wrapper - smooth scrolling on mobile */
     .stage-content {
         overflow-x: hidden !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
         max-height: none !important;
         height: 100vh !important;
+        height: 100dvh !important;
         border-radius: 0 !important;
         background: var(--bg-primary) !important;
         box-shadow: none !important;
     }
 
-    /* Stage content - scrollable */
+    /* Stage content - smooth scrollable */
     #stageContent {
         overflow-x: hidden !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
         height: 100vh !important;
+        height: 100dvh !important;
         padding-bottom: 120px !important;
         touch-action: pan-y !important;
     }
 
     #stageContent .stage-content-inner {
-        transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.25s ease;
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         overflow: visible !important;
         height: auto !important;
     }
@@ -5385,22 +5399,18 @@ a {
        MOBILE PROJECTS - 2 Column Grid Layout
        ============================================= */
 
-    /* Projects section layout - title on top */
+    /* Projects section layout */
     .stage-projects {
-        display: flex !important;
-        flex-direction: column !important;
+        display: block !important;
+        position: relative !important;
     }
 
+    /* Sticky header at top */
     .stage-projects .mobile-filter-header {
-        order: -2 !important;
-    }
-
-    .stage-projects .mobile-category-filter {
-        order: -1 !important;
-    }
-
-    .stage-projects .finder-window {
-        order: 0 !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        background: var(--bg-primary) !important;
     }
 
     /* Hide finder window chrome on mobile */
@@ -5560,43 +5570,49 @@ a {
         color: white !important;
     }
 
-    /* Mobile Filter Header for Projects */
+    /* Mobile Filter Header for Projects - Sticky at top */
     .mobile-filter-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 20px 16px;
+        padding: 16px 20px;
         position: sticky;
         top: 0;
-        background: transparent;
-        z-index: 10;
+        background: var(--bg-primary) !important;
+        z-index: 100;
+        margin: 0;
     }
 
     .mobile-section-title {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 700;
         color: var(--text-primary);
         margin: 0;
+        text-align: left;
     }
 
     .mobile-filter-btn {
         display: flex;
         align-items: center;
-        gap: 6px;
-        padding: 10px 14px;
-        background: var(--bg-secondary, rgba(128, 128, 128, 0.1));
-        border: 1px solid var(--border-light, rgba(128, 128, 128, 0.2));
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 500;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        background: var(--bg-secondary, #f0f0f0);
+        border: none;
+        border-radius: 12px;
         color: var(--text-secondary);
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
+    .mobile-filter-btn:active {
+        transform: scale(0.95);
+    }
+
     .mobile-filter-btn svg {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
     }
 
     .mobile-filter-btn .filter-label {

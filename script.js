@@ -1654,84 +1654,145 @@ function setActiveStageSection(section) {
             break;
 
         case 'about':
-            content = `
-                <div class="stage-content-inner">
-                    <div class="stage-section stage-about">
-                        <div class="about-card-modern" style="position: relative;">
-                            <!-- Text Format Toolbar -->
-                            <div class="text-format-toolbar" id="textFormatToolbar">
-                                <button class="format-btn" data-format="bold" title="Bold">
-                                    <strong>B</strong>
-                                </button>
-                                <button class="format-btn" data-format="italic" title="Italic">
-                                    <em>I</em>
-                                </button>
-                                <button class="format-btn" data-format="underline" title="Underline">
-                                    <span style="text-decoration: underline;">U</span>
-                                </button>
-                                <button class="format-btn" data-format="strikethrough" title="Strikethrough">
-                                    <span style="text-decoration: line-through;">S</span>
-                                </button>
-                                <div class="format-divider"></div>
-                                <!-- Font Size Controls -->
-                                <div class="size-control-group">
-                                    <button class="format-btn size-decrease" data-format="size-decrease" title="Decrease Size">
-                                        <span style="font-size: 10px;">A</span>
-                                    </button>
-                                    <span class="size-display" id="sizeDisplay">16px</span>
-                                    <button class="format-btn size-increase" data-format="size-increase" title="Increase Size">
-                                        <span style="font-size: 14px;">A</span>
-                                    </button>
+            const isMobileAbout = window.innerWidth <= 768;
+            if (isMobileAbout) {
+                // Full about content for mobile - no CTA needed
+                content = `
+                    <div class="stage-content-inner">
+                        <div class="stage-section stage-about mobile-full-about">
+                            <div class="mobile-about-content">
+                                <!-- Profile Header -->
+                                <div class="mobile-about-header">
+                                    <div class="mobile-profile-photo">
+                                        <img src="taha-photo.jpg" alt="Taha Alfiza">
+                                    </div>
+                                    <div class="mobile-profile-info">
+                                        <h1 class="mobile-profile-name">Taha Alfiza</h1>
+                                        <p class="mobile-profile-title">Brand & Product Designer</p>
+                                        <p class="mobile-profile-location">Istanbul, Turkey</p>
+                                    </div>
                                 </div>
-                                <div class="format-divider"></div>
-                                <!-- Text Color -->
-                                <div class="color-control-group">
-                                    <div class="color-preview" id="textColorPreview" style="background: #000000;" title="Text Color"></div>
-                                    <input type="color" id="textColorPicker" value="#000000" class="color-picker-input">
-                                    <input type="text" id="textColorHex" class="color-hex-input" value="#000000" placeholder="#000000" maxlength="7">
+
+                                <!-- Bio -->
+                                <div class="mobile-about-section">
+                                    <p class="mobile-about-bio" id="mobileBioText">
+                                        I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products. Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
+                                    </p>
                                 </div>
-                                <div class="format-divider"></div>
-                                <!-- Highlight Colors -->
-                                <button class="format-btn color-btn" data-format="highlight-yellow" title="Yellow Highlight" style="background: #FFEB3B;"></button>
-                                <button class="format-btn color-btn" data-format="highlight-green" title="Green Highlight" style="background: #A5D6A7;"></button>
-                                <button class="format-btn color-btn" data-format="highlight-blue" title="Blue Highlight" style="background: #90CAF9;"></button>
-                                <button class="format-btn color-btn" data-format="highlight-pink" title="Pink Highlight" style="background: #F48FB1;"></button>
-                                <button class="format-btn color-btn" data-format="highlight-orange" title="Orange Highlight" style="background: #FFCC80;"></button>
-                                <button class="format-btn color-btn" data-format="highlight-purple" title="Purple Highlight" style="background: #CE93D8;"></button>
-                                <div class="format-divider"></div>
-                                <button class="format-btn" data-format="removeFormat" title="Clear Formatting">
-                                    <span style="font-size: 11px;">✕</span>
-                                </button>
+
+                                <!-- Experience -->
+                                <div class="mobile-about-section">
+                                    <h2 class="mobile-section-title">Experience</h2>
+                                    <div class="mobile-experience-list" id="mobileExperienceList">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Education -->
+                                <div class="mobile-about-section">
+                                    <h2 class="mobile-section-title">Education</h2>
+                                    <div class="mobile-education-list" id="mobileEducationList">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                </div>
+
+                                <!-- CV Button -->
+                                <a href="/cv" target="_blank" class="mobile-cv-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                    View CV
+                                </a>
                             </div>
-
-                            <!-- Photo at top left -->
-                            <div class="about-photo-topleft">
-                                <img src="taha-photo.jpg" alt="Taha Alfiza">
-                            </div>
-
-                            <!-- Country flags -->
-                            <div class="about-flags">
-                                <span class="flag-item" title="Iraq">🇮🇶</span>
-                                <span class="flag-item" title="Turkey">🇹🇷</span>
-                            </div>
-
-                            <!-- Bio text - editable -->
-                            <p class="about-bio-text" contenteditable="true" id="stageBioText1">
-                                I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.
-                            </p>
-                            <p class="about-bio-text" contenteditable="true" id="stageBioText2">
-                                Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
-                            </p>
-
-                            <button class="about-cta-outline" onclick="handleAboutClick();">
-                                <span>See More</span>
-                            </button>
                         </div>
                     </div>
-                </div>
-            `;
-            // Initialize text formatting after content is added
-            setTimeout(() => initTextFormatting(), 100);
+                `;
+                // Populate experience and education after content is added
+                setTimeout(() => populateMobileAboutData(), 100);
+            } else {
+                // Desktop version with CTA
+                content = `
+                    <div class="stage-content-inner">
+                        <div class="stage-section stage-about">
+                            <div class="about-card-modern" style="position: relative;">
+                                <!-- Text Format Toolbar -->
+                                <div class="text-format-toolbar" id="textFormatToolbar">
+                                    <button class="format-btn" data-format="bold" title="Bold">
+                                        <strong>B</strong>
+                                    </button>
+                                    <button class="format-btn" data-format="italic" title="Italic">
+                                        <em>I</em>
+                                    </button>
+                                    <button class="format-btn" data-format="underline" title="Underline">
+                                        <span style="text-decoration: underline;">U</span>
+                                    </button>
+                                    <button class="format-btn" data-format="strikethrough" title="Strikethrough">
+                                        <span style="text-decoration: line-through;">S</span>
+                                    </button>
+                                    <div class="format-divider"></div>
+                                    <!-- Font Size Controls -->
+                                    <div class="size-control-group">
+                                        <button class="format-btn size-decrease" data-format="size-decrease" title="Decrease Size">
+                                            <span style="font-size: 10px;">A</span>
+                                        </button>
+                                        <span class="size-display" id="sizeDisplay">16px</span>
+                                        <button class="format-btn size-increase" data-format="size-increase" title="Increase Size">
+                                            <span style="font-size: 14px;">A</span>
+                                        </button>
+                                    </div>
+                                    <div class="format-divider"></div>
+                                    <!-- Text Color -->
+                                    <div class="color-control-group">
+                                        <div class="color-preview" id="textColorPreview" style="background: #000000;" title="Text Color"></div>
+                                        <input type="color" id="textColorPicker" value="#000000" class="color-picker-input">
+                                        <input type="text" id="textColorHex" class="color-hex-input" value="#000000" placeholder="#000000" maxlength="7">
+                                    </div>
+                                    <div class="format-divider"></div>
+                                    <!-- Highlight Colors -->
+                                    <button class="format-btn color-btn" data-format="highlight-yellow" title="Yellow Highlight" style="background: #FFEB3B;"></button>
+                                    <button class="format-btn color-btn" data-format="highlight-green" title="Green Highlight" style="background: #A5D6A7;"></button>
+                                    <button class="format-btn color-btn" data-format="highlight-blue" title="Blue Highlight" style="background: #90CAF9;"></button>
+                                    <button class="format-btn color-btn" data-format="highlight-pink" title="Pink Highlight" style="background: #F48FB1;"></button>
+                                    <button class="format-btn color-btn" data-format="highlight-orange" title="Orange Highlight" style="background: #FFCC80;"></button>
+                                    <button class="format-btn color-btn" data-format="highlight-purple" title="Purple Highlight" style="background: #CE93D8;"></button>
+                                    <div class="format-divider"></div>
+                                    <button class="format-btn" data-format="removeFormat" title="Clear Formatting">
+                                        <span style="font-size: 11px;">✕</span>
+                                    </button>
+                                </div>
+
+                                <!-- Photo at top left -->
+                                <div class="about-photo-topleft">
+                                    <img src="taha-photo.jpg" alt="Taha Alfiza">
+                                </div>
+
+                                <!-- Country flags -->
+                                <div class="about-flags">
+                                    <span class="flag-item" title="Iraq">🇮🇶</span>
+                                    <span class="flag-item" title="Turkey">🇹🇷</span>
+                                </div>
+
+                                <!-- Bio text - editable -->
+                                <p class="about-bio-text" contenteditable="true" id="stageBioText1">
+                                    I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.
+                                </p>
+                                <p class="about-bio-text" contenteditable="true" id="stageBioText2">
+                                    Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
+                                </p>
+
+                                <button class="about-cta-outline" onclick="handleAboutClick();">
+                                    <span>See More</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                // Initialize text formatting after content is added
+                setTimeout(() => initTextFormatting(), 100);
+            }
             break;
 
         case 'projects':
@@ -2690,6 +2751,45 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Populate mobile about section with experience and education data
+function populateMobileAboutData() {
+    // Populate bio from Sanity data if available
+    if (window.aboutInfo) {
+        const bioEl = document.getElementById('mobileBioText');
+        if (bioEl && window.aboutInfo.shortBio) {
+            bioEl.innerHTML = window.aboutInfo.shortBio;
+        }
+    }
+
+    // Populate experience
+    const expList = document.getElementById('mobileExperienceList');
+    if (expList && window.experienceData && window.experienceData.length > 0) {
+        expList.innerHTML = window.experienceData.map(exp => `
+            <div class="mobile-exp-item">
+                <div class="mobile-exp-header">
+                    <h3 class="mobile-exp-role">${exp.role || ''}</h3>
+                    <span class="mobile-exp-date">${exp.duration || ''}</span>
+                </div>
+                <p class="mobile-exp-company">${exp.company || ''}</p>
+            </div>
+        `).join('');
+    }
+
+    // Populate education
+    const eduList = document.getElementById('mobileEducationList');
+    if (eduList && window.educationData && window.educationData.length > 0) {
+        eduList.innerHTML = window.educationData.map(edu => `
+            <div class="mobile-edu-item">
+                <div class="mobile-edu-header">
+                    <h3 class="mobile-edu-degree">${edu.degree || ''}</h3>
+                    <span class="mobile-edu-date">${edu.year || ''}</span>
+                </div>
+                <p class="mobile-edu-school">${edu.school || ''}</p>
+            </div>
+        `).join('');
+    }
+}
 
 // Text formatting toolbar for About section in Stage View
 function initTextFormatting() {

@@ -5184,8 +5184,166 @@ a {
     }
 
     /* =============================================
+       MOBILE FULL ABOUT SECTION
+       ============================================= */
+    .mobile-full-about {
+        padding: 20px !important;
+    }
+
+    .mobile-about-content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .mobile-about-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .mobile-profile-photo {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .mobile-profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .mobile-profile-info {
+        flex: 1;
+    }
+
+    .mobile-profile-name {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+        color: var(--text-primary);
+    }
+
+    .mobile-profile-title {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 0 0 2px 0;
+    }
+
+    .mobile-profile-location {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin: 0;
+    }
+
+    .mobile-about-section {
+        padding: 0;
+    }
+
+    .mobile-about-section .mobile-section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 12px 0;
+    }
+
+    .mobile-about-bio {
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .mobile-experience-list,
+    .mobile-education-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .mobile-exp-item,
+    .mobile-edu-item {
+        padding: 16px;
+        background: var(--bg-secondary, #f5f5f5);
+        border-radius: 12px;
+    }
+
+    .mobile-exp-header,
+    .mobile-edu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    .mobile-exp-role,
+    .mobile-edu-degree {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+        flex: 1;
+    }
+
+    .mobile-exp-date,
+    .mobile-edu-date {
+        font-size: 12px;
+        color: var(--text-tertiary);
+        white-space: nowrap;
+    }
+
+    .mobile-exp-company,
+    .mobile-edu-school {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .mobile-cv-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 24px;
+        background: var(--text-primary);
+        color: var(--bg-primary);
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 8px;
+    }
+
+    .mobile-cv-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* =============================================
        MOBILE PROJECTS - 2 Column Grid Layout
        ============================================= */
+
+    /* Projects section layout - title on top */
+    .stage-projects {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .stage-projects .mobile-filter-header {
+        order: -2 !important;
+    }
+
+    .stage-projects .mobile-category-filter {
+        order: -1 !important;
+    }
+
+    .stage-projects .finder-window {
+        order: 0 !important;
+    }
 
     /* Hide finder window chrome on mobile */
     .finder-window {

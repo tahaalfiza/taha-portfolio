@@ -110,9 +110,9 @@ async function fetchAboutInfo() {
 let experienceData = [];
 let educationData = [];
 
-// Fetch all work experiences
+// Fetch all work experiences (only visible ones)
 async function fetchWorkExperience() {
-  const query = `*[_type == "workExperience"] | order(order asc) {
+  const query = `*[_type == "workExperience" && isVisible != false] | order(order asc) {
     _id,
     role,
     company,
@@ -128,6 +128,7 @@ async function fetchWorkExperience() {
     achievements,
     images,
     isFeatured,
+    isVisible,
     order
   }`;
 
@@ -237,7 +238,14 @@ async function fetchBlogPosts() {
     category,
     featured,
     order,
-    mainImage
+    mainImage,
+    "authors": authors[]->{
+      _id,
+      name,
+      image,
+      role,
+      website
+    }
   }`;
 
   try {

@@ -93,6 +93,13 @@ export default {
       initialValue: false,
     },
     {
+      name: 'isVisible',
+      title: 'Visible',
+      type: 'boolean',
+      description: 'Uncheck to hide this experience without deleting it',
+      initialValue: true,
+    },
+    {
       name: 'order',
       title: 'Display Order',
       type: 'number',
@@ -114,8 +121,16 @@ export default {
   preview: {
     select: {
       title: 'role',
-      subtitle: 'company',
+      company: 'company',
       media: 'companyLogo',
+      isVisible: 'isVisible',
+    },
+    prepare({ title, company, media, isVisible }) {
+      return {
+        title: title,
+        subtitle: `${company}${isVisible === false ? ' [Hidden]' : ''}`,
+        media: media,
+      }
     },
   },
 }

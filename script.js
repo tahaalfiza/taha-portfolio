@@ -1216,16 +1216,17 @@ function animateStageTransition(targetSection, direction) {
         updateStageThumbnails(targetSection);
         updateActiveNavButton(targetSection);
 
-        // Remove slide-out, add slide-in from opposite side
+        // Remove slide-out, add slide-in from opposite direction
         stageContent.classList.remove(`slide-${direction}`);
-        stageContent.classList.add(`slide-in-${direction === 'up' ? 'down' : 'up'}`);
+        const slideInDirection = direction === 'up' ? 'down' : 'up';
+        stageContent.classList.add(`slide-in-${slideInDirection}`);
 
-        // Clean up classes after animation
+        // Clean up classes after animation completes
         setTimeout(() => {
             stageContent.classList.remove('transitioning');
-            stageContent.classList.remove(`slide-in-${direction === 'up' ? 'down' : 'up'}`);
-        }, 250);
-    }, 100);
+            stageContent.classList.remove(`slide-in-${slideInDirection}`);
+        }, 400);
+    }, 150);
 }
 
 // Update thumbnails active state after swipe

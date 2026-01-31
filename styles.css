@@ -28,17 +28,17 @@
     --canvas-height: 2000px;
 }
 
-/* Typography - SF Pro for English (Apple), Inter for others. SF Arabic for Arabic (Apple), Noto Sans Arabic for others */
+/* Typography - SF Pro for English (Apple), Inter for others. IBM Plex Sans Arabic for Arabic */
 :root {
     --font-main: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
-    --font-arabic: 'SF Arabic', 'SF Pro Arabic', -apple-system, BlinkMacSystemFont, 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
+    --font-arabic: 'IBM Plex Sans Arabic', 'SF Arabic', -apple-system, BlinkMacSystemFont, 'Geeza Pro', 'Tahoma', sans-serif;
     --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
     --transition-fast: 0.15s ease;
     --transition-medium: 0.3s ease;
 }
 
-/* Import Inter and Noto Sans Arabic from Google Fonts for non-Apple systems */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+/* Import Inter and IBM Plex Sans Arabic from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* SF Pro and SF Arabic font faces */
 @font-face {
@@ -3811,6 +3811,102 @@ a {
 
 .notes-preview-content:active {
     cursor: grabbing;
+}
+
+/* RTL support for notes preview */
+.notes-preview-content[dir="rtl"],
+.notes-preview-content[lang="ar"] {
+    direction: rtl;
+    text-align: right;
+}
+
+.notes-preview-content[dir="rtl"] .notes-preview-title,
+.notes-preview-content[lang="ar"] .notes-preview-title {
+    font-family: var(--font-arabic);
+}
+
+.notes-preview-body[dir="rtl"],
+.notes-preview-body[lang="ar"] {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.9;
+}
+
+/* Blog Password Prompt in Preview */
+.blog-password-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px;
+    height: 100%;
+}
+
+.blog-password-prompt svg {
+    width: 64px;
+    height: 64px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.blog-password-prompt h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.blog-password-prompt p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    max-width: 280px;
+}
+
+.blog-password-input {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.blog-password-input:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.blog-password-submit {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background: #007aff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.blog-password-submit:hover {
+    background: #0066d6;
+}
+
+.blog-password-error {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
 }
 
 /* Preview Toolbar with Open Button */

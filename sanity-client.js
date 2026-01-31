@@ -363,6 +363,30 @@ function handleBlogClick(postId, blogUrl) {
   }
 }
 
+// Detect if text contains Arabic characters
+function containsArabic(text) {
+  if (!text) return false;
+  const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+  return arabicRegex.test(text);
+}
+
+// Get plain text from block content for language detection
+function getPlainTextFromContent(content) {
+  if (!content || !Array.isArray(content)) return '';
+  let text = '';
+  content.forEach(block => {
+    if (block._type === 'block' && block.children) {
+      block.children.forEach(child => {
+        if (child.text) text += child.text + ' ';
+      });
+    }
+  });
+  return text;
+}
+
+// Track unlocked blog posts in session
+const unlockedBlogPosts = new Set();
+
 // Select and display a blog post
 function selectBlogPost(postId) {
   const post = blogPostsData.find(p => p._id === postId);
@@ -391,11 +415,58 @@ function selectBlogPost(postId) {
       })
     : '';
 
-  // Convert Sanity block content to HTML
-  const contentHtml = renderBlockContent(post.content);
-
   // Build URL for single blog page (clean URL format)
   const blogUrl = post.slug?.current ? `/blogs/${post.slug.current}` : '#';
+
+  // Detect Arabic content
+  const plainText = getPlainTextFromContent(post.content);
+  const isArabic = containsArabic(post.title) || containsArabic(plainText);
+  const dirAttr = isArabic ? 'dir="rtl" lang="ar"' : '';
+  const titleDirAttr = containsArabic(post.title) ? 'dir="rtl" lang="ar"' : '';
+
+  // Check if post is password protected and not unlocked
+  if (post.password && post.password.length > 0 && !unlockedBlogPosts.has(post._id)) {
+    previewEl.innerHTML = `
+      <div class="notes-preview-toolbar">
+        <a href="${blogUrl}" target="_blank" class="blog-open-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Open
+        </a>
+      </div>
+      <div class="notes-preview-content">
+        <div class="blog-password-prompt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <h2>Protected Content</h2>
+          <p>This post is password protected. Enter the password to preview.</p>
+          <input type="password" class="blog-password-input" id="blogPreviewPassword" placeholder="Enter password">
+          <button class="blog-password-submit" onclick="unlockBlogPreview('${post._id}')">Unlock</button>
+          <p class="blog-password-error" id="blogPreviewError">Incorrect password</p>
+        </div>
+      </div>
+    `;
+
+    // Add enter key listener
+    setTimeout(() => {
+      const input = document.getElementById('blogPreviewPassword');
+      if (input) {
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') unlockBlogPreview(post._id);
+        });
+        input.focus();
+      }
+    }, 100);
+    return;
+  }
+
+  // Convert Sanity block content to HTML
+  const contentHtml = renderBlockContent(post.content);
 
   previewEl.innerHTML = `
     <div class="notes-preview-toolbar">
@@ -418,12 +489,12 @@ function selectBlogPost(postId) {
       </div>
       <span>Scroll</span>
     </div>
-    <div class="notes-preview-content">
+    <div class="notes-preview-content" ${dirAttr}>
       <div class="notes-preview-header">
-        <h1 class="notes-preview-title">${post.title}</h1>
+        <h1 class="notes-preview-title" ${titleDirAttr}>${post.title}</h1>
         <div class="notes-preview-meta">${date}${post.category ? ` • ${post.category}` : ''}</div>
       </div>
-      <div class="notes-preview-body">
+      <div class="notes-preview-body" ${dirAttr}>
         ${contentHtml}
       </div>
     </div>
@@ -436,6 +507,27 @@ function selectBlogPost(postId) {
     }
   }, 100);
 }
+
+// Unlock blog preview with password
+function unlockBlogPreview(postId) {
+  const post = blogPostsData.find(p => p._id === postId);
+  const input = document.getElementById('blogPreviewPassword');
+  const error = document.getElementById('blogPreviewError');
+
+  if (!post || !input) return;
+
+  if (input.value === post.password) {
+    unlockedBlogPosts.add(postId);
+    selectBlogPost(postId);
+  } else {
+    error.style.display = 'block';
+    input.value = '';
+    input.focus();
+  }
+}
+
+// Expose unlock function globally
+window.unlockBlogPreview = unlockBlogPreview;
 
 // Convert Sanity block content to HTML
 function renderBlockContent(content) {

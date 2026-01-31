@@ -1428,6 +1428,11 @@ function setActiveStageSection(section) {
     }
 
     stageContent.innerHTML = content;
+
+    // Update images from CMS data after Stage View content is rendered
+    if (typeof window.updateStageViewImages === 'function') {
+        setTimeout(() => window.updateStageViewImages(), 50);
+    }
 }
 
 // Initialize list view content from Sanity data

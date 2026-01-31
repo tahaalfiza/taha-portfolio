@@ -878,14 +878,21 @@ function getIconSvg(iconName) {
 
 // Render About section on main page
 function renderAboutSection(aboutInfo, experiences) {
-  // Update photo
+  // Update photo in Canvas view
   const photoEl = document.getElementById('aboutPhoto');
   if (photoEl && aboutInfo?.photo) {
     const photoUrl = sanityImageUrl(aboutInfo.photo, 400, 90);
     if (photoUrl) {
-      photoEl.querySelector('img').src = photoUrl;
+      const imgEl = photoEl.querySelector('img');
+      if (imgEl) {
+        imgEl.src = photoUrl;
+        imgEl.alt = aboutInfo.name || 'Profile photo';
+      }
     }
   }
+
+  // Apply profile photo to all views (Canvas, Stage, Overlay)
+  applyProfilePhotoToAllViews(aboutInfo);
 
   // Update bio text if provided from CMS
   const bioEl = document.getElementById('aboutBio');
@@ -1558,9 +1565,16 @@ async function fetchSiteSettings() {
   }
 }
 
+// Store site settings globally for Stage View updates
+let siteSettingsData = null;
+
 // Apply site settings to the page
 function applySiteSettings(settings) {
   if (!settings) return;
+
+  // Store globally for later use
+  siteSettingsData = settings;
+  window.siteSettings = settings;
 
   // Update page title
   if (settings.title) {
@@ -1623,53 +1637,115 @@ function applySiteSettings(settings) {
     ogImage.content = ogImageUrl;
   }
 
-  // Update avatar across all pages
-  if (settings.avatar && settings.avatar.asset) {
-    const avatarUrl = sanityImageUrl(settings.avatar, 200, 100);
-    const avatarAlt = settings.avatarAlt || 'Avatar';
-
-    // Update all avatar elements (loader, hero logos, etc.)
-    const avatarSelectors = [
-      '.loader-logo img',           // Loader avatar
-      '.hero-logo img',             // Canvas view hero avatar
-      '.list-hero-logo img',        // List view hero avatar
-      '.stage-hero-logo img',       // Stage view hero avatar
-      '[data-avatar]'               // Any element with data-avatar attribute
-    ];
-
-    avatarSelectors.forEach(selector => {
-      const elements = document.querySelectorAll(selector);
-      elements.forEach(el => {
-        if (el.tagName === 'IMG') {
-          el.src = avatarUrl;
-          el.alt = avatarAlt;
-        }
-      });
-    });
-
-    // For SVG containers, replace with image
-    const svgAvatarContainers = document.querySelectorAll('.loader-logo, .hero-logo, .list-hero-logo, .stage-hero-logo');
-    svgAvatarContainers.forEach(container => {
-      // Check if it contains an SVG (default avatar)
-      const svg = container.querySelector('svg');
-      if (svg) {
-        // Create image element to replace SVG
-        const img = document.createElement('img');
-        img.src = avatarUrl;
-        img.alt = avatarAlt;
-        img.style.width = svg.getAttribute('width') ? svg.getAttribute('width') + 'px' : '80px';
-        img.style.height = svg.getAttribute('height') ? svg.getAttribute('height') + 'px' : '80px';
-        img.style.borderRadius = '50%';
-        img.style.objectFit = 'cover';
-        svg.replaceWith(img);
-      }
-    });
-
-    console.log('Avatar applied to all pages');
-  }
+  // Apply avatar across all views
+  applyAvatarToAllViews(settings);
 
   console.log('Site settings applied:', settings.title);
 }
+
+// Apply avatar to all views (Canvas, List, Stage, Loader)
+function applyAvatarToAllViews(settings) {
+  if (!settings?.avatar?.asset) return;
+
+  const avatarUrl = sanityImageUrl(settings.avatar, 200, 100);
+  const avatarAlt = settings.avatarAlt || 'Avatar';
+
+  // Update all avatar elements (loader, hero logos, etc.)
+  const avatarSelectors = [
+    '.loader-logo img',           // Loader avatar
+    '.hero-logo img',             // Canvas view hero avatar
+    '.list-hero-logo img',        // List view hero avatar
+    '.stage-home .hero-avatar img', // Stage view hero avatar
+    '[data-avatar]'               // Any element with data-avatar attribute
+  ];
+
+  avatarSelectors.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => {
+      if (el.tagName === 'IMG') {
+        el.src = avatarUrl;
+        el.alt = avatarAlt;
+      }
+    });
+  });
+
+  // For SVG containers, replace with image
+  const svgAvatarContainers = document.querySelectorAll('.loader-logo, .hero-logo, .list-hero-logo');
+  svgAvatarContainers.forEach(container => {
+    const svg = container.querySelector('svg');
+    if (svg) {
+      const img = document.createElement('img');
+      img.src = avatarUrl;
+      img.alt = avatarAlt;
+      img.style.width = svg.getAttribute('width') ? svg.getAttribute('width') + 'px' : '80px';
+      img.style.height = svg.getAttribute('height') ? svg.getAttribute('height') + 'px' : '80px';
+      img.style.borderRadius = '50%';
+      img.style.objectFit = 'cover';
+      svg.replaceWith(img);
+    }
+  });
+
+  // Also update Stage View hero avatar if it has an SVG
+  const stageHeroAvatar = document.querySelector('.stage-home .hero-avatar');
+  if (stageHeroAvatar) {
+    const svg = stageHeroAvatar.querySelector('svg');
+    if (svg) {
+      const img = document.createElement('img');
+      img.src = avatarUrl;
+      img.alt = avatarAlt;
+      img.style.width = '120px';
+      img.style.height = '120px';
+      img.style.borderRadius = '50%';
+      img.style.objectFit = 'cover';
+      svg.replaceWith(img);
+    }
+  }
+
+  console.log('Avatar applied to all views');
+}
+
+// Apply profile photo to about sections (Canvas and Stage views)
+function applyProfilePhotoToAllViews(aboutInfo) {
+  if (!aboutInfo?.photo?.asset) return;
+
+  const photoUrl = sanityImageUrl(aboutInfo.photo, 400, 90);
+  const photoAlt = aboutInfo.name || 'Profile photo';
+
+  // Update all profile photo elements
+  const photoSelectors = [
+    '#aboutPhoto img',                          // Canvas view about photo
+    '.stage-about .about-photo-topleft img',    // Stage view about photo
+    '#profilePhotoLarge img'                    // About overlay photo
+  ];
+
+  photoSelectors.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => {
+      if (el.tagName === 'IMG') {
+        el.src = photoUrl;
+        el.alt = photoAlt;
+      }
+    });
+  });
+
+  console.log('Profile photo applied to all views');
+}
+
+// Update Stage View images when section changes (called from script.js)
+function updateStageViewImages() {
+  // Apply avatar to Stage home section
+  if (window.siteSettings?.avatar?.asset) {
+    applyAvatarToAllViews(window.siteSettings);
+  }
+
+  // Apply profile photo to Stage about section
+  if (window.aboutInfo?.photo?.asset) {
+    applyProfilePhotoToAllViews(window.aboutInfo);
+  }
+}
+
+// Expose function globally for script.js to call
+window.updateStageViewImages = updateStageViewImages;
 
 // Initialize CMS content
 async function initSanityContent() {

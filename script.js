@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     initLoadingScreen();
     initCanvas();
-    initCustomCursor();
+    // initCustomCursor(); // Disabled - using CSS view-specific cursors instead
     initNavigation();
     initZoomControls();
     initMinimap();
@@ -14,11 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================
-   CHECK URL FOR VIEW PARAMETER
+   CHECK URL FOR VIEW PARAMETER & DEVICE TYPE
    ========================================== */
 function checkViewFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const view = params.get('view');
+    const isMobile = window.innerWidth <= 768;
 
     if (view === 'list') {
         // Switch to list view after a small delay (after canvas init)
@@ -36,9 +37,37 @@ function checkViewFromUrl() {
                 stageViewBtn.click();
             }
         }, 100);
+    } else if (view === 'canvas') {
+        // Explicitly requested canvas view
+        // Canvas is already default, no action needed
+    } else {
+        // No view specified - use device-appropriate default
+        // Mobile: Stage View (3rd view), Desktop: Canvas View (1st view)
+        if (isMobile) {
+            setTimeout(() => {
+                const stageViewBtn = document.getElementById('stageViewBtn');
+                if (stageViewBtn) {
+                    stageViewBtn.click();
+                }
+            }, 100);
+        }
+        // Desktop: Canvas view is already the default, no action needed
     }
-    // 'canvas' is the default view, no action needed
 }
+
+// Handle window resize to suggest view change
+let lastWindowWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+    const currentWidth = window.innerWidth;
+    const wasMobile = lastWindowWidth <= 768;
+    const isMobile = currentWidth <= 768;
+
+    // Only suggest change if crossing the threshold
+    if (wasMobile !== isMobile) {
+        lastWindowWidth = currentWidth;
+        // Don't auto-switch, let user decide
+    }
+});
 
 /* ==========================================
    LOADING SCREEN WITH PROGRESS
@@ -48,28 +77,38 @@ function initLoadingScreen() {
     const progressFill = document.getElementById('progressFill');
     const progressText = document.getElementById('progressText');
 
-    let progress = 0;
-    const duration = 1800; // Total loading time in ms
-    const interval = 30; // Update every 30ms
-    const increment = 100 / (duration / interval);
+    if (!loadingScreen) return;
 
-    const progressInterval = setInterval(() => {
-        // Add some randomness to make it feel more natural
-        const randomIncrement = increment * (0.5 + Math.random());
-        progress = Math.min(100, progress + randomIncrement);
+    let progress = 0;
+    const duration = 800; // Fast loading - 800ms total
+    const startTime = performance.now();
+
+    // Smooth easing function
+    function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+    }
+
+    function animateProgress(currentTime) {
+        const elapsed = currentTime - startTime;
+        const rawProgress = Math.min(elapsed / duration, 1);
+        progress = easeOutQuart(rawProgress) * 100;
 
         // Update UI
         if (progressFill) progressFill.style.width = progress + '%';
         if (progressText) progressText.textContent = Math.floor(progress) + '%';
 
-        // Complete loading
-        if (progress >= 100) {
-            clearInterval(progressInterval);
+        // Continue or complete
+        if (rawProgress < 1) {
+            requestAnimationFrame(animateProgress);
+        } else {
+            // Fade out loading screen smoothly
             setTimeout(() => {
                 loadingScreen.classList.add('hidden');
-            }, 200);
+            }, 100);
         }
-    }, interval);
+    }
+
+    requestAnimationFrame(animateProgress);
 }
 
 /* ==========================================
@@ -80,8 +119,12 @@ function initCanvas() {
     const canvas = document.getElementById('canvas');
     const isMobile = window.innerWidth <= 768;
 
+    // Target scale values
+    const targetScale = isMobile ? 0.6 : 1;
+    const startScale = isMobile ? 0.25 : 0.33; // Start zoomed out at 33%
+
     let state = {
-        scale: isMobile ? 0.6 : 1,
+        scale: startScale, // Start zoomed out for animation
         minScale: isMobile ? 0.25 : 0.3,
         maxScale: 2,
         panX: 0,
@@ -98,7 +141,7 @@ function initCanvas() {
         lastPinchCenter: { x: 0, y: 0 }
     };
 
-    // Center on home section initially
+    // Center on home section initially (at start scale)
     const homeSection = document.getElementById('section-home');
     if (homeSection) {
         state.panX = -(parseFloat(homeSection.style.left) / 100 * 2800) * state.scale + window.innerWidth / 2;
@@ -107,6 +150,16 @@ function initCanvas() {
 
     updateTransform();
     updateZoomLevel();
+
+    // Set initial active nav button to 'home'
+    setTimeout(() => {
+        updateActiveNavButton('home');
+    }, 50);
+
+    // Animate zoom-in on first load (only for canvas view on desktop)
+    if (!isMobile) {
+        animateZoomIn(state, homeSection, targetScale);
+    }
 
     // Mouse events
     container.addEventListener('mousedown', startDrag);
@@ -376,6 +429,11 @@ function initCanvas() {
 
     function updateTransform() {
         canvas.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
+
+        // Detect and highlight active section in navbar
+        if (window.debouncedSectionDetection) {
+            window.debouncedSectionDetection();
+        }
     }
 
     function updateZoomLevel() {
@@ -393,6 +451,9 @@ function initCanvas() {
     window.navigateToSection = function (sectionId) {
         const section = document.getElementById(`section-${sectionId}`);
         if (!section) return;
+
+        // Update active nav button
+        updateActiveNavButton(sectionId);
 
         // For home section, adjust scale to show the full card (like resetZoom)
         if (sectionId === 'home') {
@@ -567,6 +628,145 @@ function initCanvas() {
 }
 
 /* ==========================================
+   ACTIVE NAV BUTTON MANAGEMENT
+   ========================================== */
+function updateActiveNavButton(sectionId) {
+    const navButtons = document.querySelectorAll('.nav-btn[data-target]');
+    navButtons.forEach(btn => {
+        if (btn.dataset.target === sectionId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// Detect which section is closest to center of viewport
+function detectCurrentSection() {
+    const state = window.canvasState;
+    if (!state) return null;
+
+    // Get all sections dynamically
+    const sectionIds = ['home', 'about', 'blog', 'projects', 'contact', 'hire', 'experience'];
+    const sections = sectionIds
+        .map(id => ({ id, el: document.getElementById(`section-${id}`) }))
+        .filter(s => s.el !== null);
+
+    const viewportCenterX = window.innerWidth / 2;
+    const viewportCenterY = window.innerHeight / 2;
+
+    // Convert viewport center to canvas coordinates
+    const canvasCenterX = (viewportCenterX - state.panX) / state.scale;
+    const canvasCenterY = (viewportCenterY - state.panY) / state.scale;
+
+    let closestSection = null;
+    let closestDistance = Infinity;
+
+    sections.forEach(section => {
+        if (!section.el) return;
+
+        // Get section center in canvas coordinates
+        const sectionX = parseFloat(section.el.style.left) / 100 * 2800;
+        const sectionY = parseFloat(section.el.style.top) / 100 * 2000;
+
+        // Calculate distance from viewport center to section center
+        const dx = canvasCenterX - sectionX;
+        const dy = canvasCenterY - sectionY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestSection = section.id;
+        }
+    });
+
+    return closestSection;
+}
+
+// Debounced section detection for smoother updates
+let sectionDetectionTimeout = null;
+function debouncedSectionDetection() {
+    if (sectionDetectionTimeout) {
+        clearTimeout(sectionDetectionTimeout);
+    }
+    sectionDetectionTimeout = setTimeout(() => {
+        const currentSection = detectCurrentSection();
+        if (currentSection) {
+            updateActiveNavButton(currentSection);
+            // Also update minimap marker
+            if (window.updateActiveMinimapMarker) {
+                window.updateActiveMinimapMarker(currentSection);
+            }
+        }
+    }, 150); // Debounce for 150ms
+}
+
+// Expose for use in canvas events
+window.updateActiveNavButton = updateActiveNavButton;
+window.debouncedSectionDetection = debouncedSectionDetection;
+
+/* ==========================================
+   ZOOM-IN ANIMATION ON FIRST LOAD
+   ========================================== */
+function animateZoomIn(state, homeSection, targetScale) {
+    const startScale = state.scale;
+    const startPanX = state.panX;
+    const startPanY = state.panY;
+
+    // Calculate target pan position (centered on home section at target scale)
+    let targetPanX = startPanX;
+    let targetPanY = startPanY;
+
+    if (homeSection) {
+        const sectionX = parseFloat(homeSection.style.left) / 100 * 2800;
+        const sectionY = parseFloat(homeSection.style.top) / 100 * 2000;
+        targetPanX = -sectionX * targetScale + window.innerWidth / 2;
+        targetPanY = -sectionY * targetScale + window.innerHeight / 2;
+    }
+
+    const duration = 2000; // Animation duration in ms (slower)
+    const startTime = performance.now();
+
+    // Easing function - ease out quart for smoother, slower deceleration
+    function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+    }
+
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuart(progress);
+
+        // Interpolate scale and pan
+        state.scale = startScale + (targetScale - startScale) * easedProgress;
+        state.panX = startPanX + (targetPanX - startPanX) * easedProgress;
+        state.panY = startPanY + (targetPanY - startPanY) * easedProgress;
+
+        // Update canvas transform
+        const canvas = document.getElementById('canvas');
+        if (canvas) {
+            canvas.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
+        }
+
+        // Update zoom level display
+        const zoomLevel = document.getElementById('zoomLevel');
+        if (zoomLevel) {
+            zoomLevel.textContent = Math.round(state.scale * 100) + '%';
+        }
+
+        // Continue animation if not complete
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    // Start animation after a small delay
+    setTimeout(() => {
+        requestAnimationFrame(animate);
+    }, 100);
+}
+
+/* ==========================================
    CUSTOM CURSOR
    ========================================== */
 function initCustomCursor() {
@@ -613,10 +813,14 @@ function initNavigation() {
         btn.addEventListener('click', () => {
             const target = btn.dataset.target;
             const listView = document.getElementById('listView');
+            const stageView = document.getElementById('stageView');
             const isListViewActive = listView?.classList.contains('active');
+            const isStageViewActive = stageView?.classList.contains('active');
 
-            navButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            // Update active state immediately for better UX feedback
+            if (target) {
+                updateActiveNavButton(target);
+            }
 
             // If in list view, scroll to list section
             if (isListViewActive) {
@@ -624,6 +828,11 @@ function initNavigation() {
                 if (listSection) {
                     listSection.scrollIntoView({ behavior: 'smooth' });
                 }
+                return;
+            }
+
+            // If in stage view, don't navigate canvas
+            if (isStageViewActive) {
                 return;
             }
 
@@ -703,7 +912,9 @@ function initZoomControls() {
         stageView?.classList.add('active');
         navbar?.style.setProperty('display', 'none'); // Hide navbar in stage view
         stageViewBtn?.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        // Allow scroll on mobile for stage view
+        const isMobile = window.innerWidth <= 768;
+        document.body.style.overflow = isMobile ? 'auto' : 'hidden';
         initStageView();
         history.pushState({}, '', '/view_3/');
     }
@@ -807,6 +1018,34 @@ function initStageView() {
         setActiveStageSection('home');
         stageViewInitialized = true;
     }
+
+    // Initialize scroll to top button for mobile
+    initStageScrollTop();
+}
+
+// Stage View Scroll to Start Button - For sidebar thumbnail horizontal scroll on mobile
+function initStageScrollTop() {
+    const scrollTopBtn = document.getElementById('stageScrollTop');
+    const stageSidebar = document.getElementById('stageSidebar');
+
+    if (!scrollTopBtn || !stageSidebar) return;
+
+    // Show/hide button based on sidebar horizontal scroll position
+    stageSidebar.addEventListener('scroll', () => {
+        if (stageSidebar.scrollLeft > 50) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+    });
+
+    // Scroll sidebar back to start on click
+    scrollTopBtn.addEventListener('click', () => {
+        stageSidebar.scrollTo({
+            left: 0,
+            behavior: 'smooth'
+        });
+    });
 }
 
 function generateStageThumbnails(sidebar) {
@@ -1059,25 +1298,25 @@ function setActiveStageSection(section) {
                                     <span style="text-decoration: line-through;">S</span>
                                 </button>
                                 <div class="format-divider"></div>
-                                <button class="format-btn size-btn" data-format="size-1" title="Extra Small">
-                                    <span style="font-size: 8px;">A</span>
-                                </button>
-                                <button class="format-btn size-btn" data-format="size-2" title="Small">
-                                    <span style="font-size: 10px;">A</span>
-                                </button>
-                                <button class="format-btn size-btn" data-format="size-3" title="Normal">
-                                    <span style="font-size: 12px;">A</span>
-                                </button>
-                                <button class="format-btn size-btn" data-format="size-4" title="Large">
-                                    <span style="font-size: 14px;">A</span>
-                                </button>
-                                <button class="format-btn size-btn" data-format="size-5" title="Extra Large">
-                                    <span style="font-size: 16px;">A</span>
-                                </button>
-                                <button class="format-btn size-btn" data-format="size-6" title="Huge">
-                                    <span style="font-size: 18px;">A</span>
-                                </button>
+                                <!-- Font Size Controls -->
+                                <div class="size-control-group">
+                                    <button class="format-btn size-decrease" data-format="size-decrease" title="Decrease Size">
+                                        <span style="font-size: 10px;">A</span>
+                                    </button>
+                                    <span class="size-display" id="sizeDisplay">16px</span>
+                                    <button class="format-btn size-increase" data-format="size-increase" title="Increase Size">
+                                        <span style="font-size: 14px;">A</span>
+                                    </button>
+                                </div>
                                 <div class="format-divider"></div>
+                                <!-- Text Color -->
+                                <div class="color-control-group">
+                                    <div class="color-preview" id="textColorPreview" style="background: #000000;" title="Text Color"></div>
+                                    <input type="color" id="textColorPicker" value="#000000" class="color-picker-input">
+                                    <input type="text" id="textColorHex" class="color-hex-input" value="#000000" placeholder="#000000" maxlength="7">
+                                </div>
+                                <div class="format-divider"></div>
+                                <!-- Highlight Colors -->
                                 <button class="format-btn color-btn" data-format="highlight-yellow" title="Yellow Highlight" style="background: #FFEB3B;"></button>
                                 <button class="format-btn color-btn" data-format="highlight-green" title="Green Highlight" style="background: #A5D6A7;"></button>
                                 <button class="format-btn color-btn" data-format="highlight-blue" title="Blue Highlight" style="background: #90CAF9;"></button>
@@ -1743,11 +1982,49 @@ function initMinimap() {
 
     let isDragging = false;
 
-    // Click on markers to navigate
+    // Update active marker based on current section
+    function updateActiveMarker(sectionId) {
+        markers.forEach(marker => {
+            if (marker.dataset.section === sectionId) {
+                marker.classList.add('active');
+            } else {
+                marker.classList.remove('active');
+            }
+        });
+    }
+
+    // Expose for external use
+    window.updateActiveMinimapMarker = updateActiveMarker;
+
+    // Click on markers to navigate - with better event handling
     markers.forEach(marker => {
+        // Prevent event bubbling issues
+        marker.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+        });
+
         marker.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             const section = marker.dataset.section;
+
+            // Update active state immediately
+            updateActiveMarker(section);
+
+            if (window.navigateToSection) {
+                window.navigateToSection(section);
+            }
+        });
+
+        // Touch support for markers
+        marker.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const section = marker.dataset.section;
+
+            // Update active state immediately
+            updateActiveMarker(section);
+
             if (window.navigateToSection) {
                 window.navigateToSection(section);
             }
@@ -1781,9 +2058,9 @@ function initMinimap() {
         window.updateMinimap?.();
     }
 
-    // Mouse down - start drag
+    // Mouse down - start drag (only if not clicking on marker)
     minimap.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('minimap-marker')) return;
+        if (e.target.closest('.minimap-marker')) return;
         isDragging = true;
         navigateToMinimapPoint(e);
     });
@@ -1799,9 +2076,9 @@ function initMinimap() {
         isDragging = false;
     });
 
-    // Touch support
+    // Touch support for minimap dragging
     minimap.addEventListener('touchstart', (e) => {
-        if (e.target.classList.contains('minimap-marker')) return;
+        if (e.target.closest('.minimap-marker')) return;
         isDragging = true;
         const touch = e.touches[0];
         navigateToMinimapPoint(touch);
@@ -1994,8 +2271,50 @@ document.head.appendChild(style);
 function initTextFormatting() {
     const toolbar = document.getElementById('textFormatToolbar');
     const bioTexts = document.querySelectorAll('.stage-about .about-bio-text[contenteditable]');
+    const sizeDisplay = document.getElementById('sizeDisplay');
+    const textColorPicker = document.getElementById('textColorPicker');
+    const textColorHex = document.getElementById('textColorHex');
+    const textColorPreview = document.getElementById('textColorPreview');
 
     if (!toolbar || bioTexts.length === 0) return;
+
+    // Font size mapping (browser fontSize 1-7 to px)
+    const fontSizes = [10, 13, 16, 18, 24, 32, 48]; // Corresponds to fontSize 1-7
+    let currentSizeIndex = 2; // Default to 16px (index 2)
+
+    // Update size display
+    function updateSizeDisplay() {
+        if (sizeDisplay) {
+            sizeDisplay.textContent = fontSizes[currentSizeIndex] + 'px';
+        }
+    }
+
+    // Get current selection's font size
+    function getSelectionFontSize() {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const container = range.commonAncestorContainer;
+            const element = container.nodeType === 3 ? container.parentElement : container;
+            const computedSize = window.getComputedStyle(element).fontSize;
+            return parseInt(computedSize);
+        }
+        return 16;
+    }
+
+    // Find closest size index
+    function findClosestSizeIndex(px) {
+        let closestIndex = 0;
+        let minDiff = Math.abs(fontSizes[0] - px);
+        for (let i = 1; i < fontSizes.length; i++) {
+            const diff = Math.abs(fontSizes[i] - px);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestIndex = i;
+            }
+        }
+        return closestIndex;
+    }
 
     // Show toolbar on text selection
     bioTexts.forEach(text => {
@@ -2007,9 +2326,14 @@ function initTextFormatting() {
                 const rect = range.getBoundingClientRect();
                 const parentRect = text.closest('.about-card-modern').getBoundingClientRect();
 
-                toolbar.style.top = (rect.top - parentRect.top - 45) + 'px';
+                toolbar.style.top = (rect.top - parentRect.top - 55) + 'px';
                 toolbar.style.left = (rect.left - parentRect.left + rect.width / 2) + 'px';
                 toolbar.classList.add('visible');
+
+                // Update size display based on selection
+                const currentPx = getSelectionFontSize();
+                currentSizeIndex = findClosestSizeIndex(currentPx);
+                updateSizeDisplay();
             }
         });
 
@@ -2040,9 +2364,18 @@ function initTextFormatting() {
                 document.execCommand('underline', false, null);
             } else if (format === 'strikethrough') {
                 document.execCommand('strikeThrough', false, null);
-            } else if (format.startsWith('size-')) {
-                const size = format.split('-')[1];
-                document.execCommand('fontSize', false, size);
+            } else if (format === 'size-decrease') {
+                if (currentSizeIndex > 0) {
+                    currentSizeIndex--;
+                    document.execCommand('fontSize', false, currentSizeIndex + 1);
+                    updateSizeDisplay();
+                }
+            } else if (format === 'size-increase') {
+                if (currentSizeIndex < fontSizes.length - 1) {
+                    currentSizeIndex++;
+                    document.execCommand('fontSize', false, currentSizeIndex + 1);
+                    updateSizeDisplay();
+                }
             } else if (format.startsWith('highlight-')) {
                 const colors = {
                     'highlight-yellow': '#FFEB3B',
@@ -2055,9 +2388,67 @@ function initTextFormatting() {
                 document.execCommand('backColor', false, colors[format]);
             } else if (format === 'removeFormat') {
                 document.execCommand('removeFormat', false, null);
+                currentSizeIndex = 2; // Reset to default
+                updateSizeDisplay();
             }
         });
     });
+
+    // Text Color Picker functionality
+    if (textColorPicker && textColorHex && textColorPreview) {
+        // Click on preview opens color picker
+        textColorPreview.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            textColorPicker.click();
+        });
+
+        // Prevent losing selection on mousedown
+        textColorPicker.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+        });
+
+        textColorHex.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+        });
+
+        // Color picker change
+        textColorPicker.addEventListener('input', (e) => {
+            const color = e.target.value;
+            textColorHex.value = color.toUpperCase();
+            textColorPreview.style.background = color;
+            document.execCommand('foreColor', false, color);
+        });
+
+        // Hex input change
+        textColorHex.addEventListener('input', (e) => {
+            let value = e.target.value;
+            if (!value.startsWith('#')) {
+                value = '#' + value;
+            }
+            // Validate hex color
+            if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+                textColorPicker.value = value;
+                textColorPreview.style.background = value;
+                document.execCommand('foreColor', false, value);
+            }
+        });
+
+        textColorHex.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                let value = textColorHex.value;
+                if (!value.startsWith('#')) {
+                    value = '#' + value;
+                }
+                if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+                    textColorPicker.value = value;
+                    textColorPreview.style.background = value;
+                    document.execCommand('foreColor', false, value);
+                }
+            }
+        });
+    }
 
     // Hide toolbar when clicking outside
     document.addEventListener('click', (e) => {

@@ -1165,6 +1165,44 @@ a {
     overflow-y: auto;
 }
 
+/* Stage View folders grid - more compact layout for desktop */
+.stage-view .stage-projects .folders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 40px 30px;
+    padding: 40px 30px 60px;
+}
+
+.stage-view .stage-projects .folder-wrapper {
+    width: 90px;
+    height: 110px;
+}
+
+.stage-view .stage-projects .folder-icon {
+    width: 80px;
+    height: 75px;
+}
+
+.stage-view .stage-projects .folder-tab {
+    height: 16px;
+}
+
+.stage-view .stage-projects .folder-body {
+    height: 52px;
+}
+
+.stage-view .stage-projects .popup-img {
+    width: 50px;
+    height: 65px;
+}
+
+.stage-view .stage-projects .folder-name {
+    font-size: 11px;
+}
+
+.stage-view .stage-projects .folder-info {
+    font-size: 10px;
+}
+
 /* Stage Blog Section */
 .stage-view .stage-blog {
     height: 100%;
@@ -1216,11 +1254,11 @@ a {
         width: 100%;
         min-width: 100%;
         height: auto;
-        max-height: 70px;
+        max-height: 56px;
         flex-direction: row;
-        padding: 8px 16px;
-        padding-bottom: max(8px, env(safe-area-inset-bottom)); /* iOS safe area */
-        gap: 6px;
+        padding: 6px 12px;
+        padding-bottom: max(6px, env(safe-area-inset-bottom)); /* iOS safe area */
+        gap: 4px;
         overflow-x: auto;
         overflow-y: hidden;
         justify-content: flex-start;
@@ -1242,18 +1280,18 @@ a {
     .stage-thumb {
         min-width: auto;
         flex-shrink: 0;
-        gap: 4px;
+        gap: 2px;
     }
 
     .thumb-preview {
-        width: 44px;
-        height: 32px;
-        border-radius: 6px;
+        width: 36px;
+        height: 26px;
+        border-radius: 4px;
     }
 
     .thumb-label {
-        font-size: 9px;
-        max-width: 50px;
+        font-size: 8px;
+        max-width: 40px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -1389,21 +1427,25 @@ a {
 /* Extra small devices */
 @media (max-width: 480px) {
     .stage-sidebar {
-        padding: 55px 8px 8px;
-        max-height: 100px;
+        padding: 4px 8px;
+        padding-bottom: max(4px, env(safe-area-inset-bottom));
+        max-height: 50px;
     }
 
     .stage-thumb {
-        min-width: 60px;
+        min-width: auto;
+        gap: 1px;
     }
 
     .thumb-preview {
-        width: 50px;
-        height: 38px;
+        width: 32px;
+        height: 22px;
+        border-radius: 3px;
     }
 
     .thumb-label {
         font-size: 7px;
+        max-width: 36px;
     }
 
     .stage-main {

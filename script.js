@@ -1237,6 +1237,98 @@ function updateStageThumbnails(section) {
     });
 }
 
+// Initialize sidebar clicks for Stage View projects (re-add event listeners after cloning)
+function initStageSidebarClicks() {
+    const stageProjects = document.querySelector('.stage-view .stage-projects');
+    if (!stageProjects) return;
+
+    const sidebarItems = stageProjects.querySelectorAll('.sidebar-item');
+    sidebarItems.forEach(item => {
+        // Remove inline onclick to avoid double-firing
+        item.removeAttribute('onclick');
+
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const category = item.dataset.category;
+            if (!category) return;
+
+            // Update active state in Stage View
+            sidebarItems.forEach(si => si.classList.remove('active'));
+            item.classList.add('active');
+
+            // Filter projects using the global function
+            if (typeof filterByCategory === 'function') {
+                filterByCategory(category);
+            }
+
+            // Also update the Stage View folders grid
+            const foldersGrid = stageProjects.querySelector('.folders-grid');
+            if (foldersGrid && window.projectsData) {
+                const filtered = category === 'all'
+                    ? window.projectsData
+                    : window.projectsData.filter(p =>
+                        p.category?.name?.toLowerCase() === category.toLowerCase()
+                    );
+
+                // Re-render folders in Stage View
+                renderStageFolders(foldersGrid, filtered);
+
+                // Update count
+                const countEl = stageProjects.querySelector('.finder-count');
+                if (countEl) {
+                    countEl.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
+                }
+            }
+        });
+    });
+}
+
+// Render folders in Stage View
+function renderStageFolders(container, projects) {
+    if (!container || !projects) return;
+
+    container.innerHTML = projects.map((project, index) => {
+        const images = project.images || [];
+        const imageHtml = images.slice(0, 3).map((img, i) => {
+            const url = window.sanityImageUrl?.(img, 400, 85) || '';
+            return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
+        }).join('');
+
+        let clickHandler = '';
+        if (project.projectUrl && !project.hasOverlay) {
+            clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
+        } else {
+            clickHandler = `onclick="openProjectOverlay(${index})"`;
+        }
+
+        const formatColor = (color) => {
+            if (!color) return null;
+            if (color.includes('gradient') || color.includes('rgb') || color.startsWith('#')) return color;
+            return `#${color}`;
+        };
+        const tabColor = formatColor(project.folderTabColor);
+        const bodyColor = formatColor(project.folderBodyColor);
+        const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
+        const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
+
+        return `
+            <div class="mac-folder" ${clickHandler}>
+                <div class="folder-wrapper">
+                    ${imageHtml}
+                    <div class="folder-icon">
+                        <div class="folder-tab" ${tabStyle}></div>
+                        <div class="folder-body" ${bodyStyle}></div>
+                    </div>
+                </div>
+                <span class="folder-name">${project.title || 'Untitled'}</span>
+                <span class="folder-info">${project.category?.name || ''}</span>
+            </div>
+        `;
+    }).join('');
+}
+
 // Stage View Scroll to Start Button - For sidebar thumbnail horizontal scroll on mobile
 function initStageScrollTop() {
     const scrollTopBtn = document.getElementById('stageScrollTop');
@@ -1585,6 +1677,8 @@ function setActiveStageSection(section) {
                     </div>
                 </div>
             `;
+            // Re-initialize sidebar click handlers after content is added
+            setTimeout(() => initStageSidebarClicks(), 50);
             break;
 
         case 'blog':

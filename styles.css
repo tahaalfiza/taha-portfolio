@@ -1201,16 +1201,22 @@ a {
     background: transparent;
     box-shadow: none;
     border-radius: 0;
-    overflow: visible;
+    overflow: visible !important;
+    max-width: none;
+}
+
+.stage-content:has(.stage-projects) .stage-content-inner {
+    overflow: visible !important;
 }
 
 .stage-view .stage-projects {
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 40px;
     overflow: visible;
 }
 
@@ -1221,6 +1227,19 @@ a {
     max-width: 1000px;
     height: 580px;
     max-height: calc(100vh - 200px);
+    box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.15), inset 0 0 0 1px #d1d1d6;
+}
+
+/* Ensure sidebar items are clickable */
+.stage-view .stage-projects .finder-sidebar {
+    pointer-events: auto;
+    position: relative;
+    z-index: 10;
+}
+
+.stage-view .stage-projects .sidebar-item {
+    pointer-events: auto;
+    cursor: pointer;
 }
 
 /* Stage Blog Section */

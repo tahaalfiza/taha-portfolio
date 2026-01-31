@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Blog - Taha Alfiza</title>
-    <link rel="stylesheet" href="../styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Charter:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
     <style>
         /* Override main styles for blog page */
         html, body {
@@ -674,6 +674,11 @@
             /* Hide entire navbar on mobile, show floating share button */
             .blog-nav {
                 display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                height: 0 !important;
+                overflow: hidden !important;
             }
 
             .reading-progress {
@@ -681,12 +686,14 @@
             }
 
             .blog-page-content {
-                padding-top: 40px !important;
+                padding-top: 24px !important;
             }
 
             /* Floating share button on mobile */
             .mobile-share-btn {
                 display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
 
             .author-avatar {

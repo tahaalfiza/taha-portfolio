@@ -2125,8 +2125,8 @@ function populateListView() {
                       })
                     : '';
 
-                // Get thumbnail image if available (same as canvas) - square aspect ratio
-                const thumbUrl = post.mainImage ? window.sanityImageUrl?.(post.mainImage, 140, 80) : null;
+                // Get thumbnail image if available - square cropped
+                const thumbUrl = post.mainImage ? window.sanityThumbUrl?.(post.mainImage, 140, 80) : null;
                 const thumbHtml = thumbUrl
                     ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
                     : `<div class="note-item-thumb-placeholder">
@@ -2469,8 +2469,8 @@ function initListBlogSearch() {
                           })
                         : '';
 
-                    // Get thumbnail image if available (same as canvas) - square aspect ratio
-                    const thumbUrl = post.mainImage ? window.sanityImageUrl?.(post.mainImage, 140, 80) : null;
+                    // Get thumbnail image if available - square cropped
+                    const thumbUrl = post.mainImage ? window.sanityThumbUrl?.(post.mainImage, 140, 80) : null;
                     const thumbHtml = thumbUrl
                         ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
                         : `<div class="note-item-thumb-placeholder">

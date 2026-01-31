@@ -14,7 +14,7 @@ function sanityUrl(query) {
 }
 
 // Sanity image URL builder
-function sanityImageUrl(imageRef, width = 800, quality = 90) {
+function sanityImageUrl(imageRef, width = 800, quality = 90, fit = 'max') {
   if (!imageRef || !imageRef.asset || !imageRef.asset._ref) return '';
 
   // Parse the image reference: image-{id}-{dimensions}-{format}
@@ -22,7 +22,18 @@ function sanityImageUrl(imageRef, width = 800, quality = 90) {
   const [, id, dimensions, format] = ref.split('-');
 
   // Higher quality settings: auto=format for best compression, q for quality
-  return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&q=${quality}&auto=format&fit=max`;
+  return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${width}&q=${quality}&auto=format&fit=${fit}`;
+}
+
+// Sanity image URL builder for square thumbnails (crop to fill)
+function sanityThumbUrl(imageRef, size = 140, quality = 80) {
+  if (!imageRef || !imageRef.asset || !imageRef.asset._ref) return '';
+
+  const ref = imageRef.asset._ref;
+  const [, id, dimensions, format] = ref.split('-');
+
+  // Use fit=crop to fill the square, with center focus
+  return `https://cdn.sanity.io/images/${SANITY_PROJECT_ID}/${SANITY_DATASET}/${id}-${dimensions}.${format}?w=${size}&h=${size}&q=${quality}&auto=format&fit=crop&crop=center`;
 }
 
 // Store projects globally for overlay access
@@ -302,8 +313,8 @@ function renderBlogPosts(posts) {
         })
       : '';
 
-    // Get thumbnail image if available - square aspect ratio
-    const thumbUrl = post.mainImage ? sanityImageUrl(post.mainImage, 140, 80) : null;
+    // Get thumbnail image if available - square cropped
+    const thumbUrl = post.mainImage ? sanityThumbUrl(post.mainImage, 140, 80) : null;
     const thumbHtml = thumbUrl
       ? `<img class="note-item-thumb" src="${thumbUrl}" alt="${post.title}">`
       : `<div class="note-item-thumb-placeholder">
@@ -2266,6 +2277,7 @@ async function initSanityContent() {
     window.experiencesData = experiences;
     window.testimonialsData = testimonials;
     window.sanityImageUrl = sanityImageUrl;
+    window.sanityThumbUrl = sanityThumbUrl;
 
     // Expose password functions globally for inline onclick handlers
     window.closePasswordOverlay = closePasswordOverlay;

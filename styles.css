@@ -5569,7 +5569,7 @@ a {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 60px;
+        gap: 100px;
         padding: 12px 12px 12px 28px;
         position: sticky;
         top: 16px;

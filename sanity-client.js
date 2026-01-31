@@ -693,16 +693,38 @@ function filterByCategory(category) {
 }
 
 // Toggle mobile category filter dropdown
-function toggleMobileCategoryFilter() {
+function toggleMobileCategoryFilter(event) {
+  if (event) event.stopPropagation();
+
   const filterContainer = document.getElementById('mobileCategoryFilter');
   if (!filterContainer) return;
 
+  const isOpening = !filterContainer.classList.contains('active');
   filterContainer.classList.toggle('active');
 
   // Update button active state
   const filterBtn = document.querySelector('.mobile-filter-btn');
   if (filterBtn) {
     filterBtn.classList.toggle('active', filterContainer.classList.contains('active'));
+  }
+
+  // Add click outside listener when opening
+  if (isOpening) {
+    setTimeout(() => {
+      document.addEventListener('click', closeMobileFilterOnClickOutside);
+    }, 10);
+  }
+}
+
+// Close filter dropdown when clicking outside
+function closeMobileFilterOnClickOutside(event) {
+  const filterContainer = document.getElementById('mobileCategoryFilter');
+  const filterBtn = document.querySelector('.mobile-filter-btn');
+
+  if (filterContainer && !filterContainer.contains(event.target) && !filterBtn?.contains(event.target)) {
+    filterContainer.classList.remove('active');
+    if (filterBtn) filterBtn.classList.remove('active');
+    document.removeEventListener('click', closeMobileFilterOnClickOutside);
   }
 }
 
@@ -795,12 +817,6 @@ function updateMobileFilterUI() {
       : activeCategory.toLowerCase() === category;
     chip.classList.toggle('active', isActive);
   });
-
-  // Update filter label to show active category
-  const filterLabel = document.querySelector('.mobile-filter-btn .filter-label');
-  if (filterLabel) {
-    filterLabel.textContent = activeCategory === 'all' ? 'Filter' : activeCategory;
-  }
 }
 
 // Helper function to render a single project folder (for mobile filtering)

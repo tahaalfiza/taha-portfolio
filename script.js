@@ -1731,13 +1731,10 @@ function setActiveStageSection(section) {
             const mobileFilterHeader = isMobileView ? `
                 <div class="mobile-filter-header">
                     <h2 class="mobile-section-title">Projects</h2>
-                    <button class="mobile-filter-btn" onclick="toggleMobileCategoryFilter()">
+                    <button class="mobile-filter-btn" onclick="toggleMobileCategoryFilter()" aria-label="Filter projects">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="4" y1="6" x2="20" y2="6"></line>
-                            <line x1="6" y1="12" x2="18" y2="12"></line>
-                            <line x1="8" y1="18" x2="16" y2="18"></line>
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </svg>
-                        <span class="filter-label">Filter</span>
                     </button>
                 </div>
                 <div class="mobile-category-filter" id="mobileCategoryFilter">

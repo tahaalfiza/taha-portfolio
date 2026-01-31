@@ -21,23 +21,31 @@ function checkViewFromUrl() {
     const view = params.get('view');
     const isMobile = window.innerWidth <= 768;
 
-    if (view === 'list' && !isMobile) {
-        // Switch to list view after a small delay (desktop only)
-        setTimeout(() => {
-            const listViewBtn = document.getElementById('listViewBtn');
-            if (listViewBtn) {
-                listViewBtn.click();
-            }
-        }, 100);
-    } else if (view === 'canvas' && !isMobile) {
-        // Explicitly requested canvas view (desktop only)
-        // Canvas view - no action needed as it's the initial HTML state
-    } else {
-        // Stage view is default for both mobile and desktop
+    if (isMobile) {
+        // Mobile always uses Stage View
         setTimeout(() => {
             const stageViewBtn = document.getElementById('stageViewBtn');
             if (stageViewBtn) {
                 stageViewBtn.click();
+            }
+        }, 100);
+    } else if (view === 'canvas') {
+        // Explicitly requested canvas view (desktop only)
+        // Canvas view - no action needed as it's the initial HTML state
+    } else if (view === 'stage') {
+        // Explicitly requested stage view
+        setTimeout(() => {
+            const stageViewBtn = document.getElementById('stageViewBtn');
+            if (stageViewBtn) {
+                stageViewBtn.click();
+            }
+        }, 100);
+    } else {
+        // List view is default for desktop (view 2)
+        setTimeout(() => {
+            const listViewBtn = document.getElementById('listViewBtn');
+            if (listViewBtn) {
+                listViewBtn.click();
             }
         }, 100);
     }

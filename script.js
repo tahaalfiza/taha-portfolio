@@ -1033,7 +1033,9 @@ function initStageView() {
 
     // Load initial section
     if (!stageViewInitialized) {
-        setActiveStageSection('home');
+        const isMobile = window.innerWidth <= 768;
+        // Mobile starts with About, Desktop starts with Home
+        setActiveStageSection(isMobile ? 'about' : 'home');
         stageViewInitialized = true;
     }
 
@@ -1047,11 +1049,11 @@ function initStageView() {
     initStageWheelNavigation();
 }
 
-// Swipe Navigation for Mobile Stage View - Horizontal (left/right) between sections
-// Vertical scroll is for content within each section
+// Swipe Navigation for Mobile Stage View - DISABLED
+// Navigation is now only through navbar
 function initSwipeNavigation() {
-    const isMobile = window.innerWidth <= 768;
-    if (!isMobile) return;
+    // Swipe navigation disabled - users navigate via navbar only
+    return;
 
     const stageContent = document.getElementById('stageContent');
     if (!stageContent) return;

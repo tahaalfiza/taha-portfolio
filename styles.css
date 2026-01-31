@@ -4769,6 +4769,13 @@ a {
         max-width: calc(100% - 32px);
     }
 
+    /* Hide Home, Blog, and Hire buttons on mobile - only show About, Projects, Contact */
+    .nav-btn[data-target="home"],
+    .nav-btn[data-target="blog"],
+    .nav-btn[data-target="hire"] {
+        display: none !important;
+    }
+
     .nav-btn {
         width: 48px;
         height: 48px;

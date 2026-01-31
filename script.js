@@ -1041,18 +1041,39 @@ function setActiveStageSection(section) {
                                 <button class="format-btn" data-format="underline" title="Underline">
                                     <span style="text-decoration: underline;">U</span>
                                 </button>
-                                <div class="format-divider"></div>
-                                <button class="format-btn" data-format="bigger" title="Bigger">
-                                    <span style="font-size: 15px;">A</span>
+                                <button class="format-btn" data-format="strikethrough" title="Strikethrough">
+                                    <span style="text-decoration: line-through;">S</span>
                                 </button>
-                                <button class="format-btn" data-format="smaller" title="Smaller">
+                                <div class="format-divider"></div>
+                                <button class="format-btn size-btn" data-format="size-1" title="Extra Small">
+                                    <span style="font-size: 8px;">A</span>
+                                </button>
+                                <button class="format-btn size-btn" data-format="size-2" title="Small">
                                     <span style="font-size: 10px;">A</span>
                                 </button>
+                                <button class="format-btn size-btn" data-format="size-3" title="Normal">
+                                    <span style="font-size: 12px;">A</span>
+                                </button>
+                                <button class="format-btn size-btn" data-format="size-4" title="Large">
+                                    <span style="font-size: 14px;">A</span>
+                                </button>
+                                <button class="format-btn size-btn" data-format="size-5" title="Extra Large">
+                                    <span style="font-size: 16px;">A</span>
+                                </button>
+                                <button class="format-btn size-btn" data-format="size-6" title="Huge">
+                                    <span style="font-size: 18px;">A</span>
+                                </button>
                                 <div class="format-divider"></div>
-                                <button class="format-btn" data-format="highlight-yellow" title="Yellow" style="background: #FFEB3B;"></button>
-                                <button class="format-btn" data-format="highlight-green" title="Green" style="background: #A5D6A7;"></button>
-                                <button class="format-btn" data-format="highlight-blue" title="Blue" style="background: #90CAF9;"></button>
-                                <button class="format-btn" data-format="highlight-pink" title="Pink" style="background: #F48FB1;"></button>
+                                <button class="format-btn color-btn" data-format="highlight-yellow" title="Yellow Highlight" style="background: #FFEB3B;"></button>
+                                <button class="format-btn color-btn" data-format="highlight-green" title="Green Highlight" style="background: #A5D6A7;"></button>
+                                <button class="format-btn color-btn" data-format="highlight-blue" title="Blue Highlight" style="background: #90CAF9;"></button>
+                                <button class="format-btn color-btn" data-format="highlight-pink" title="Pink Highlight" style="background: #F48FB1;"></button>
+                                <button class="format-btn color-btn" data-format="highlight-orange" title="Orange Highlight" style="background: #FFCC80;"></button>
+                                <button class="format-btn color-btn" data-format="highlight-purple" title="Purple Highlight" style="background: #CE93D8;"></button>
+                                <div class="format-divider"></div>
+                                <button class="format-btn" data-format="removeFormat" title="Clear Formatting">
+                                    <span style="font-size: 11px;">✕</span>
+                                </button>
                             </div>
 
                             <!-- Country flags -->
@@ -1994,18 +2015,23 @@ function initTextFormatting() {
                 document.execCommand('italic', false, null);
             } else if (format === 'underline') {
                 document.execCommand('underline', false, null);
-            } else if (format === 'bigger') {
-                document.execCommand('fontSize', false, '5');
-            } else if (format === 'smaller') {
-                document.execCommand('fontSize', false, '2');
+            } else if (format === 'strikethrough') {
+                document.execCommand('strikeThrough', false, null);
+            } else if (format.startsWith('size-')) {
+                const size = format.split('-')[1];
+                document.execCommand('fontSize', false, size);
             } else if (format.startsWith('highlight-')) {
-                const color = {
+                const colors = {
                     'highlight-yellow': '#FFEB3B',
                     'highlight-green': '#A5D6A7',
                     'highlight-blue': '#90CAF9',
-                    'highlight-pink': '#F48FB1'
-                }[format];
-                document.execCommand('backColor', false, color);
+                    'highlight-pink': '#F48FB1',
+                    'highlight-orange': '#FFCC80',
+                    'highlight-purple': '#CE93D8'
+                };
+                document.execCommand('backColor', false, colors[format]);
+            } else if (format === 'removeFormat') {
+                document.execCommand('removeFormat', false, null);
             }
         });
     });

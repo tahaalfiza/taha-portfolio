@@ -5197,7 +5197,7 @@ a {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 16px !important;
         padding: 16px !important;
-        padding-bottom: 200px !important;
+        padding-bottom: 100px !important;
         max-height: none !important;
         overflow: visible !important;
         background: transparent !important;

@@ -1263,6 +1263,26 @@ a {
     box-shadow: none;
 }
 
+/* Stage View Blog Thumbnails - ensure square with zoom-to-fill */
+.stage-view .note-item-thumb {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background: #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stage-view .note-item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
 /* Stage Contact Section */
 .stage-view .stage-contact {
     padding: 50px;

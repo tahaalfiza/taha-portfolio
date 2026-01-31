@@ -158,6 +158,41 @@
             visibility: visible;
         }
 
+        /* Mobile floating share button */
+        .mobile-share-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-share-btn:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-share-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .mobile-share-btn {
+            background: rgba(30, 30, 30, 0.95);
+        }
+
         /* Project Content Container */
         .project-page-content {
             max-width: 1200px;
@@ -423,14 +458,33 @@
                 margin-left: -20px;
             }
 
-            .nav-logo {
-                display: none;
+            /* Hide entire navbar on mobile, show floating share button */
+            .project-nav {
+                display: none !important;
+            }
+
+            .project-page-content {
+                padding-top: 40px !important;
+            }
+
+            /* Floating share button on mobile */
+            .mobile-share-btn {
+                display: flex !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="project-page">
+        <!-- Mobile Floating Share Button -->
+        <button class="mobile-share-btn" onclick="shareProject()" title="Share">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+        </button>
+
         <!-- Top Navigation -->
         <nav class="project-nav" id="projectNav">
             <div class="nav-left">

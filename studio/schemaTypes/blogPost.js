@@ -145,6 +145,18 @@ export default {
       },
     },
     {
+      name: 'authors',
+      title: 'Authors',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'author' }],
+        },
+      ],
+      description: 'Add one or more authors. Create authors in the "Authors" section first.',
+    },
+    {
       name: 'featured',
       title: 'Featured Post',
       type: 'boolean',

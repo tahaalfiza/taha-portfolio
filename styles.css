@@ -139,6 +139,11 @@ a {
     color: inherit;
 }
 
+/* Mobile nav - hidden on desktop */
+.mobile-nav {
+    display: none;
+}
+
 /* ==========================================
    LOADING SCREEN - Smooth and fast
    ========================================== */
@@ -4699,31 +4704,86 @@ a {
         gap: 4px;
     }
 
-    /* Hide zoom +/- and level on mobile, show only view switcher */
-    .zoom-controls .zoom-btn:not(.reset),
-    .zoom-controls .zoom-level,
-    .zoom-controls .zoom-divider {
+    /* Hide zoom controls completely on mobile - only Canvas view available */
+    .zoom-controls {
         display: none;
     }
 
-    .zoom-controls .zoom-btn.reset {
-        display: none;
+    /* Hide list and stage views on mobile */
+    .list-view,
+    .stage-view {
+        display: none !important;
     }
 
-    .view-switcher {
-        display: flex;
-        gap: 4px;
-    }
-
-    .view-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
+    /* Ensure canvas view is always visible on mobile */
+    .canvas-view {
+        display: block !important;
     }
 
     /* Hide minimap on mobile - use nav instead */
     .minimap {
         display: none;
+    }
+
+    /* Mobile Navigation Bar */
+    .mobile-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: var(--bg-primary);
+        border-top: 1px solid var(--border-light);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 8px;
+        padding-bottom: env(safe-area-inset-bottom);
+        z-index: 1000;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    [data-theme="dark"] .mobile-nav {
+        background: rgba(0, 0, 0, 0.95);
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        min-width: 56px;
+    }
+
+    .mobile-nav-item svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .mobile-nav-item span {
+        font-size: 10px;
+        font-weight: 500;
+    }
+
+    .mobile-nav-item.active {
+        color: var(--text-primary);
+        background: var(--bg-secondary);
+    }
+
+    .mobile-nav-item:active {
+        transform: scale(0.95);
+    }
+
+    /* Add bottom padding to canvas container for mobile nav */
+    #canvasContainer {
+        padding-bottom: 70px;
     }
 
     /* Canvas sections - Mobile optimized */

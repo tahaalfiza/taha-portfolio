@@ -403,10 +403,16 @@
             border-top: 1px solid var(--border-light);
         }
 
-        .author-section {
+        /* Authors Section - Stacked Avatars */
+        .authors-section {
             display: flex;
             align-items: center;
             gap: 16px;
+        }
+
+        .authors-avatars {
+            display: flex;
+            align-items: center;
         }
 
         .author-avatar {
@@ -415,6 +421,19 @@
             border-radius: 50%;
             background: var(--bg-secondary);
             overflow: hidden;
+            border: 3px solid var(--bg-primary);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, z-index 0s;
+        }
+
+        .author-avatar:not(:first-child) {
+            margin-left: -16px;
+        }
+
+        .author-avatar:hover {
+            transform: scale(1.1);
+            z-index: 10;
         }
 
         .author-avatar img {
@@ -423,19 +442,82 @@
             object-fit: cover;
         }
 
-        .author-info {
+        /* More authors indicator */
+        .authors-more {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--bg-primary);
+            margin-left: -16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Author tooltip on hover */
+        .author-avatar .author-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .author-avatar .author-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--text-primary);
+        }
+
+        .author-avatar:hover .author-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Author role in tooltip */
+        .author-tooltip-role {
+            font-size: 11px;
+            font-weight: 400;
+            opacity: 0.7;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .authors-info {
             flex: 1;
         }
 
-        .author-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
+        .authors-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
         }
 
-        .author-title {
-            font-size: 14px;
-            color: var(--text-secondary);
+        .authors-names {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
         }
 
         /* Password Protection */
@@ -707,7 +789,14 @@
                 content,
                 category,
                 mainImage,
-                password
+                password,
+                "authors": authors[]->{
+                    _id,
+                    name,
+                    image,
+                    role,
+                    website
+                }
             }`;
 
             try {
@@ -762,6 +851,64 @@
             return Math.max(1, Math.ceil(wordCount / 200));
         }
 
+        // Render authors section
+        function renderAuthors(authors) {
+            if (!authors || authors.length === 0) {
+                // Default author if none specified
+                return `
+                    <div class="authors-section">
+                        <div class="authors-avatars">
+                            <div class="author-avatar">
+                                <img src="taha-photo.jpg" alt="Taha Alfiza">
+                                <div class="author-tooltip">
+                                    Taha Alfiza
+                                    <span class="author-tooltip-role">Brand & Product Designer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="authors-info">
+                            <div class="authors-label">Written by</div>
+                            <div class="authors-names">Taha Alfiza</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const maxVisible = 3;
+            const visibleAuthors = authors.slice(0, maxVisible);
+            const remainingCount = authors.length - maxVisible;
+
+            const avatarsHtml = visibleAuthors.map(author => {
+                const imageUrl = author.image ? sanityImageUrl(author.image, 200, 90) : 'taha-photo.jpg';
+                return `
+                    <div class="author-avatar">
+                        <img src="${imageUrl}" alt="${author.name}">
+                        <div class="author-tooltip">
+                            ${author.name}
+                            ${author.role ? `<span class="author-tooltip-role">${author.role}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const moreHtml = remainingCount > 0 ? `<div class="authors-more">+${remainingCount}</div>` : '';
+
+            const authorNames = authors.map(a => a.name).join(', ');
+
+            return `
+                <div class="authors-section">
+                    <div class="authors-avatars">
+                        ${avatarsHtml}
+                        ${moreHtml}
+                    </div>
+                    <div class="authors-info">
+                        <div class="authors-label">Written by</div>
+                        <div class="authors-names">${authorNames}</div>
+                    </div>
+                </div>
+            `;
+        }
+
         // Render post
         function renderPost(post) {
             const contentEl = document.getElementById('content');
@@ -769,6 +916,7 @@
             const readingTime = calculateReadingTime(post.content);
             const featuredImage = post.mainImage ? sanityImageUrl(post.mainImage, 1800, 90) : null;
             const contentHtml = renderBlockContent(post.content);
+            const authorsHtml = renderAuthors(post.authors);
 
             contentEl.innerHTML = `
                 <article>
@@ -794,15 +942,7 @@
                     </div>
 
                     <footer class="article-footer">
-                        <div class="author-section">
-                            <div class="author-avatar">
-                                <img src="taha-photo.jpg" alt="Taha Alfiza">
-                            </div>
-                            <div class="author-info">
-                                <div class="author-name">Taha Alfiza</div>
-                                <div class="author-title">Brand & Product Designer</div>
-                            </div>
-                        </div>
+                        ${authorsHtml}
                     </footer>
                 </article>
             `;

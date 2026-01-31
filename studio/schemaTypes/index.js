@@ -7,5 +7,6 @@ import contactInfo from './contactInfo'
 import aboutInfo from './aboutInfo'
 import blogPost from './blogPost'
 import siteSettings from './siteSettings'
+import author from './author'
 
-export const schemaTypes = [project, projectCategory, workExperience, testimonial, education, contactInfo, aboutInfo, blogPost, siteSettings]
+export const schemaTypes = [project, projectCategory, workExperience, testimonial, education, contactInfo, aboutInfo, blogPost, siteSettings, author]

@@ -910,6 +910,62 @@ function cloneSectionForThumb(section) {
         return;
     }
 
+    // Custom thumbnail for Hire/New Project
+    if (section === 'hire') {
+        thumbContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 12px; text-align: center; box-sizing: border-box;">
+                <div style="background: #f5f5f7; border-radius: 8px; padding: 10px; width: 100%; box-sizing: border-box;">
+                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
+                        <span style="width: 6px; height: 6px; background: #ff5f56; border-radius: 50%;"></span>
+                        <span style="width: 6px; height: 6px; background: #ffbd2e; border-radius: 50%;"></span>
+                        <span style="width: 6px; height: 6px; background: #27ca3f; border-radius: 50%;"></span>
+                        <span style="font-size: 8px; color: #666; margin-left: auto;">New Project</span>
+                    </div>
+                    <h3 style="font-size: 11px; font-weight: 600; margin: 0 0 4px 0; text-align: left;">Start a Project</h3>
+                    <p style="font-size: 7px; color: #666; margin: 0 0 8px 0; text-align: left;">Tell me about your project</p>
+                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 4px 6px; margin-bottom: 4px; text-align: left;">
+                        <span style="font-size: 6px; color: #999;">NAME</span>
+                    </div>
+                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 4px 6px; margin-bottom: 4px; text-align: left;">
+                        <span style="font-size: 6px; color: #999;">EMAIL</span>
+                    </div>
+                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 4px 6px; margin-bottom: 6px; text-align: left;">
+                        <span style="font-size: 6px; color: #999;">MESSAGE</span>
+                    </div>
+                    <div style="background: #6366f1; color: white; border-radius: 4px; padding: 4px; font-size: 7px; text-align: center;">Send Message ✈</div>
+                </div>
+            </div>
+        `;
+        thumbContent.style.transform = 'none';
+        return;
+    }
+
+    // Custom thumbnail for Contact
+    if (section === 'contact') {
+        thumbContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 16px; text-align: center; box-sizing: border-box;">
+                <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 6px 0;">Let's Create Something Amazing</h3>
+                <p style="font-size: 8px; color: #666; margin: 0 0 12px 0;">I'm always open to discussing new projects and opportunities.</p>
+                <div style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+                    <div style="display: flex; align-items: center; gap: 8px; background: #f5f5f7; border-radius: 20px; padding: 6px 10px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6L12 13L2 6"/></svg>
+                        <span style="font-size: 8px;">taha.alfiza@gmail.com</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; background: #f5f5f7; border-radius: 20px; padding: 6px 10px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        <span style="font-size: 8px;">LinkedIn</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; background: #f5f5f7; border-radius: 20px; padding: 6px 10px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/></svg>
+                        <span style="font-size: 8px;">Instagram</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        thumbContent.style.transform = 'none';
+        return;
+    }
+
     // For other sections, clone the original content
     const selector = sectionSelectors[section];
     const originalSection = document.querySelector(selector);

@@ -138,17 +138,20 @@
             color: var(--text-secondary);
         }
 
-        /* Featured Image - Full width */
+        /* Featured Image - Contained with rounded corners */
         .featured-image {
-            width: 100vw;
-            margin-left: calc(-50vw + 50%);
-            margin-bottom: 48px;
+            width: 100%;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .featured-image img {
             width: 100%;
             height: auto;
             display: block;
+            max-height: 400px;
+            object-fit: cover;
         }
 
         /* Article Body */

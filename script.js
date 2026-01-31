@@ -28,6 +28,14 @@ function checkViewFromUrl() {
                 listViewBtn.click();
             }
         }, 100);
+    } else if (view === 'stage') {
+        // Switch to stage view after a small delay
+        setTimeout(() => {
+            const stageViewBtn = document.getElementById('stageViewBtn');
+            if (stageViewBtn) {
+                stageViewBtn.click();
+            }
+        }, 100);
     }
     // 'canvas' is the default view, no action needed
 }
@@ -648,39 +656,56 @@ function initZoomControls() {
     // View sprite buttons
     const canvasViewBtn = document.getElementById('canvasViewBtn');
     const listViewBtn = document.getElementById('listViewBtn');
+    const stageViewBtn = document.getElementById('stageViewBtn');
     const listView = document.getElementById('listView');
+    const stageView = document.getElementById('stageView');
     const canvasContainer = document.getElementById('canvasContainer');
     const minimap = document.getElementById('minimap');
     const navbar = document.querySelector('.navbar');
     const zoomControls = document.querySelector('.zoom-controls');
 
+    // Function to clear all view states
+    function clearAllViews() {
+        listView?.classList.remove('active');
+        stageView?.classList.remove('active');
+        canvasContainer.style.display = 'none';
+        minimap?.style.setProperty('display', 'none');
+        canvasViewBtn?.classList.remove('active');
+        listViewBtn?.classList.remove('active');
+        stageViewBtn?.classList.remove('active');
+    }
+
     // Function to switch to canvas view
     function switchToCanvasView() {
-        listView?.classList.remove('active');
+        clearAllViews();
         canvasContainer.style.display = 'block';
         minimap?.style.setProperty('display', 'block');
         navbar?.style.setProperty('display', 'flex');
         canvasViewBtn?.classList.add('active');
-        listViewBtn?.classList.remove('active');
         document.body.style.overflow = 'hidden';
-        // Update URL to clean URL format
         history.pushState({}, '', '/view_1/');
     }
 
     // Function to switch to list view
     function switchToListView() {
+        clearAllViews();
         listView?.classList.add('active');
-        canvasContainer.style.display = 'none';
-        minimap?.style.setProperty('display', 'none');
-        // Keep navbar visible in list view
         navbar?.style.setProperty('display', 'flex');
         listViewBtn?.classList.add('active');
-        canvasViewBtn?.classList.remove('active');
         document.body.style.overflow = 'auto';
-        // Load list view content if not already loaded
         initListViewContent();
-        // Update URL to clean URL format
         history.pushState({}, '', '/view_2/');
+    }
+
+    // Function to switch to stage view
+    function switchToStageView() {
+        clearAllViews();
+        stageView?.classList.add('active');
+        navbar?.style.setProperty('display', 'flex');
+        stageViewBtn?.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        initStageView();
+        history.pushState({}, '', '/view_3/');
     }
 
     // Canvas view button click
@@ -691,6 +716,11 @@ function initZoomControls() {
     // List view button click
     if (listViewBtn && listView) {
         listViewBtn.addEventListener('click', switchToListView);
+    }
+
+    // Stage view button click
+    if (stageViewBtn && stageView) {
+        stageViewBtn.addEventListener('click', switchToStageView);
     }
 
     // List view form submission
@@ -718,6 +748,142 @@ function initZoomControls() {
             }
         });
     }
+}
+
+// Initialize Stage View
+let stageViewInitialized = false;
+let currentStageSection = 'home';
+
+function initStageView() {
+    const stageContent = document.getElementById('stageContent');
+    const stageThumbs = document.querySelectorAll('.stage-thumb');
+
+    if (!stageContent) return;
+
+    // Set up thumbnail click handlers
+    stageThumbs.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+            const section = thumb.dataset.section;
+            setActiveStageSection(section);
+
+            // Update active thumbnail
+            stageThumbs.forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        });
+    });
+
+    // Load initial section
+    if (!stageViewInitialized) {
+        setActiveStageSection('home');
+        stageViewInitialized = true;
+    }
+}
+
+function setActiveStageSection(section) {
+    const stageContent = document.getElementById('stageContent');
+    if (!stageContent) return;
+
+    currentStageSection = section;
+
+    // Generate content based on section
+    let content = '';
+
+    switch(section) {
+        case 'home':
+            content = `
+                <div class="stage-content-inner">
+                    <div class="stage-section stage-home">
+                        <div class="hero-logo">
+                            <svg width="100" height="100" viewBox="0 0 257 258" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M128.5 0.52948C199.192 0.52948 256.5 57.837 256.5 128.529C256.5 199.222 199.192 256.529 128.5 256.529C57.8076 256.529 0.5 199.222 0.5 128.529C0.5 57.837 57.8076 0.52948 128.5 0.52948Z" stroke="currentColor"/>
+                            </svg>
+                        </div>
+                        <p class="hero-greeting">hey, this is</p>
+                        <h1 class="hero-title">
+                            <span class="title-line">Taha's</span>
+                            <span class="title-line accent">Work</span>
+                        </h1>
+                        <p class="hero-subtitle">Brand & Product Designer</p>
+                        <div class="hero-cta">
+                            <button class="btn btn-primary" onclick="document.querySelector('.stage-thumb[data-section=projects]').click()">Projects</button>
+                            <button class="btn btn-ghost" onclick="document.querySelector('.stage-thumb[data-section=about]').click()">Resume</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'about':
+            const aboutHtml = document.querySelector('#section-about .about-card-modern')?.outerHTML || '';
+            content = `
+                <div class="stage-content-inner">
+                    <div class="stage-section stage-about">
+                        ${aboutHtml}
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'projects':
+            const projectsHtml = document.querySelector('#section-projects .finder-window')?.outerHTML || '';
+            content = `
+                <div class="stage-content-inner">
+                    <div class="stage-section stage-projects">
+                        ${projectsHtml}
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'blog':
+            const blogHtml = document.querySelector('#section-blog .notes-app-window')?.outerHTML || '';
+            content = `
+                <div class="stage-content-inner">
+                    <div class="stage-section stage-blog">
+                        ${blogHtml}
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'contact':
+            content = `
+                <div class="stage-content-inner">
+                    <div class="stage-section stage-contact">
+                        <div class="contact-card">
+                            <h2>Let's Create Something Amazing</h2>
+                            <p>I'm always open to discussing new projects and opportunities.</p>
+                            <div class="contact-links">
+                                <a href="mailto:taha.alfiza@gmail.com" class="contact-link">
+                                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                        <path d="M22 6L12 13L2 6"/>
+                                    </svg>
+                                    <span>taha.alfiza@gmail.com</span>
+                                </a>
+                                <a href="https://www.linkedin.com/in/tahaalfiza/" target="_blank" class="contact-link">
+                                    <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://www.instagram.com/tahaalfiza/" target="_blank" class="contact-link">
+                                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                        <circle cx="12" cy="12" r="4"/>
+                                        <circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+                                    </svg>
+                                    <span>Instagram</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+    }
+
+    stageContent.innerHTML = content;
 }
 
 // Initialize list view content from Sanity data

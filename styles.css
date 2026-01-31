@@ -1206,7 +1206,7 @@ a {
 /* Stage View Responsive */
 @media (max-width: 768px) {
     .stage-view {
-        flex-direction: column;
+        flex-direction: column-reverse; /* Sidebar at bottom for better mobile UX */
         position: fixed;
         height: 100%;
         height: 100dvh; /* Dynamic viewport height for mobile browsers */
@@ -1216,19 +1216,22 @@ a {
         width: 100%;
         min-width: 100%;
         height: auto;
-        max-height: 120px;
+        max-height: 100px;
         flex-direction: row;
-        padding: 60px 12px 12px;
+        padding: 12px 12px 20px; /* More padding at bottom for safe area */
+        padding-bottom: max(20px, env(safe-area-inset-bottom)); /* iOS safe area */
         gap: 8px;
         overflow-x: auto;
         overflow-y: hidden;
         justify-content: flex-start;
         border-right: none;
-        border-bottom: 1px solid var(--border-light);
+        border-bottom: none;
+        border-top: 1px solid var(--border-light); /* Border on top instead */
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
         scrollbar-width: none;
         -ms-overflow-style: none;
+        background: var(--bg-primary); /* Ensure solid background */
     }
 
     .stage-sidebar::-webkit-scrollbar {
@@ -1261,6 +1264,7 @@ a {
 
     .stage-main {
         padding: 16px;
+        padding-top: 70px; /* Space for top navbar */
         flex: 1;
         min-height: 0;
     }
@@ -1409,7 +1413,8 @@ a {
 /* Stage View Scroll to Start Button - for sidebar horizontal scroll */
 .stage-scroll-start {
     position: fixed;
-    top: 75px;
+    bottom: 110px; /* Position above the bottom sidebar */
+    bottom: calc(110px + env(safe-area-inset-bottom)); /* iOS safe area */
     left: 12px;
     width: 28px;
     height: 28px;

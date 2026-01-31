@@ -165,7 +165,7 @@
             }
         }
 
-        /* Nav Actions Container */
+        /* Nav Actions Container - Same style as main navbar */
         .nav-container {
             position: fixed;
             bottom: 24px;
@@ -173,28 +173,51 @@
             transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 4px;
+            padding: 8px;
+            background: var(--bg-card, rgba(255, 255, 255, 0.95));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
             z-index: 1000;
+        }
+
+        [data-theme="dark"] .nav-container {
+            background: rgba(17, 17, 17, 0.95);
         }
 
         .nav-container .navbar {
             position: static;
             transform: none;
+            padding: 0;
+            background: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: none;
+            border-radius: 0;
         }
 
-        /* Action Buttons (Back & Share) */
+        /* Divider between sections */
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border-light);
+            margin: 0 4px;
+        }
+
+        /* Action Buttons (Back & Share) - Same as nav-btn */
         .nav-action-btn {
+            position: relative;
             width: 44px;
             height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--bg-card, rgba(255, 255, 255, 0.95));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
+            background: transparent;
+            border: none;
             color: var(--text-secondary);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.15s ease;
         }
@@ -202,18 +225,19 @@
         .nav-action-btn:hover {
             color: var(--text-primary);
             background: var(--bg-hover, var(--bg-secondary));
-            transform: scale(1.05);
         }
 
         .nav-action-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
         }
 
         @media (max-width: 768px) {
             .nav-container {
                 bottom: 16px;
-                gap: 8px;
+                padding: 6px;
+                gap: 2px;
+                border-radius: 14px;
             }
 
             .nav-action-btn {
@@ -223,8 +247,13 @@
             }
 
             .nav-action-btn svg {
-                width: 18px;
-                height: 18px;
+                width: 20px;
+                height: 20px;
+            }
+
+            .nav-divider {
+                height: 20px;
+                margin: 0 2px;
             }
         }
 
@@ -693,6 +722,8 @@
                 </svg>
             </button>
 
+            <div class="nav-divider"></div>
+
             <!-- Main Navigation -->
             <nav class="navbar" id="navbar">
                 <a href="/" class="nav-btn" title="Home">
@@ -733,6 +764,8 @@
                     <span class="nav-tooltip">New Project</span>
                 </button>
             </nav>
+
+            <div class="nav-divider"></div>
 
             <!-- Share Button -->
             <button class="nav-action-btn" onclick="sharePost()" title="Share">

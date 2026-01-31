@@ -1254,32 +1254,28 @@ function initStageSidebarClicks() {
             const category = item.dataset.category;
             if (!category) return;
 
-            // Update active state in Stage View
+            // Update active state in Stage View sidebar
             sidebarItems.forEach(si => si.classList.remove('active'));
             item.classList.add('active');
 
-            // Filter projects using the global function
-            if (typeof filterByCategory === 'function') {
-                filterByCategory(category);
+            // Filter projects - get filtered list
+            const allProjects = window.projectsData || [];
+            const filtered = category === 'all'
+                ? allProjects
+                : allProjects.filter(p =>
+                    p.category?.name?.toLowerCase() === category.toLowerCase()
+                );
+
+            // Re-render folders in Stage View
+            const foldersGrid = stageProjects.querySelector('.folders-grid');
+            if (foldersGrid) {
+                renderStageFolders(foldersGrid, filtered);
             }
 
-            // Also update the Stage View folders grid
-            const foldersGrid = stageProjects.querySelector('.folders-grid');
-            if (foldersGrid && window.projectsData) {
-                const filtered = category === 'all'
-                    ? window.projectsData
-                    : window.projectsData.filter(p =>
-                        p.category?.name?.toLowerCase() === category.toLowerCase()
-                    );
-
-                // Re-render folders in Stage View
-                renderStageFolders(foldersGrid, filtered);
-
-                // Update count
-                const countEl = stageProjects.querySelector('.finder-count');
-                if (countEl) {
-                    countEl.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
-                }
+            // Update count
+            const countEl = stageProjects.querySelector('.finder-count');
+            if (countEl) {
+                countEl.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
             }
         });
     });
@@ -1287,9 +1283,25 @@ function initStageSidebarClicks() {
 
 // Render folders in Stage View
 function renderStageFolders(container, projects) {
-    if (!container || !projects) return;
+    if (!container) return;
 
-    container.innerHTML = projects.map((project, index) => {
+    if (!projects || projects.length === 0) {
+        container.innerHTML = `
+            <div class="finder-empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                <p>No projects in this category</p>
+                <span>Try selecting a different category</span>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = projects.map((project) => {
+        // Find the real index in the full projectsData array for overlay
+        const realIndex = window.projectsData ? window.projectsData.findIndex(p => p._id === project._id) : 0;
+
         const images = project.images || [];
         const imageHtml = images.slice(0, 3).map((img, i) => {
             const url = window.sanityImageUrl?.(img, 400, 85) || '';
@@ -1300,7 +1312,7 @@ function renderStageFolders(container, projects) {
         if (project.projectUrl && !project.hasOverlay) {
             clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
         } else {
-            clickHandler = `onclick="openProjectOverlay(${index})"`;
+            clickHandler = `onclick="openProjectOverlay(${realIndex})"`;
         }
 
         const formatColor = (color) => {

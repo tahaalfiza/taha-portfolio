@@ -244,6 +244,12 @@ export default {
       initialValue: true,
     },
     {
+      name: 'password',
+      title: 'Password Protection',
+      type: 'string',
+      description: 'Set a password to protect this project. Leave empty for no protection.',
+    },
+    {
       name: 'isVisible',
       title: 'Visible',
       type: 'boolean',

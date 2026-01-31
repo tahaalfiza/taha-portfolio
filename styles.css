@@ -862,7 +862,92 @@ a {
     max-width: 100%;
     box-shadow: none;
     background: transparent;
+    border: none;
 }
+
+.stage-view .stage-about .about-bio-text {
+    font-size: 22px;
+    line-height: 1.7;
+}
+
+/* Text formatting toolbar - macOS style */
+.text-format-toolbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 4px 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.text-format-toolbar.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.text-format-toolbar::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(255, 255, 255, 0.95);
+}
+
+.format-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+}
+
+.format-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.format-btn.active {
+    background: #007AFF;
+    color: white;
+}
+
+.format-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.format-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.12);
+    margin: 0 4px;
+}
+
+/* Highlight colors */
+.highlight-yellow { background: #FFEB3B; padding: 2px 4px; border-radius: 3px; }
+.highlight-green { background: #A5D6A7; padding: 2px 4px; border-radius: 3px; }
+.highlight-blue { background: #90CAF9; padding: 2px 4px; border-radius: 3px; }
+.highlight-pink { background: #F48FB1; padding: 2px 4px; border-radius: 3px; }
 
 /* Stage Projects Section */
 .stage-view .stage-projects {

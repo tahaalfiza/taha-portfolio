@@ -1026,14 +1026,54 @@ function setActiveStageSection(section) {
             break;
 
         case 'about':
-            const aboutHtml = document.querySelector('#section-about .about-card-modern')?.outerHTML || '';
             content = `
                 <div class="stage-content-inner">
                     <div class="stage-section stage-about">
-                        ${aboutHtml}
+                        <div class="about-card-modern" style="position: relative;">
+                            <!-- Text Format Toolbar -->
+                            <div class="text-format-toolbar" id="textFormatToolbar">
+                                <button class="format-btn" data-format="bold" title="Bold">
+                                    <strong>B</strong>
+                                </button>
+                                <button class="format-btn" data-format="italic" title="Italic">
+                                    <em>I</em>
+                                </button>
+                                <button class="format-btn" data-format="underline" title="Underline">
+                                    <span style="text-decoration: underline;">U</span>
+                                </button>
+                                <div class="format-divider"></div>
+                                <button class="format-btn" data-format="bigger" title="Bigger">
+                                    <span style="font-size: 15px;">A</span>
+                                </button>
+                                <button class="format-btn" data-format="smaller" title="Smaller">
+                                    <span style="font-size: 10px;">A</span>
+                                </button>
+                                <div class="format-divider"></div>
+                                <button class="format-btn" data-format="highlight-yellow" title="Yellow" style="background: #FFEB3B;"></button>
+                                <button class="format-btn" data-format="highlight-green" title="Green" style="background: #A5D6A7;"></button>
+                                <button class="format-btn" data-format="highlight-blue" title="Blue" style="background: #90CAF9;"></button>
+                                <button class="format-btn" data-format="highlight-pink" title="Pink" style="background: #F48FB1;"></button>
+                            </div>
+
+                            <!-- Country flags -->
+                            <div class="about-flags">
+                                <span class="flag-item" title="Iraq">🇮🇶</span>
+                                <span class="flag-item" title="Turkey">🇹🇷</span>
+                            </div>
+
+                            <!-- Bio text - editable -->
+                            <p class="about-bio-text" contenteditable="true" id="stageBioText1">
+                                I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.
+                            </p>
+                            <p class="about-bio-text" contenteditable="true" id="stageBioText2">
+                                Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
+                            </p>
+                        </div>
                     </div>
                 </div>
             `;
+            // Initialize text formatting after content is added
+            setTimeout(() => initTextFormatting(), 100);
             break;
 
         case 'projects':
@@ -1905,3 +1945,75 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Text formatting toolbar for About section in Stage View
+function initTextFormatting() {
+    const toolbar = document.getElementById('textFormatToolbar');
+    const bioTexts = document.querySelectorAll('.stage-about .about-bio-text[contenteditable]');
+
+    if (!toolbar || bioTexts.length === 0) return;
+
+    // Show toolbar on text selection
+    bioTexts.forEach(text => {
+        text.addEventListener('mouseup', (e) => {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                // Position toolbar near selection
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                const parentRect = text.closest('.about-card-modern').getBoundingClientRect();
+
+                toolbar.style.top = (rect.top - parentRect.top - 45) + 'px';
+                toolbar.style.left = (rect.left - parentRect.left + rect.width / 2) + 'px';
+                toolbar.classList.add('visible');
+            }
+        });
+
+        text.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!toolbar.matches(':hover')) {
+                    toolbar.classList.remove('visible');
+                }
+            }, 200);
+        });
+    });
+
+    // Handle format buttons
+    toolbar.querySelectorAll('.format-btn').forEach(btn => {
+        btn.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Prevent losing selection
+        });
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const format = btn.dataset.format;
+
+            if (format === 'bold') {
+                document.execCommand('bold', false, null);
+            } else if (format === 'italic') {
+                document.execCommand('italic', false, null);
+            } else if (format === 'underline') {
+                document.execCommand('underline', false, null);
+            } else if (format === 'bigger') {
+                document.execCommand('fontSize', false, '5');
+            } else if (format === 'smaller') {
+                document.execCommand('fontSize', false, '2');
+            } else if (format.startsWith('highlight-')) {
+                const color = {
+                    'highlight-yellow': '#FFEB3B',
+                    'highlight-green': '#A5D6A7',
+                    'highlight-blue': '#90CAF9',
+                    'highlight-pink': '#F48FB1'
+                }[format];
+                document.execCommand('backColor', false, color);
+            }
+        });
+    });
+
+    // Hide toolbar when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!toolbar.contains(e.target) && !e.target.closest('.about-bio-text')) {
+            toolbar.classList.remove('visible');
+        }
+    });
+}

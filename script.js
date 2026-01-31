@@ -2076,7 +2076,15 @@ function populateListView() {
     const blogCount = document.getElementById('listBlogCount');
     const blogPreview = document.getElementById('listBlogPreview');
 
-    if (!window.blogPostsData || window.blogPostsData.length === 0) {
+    // Get filtered blog posts based on active category
+    const activeBlogCategory = window.activeBlogCategory || 'all';
+    const filteredBlogPosts = activeBlogCategory === 'all'
+        ? window.blogPostsData
+        : (window.blogPostsData || []).filter(post =>
+            (post.category || '').toLowerCase() === activeBlogCategory.toLowerCase()
+          );
+
+    if (!filteredBlogPosts || filteredBlogPosts.length === 0) {
         // Show empty state placeholder
         if (blogNotesList) {
             blogNotesList.innerHTML = `
@@ -2108,7 +2116,7 @@ function populateListView() {
             blogCount.textContent = '0';
         }
     } else if (blogNotesList) {
-        blogNotesList.innerHTML = window.blogPostsData.map((post, index) => {
+        blogNotesList.innerHTML = filteredBlogPosts.map((post, index) => {
                 const dateStr = post.publishedAt
                     ? new Date(post.publishedAt).toLocaleDateString('en-US', {
                         day: '2-digit',
@@ -2139,11 +2147,11 @@ function populateListView() {
                 `;
         }).join('');
         // Show first post in preview
-        if (window.blogPostsData.length > 0) {
-            selectListBlogPost(window.blogPostsData[0]._id);
+        if (filteredBlogPosts.length > 0) {
+            selectListBlogPost(filteredBlogPosts[0]._id);
         }
         if (blogCount) {
-            blogCount.textContent = window.blogPostsData.length;
+            blogCount.textContent = filteredBlogPosts.length;
         }
     }
 
@@ -2430,10 +2438,18 @@ function initListBlogSearch() {
 
         if (!window.blogPostsData || window.blogPostsData.length === 0) return;
 
-        // Filter posts
-        const filtered = query === ''
+        // Get category-filtered posts first
+        const activeBlogCategory = window.activeBlogCategory || 'all';
+        const categoryFiltered = activeBlogCategory === 'all'
             ? window.blogPostsData
             : window.blogPostsData.filter(post =>
+                (post.category || '').toLowerCase() === activeBlogCategory.toLowerCase()
+              );
+
+        // Then filter by search query
+        const filtered = query === ''
+            ? categoryFiltered
+            : categoryFiltered.filter(post =>
                 post.title.toLowerCase().includes(query) ||
                 (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
                 (post.category && post.category.toLowerCase().includes(query))

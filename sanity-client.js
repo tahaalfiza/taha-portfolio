@@ -235,9 +235,9 @@ async function fetchContactInfo() {
 let blogPostsData = [];
 let activeBlogPost = null;
 
-// Fetch all blog posts
+// Fetch all blog posts (only visible ones)
 async function fetchBlogPosts() {
-  const query = `*[_type == "blogPost"] | order(publishedAt desc) {
+  const query = `*[_type == "blogPost" && isVisible != false] | order(publishedAt desc) {
     _id,
     title,
     slug,
@@ -512,11 +512,11 @@ function initBlogSearch() {
     const query = e.target.value.toLowerCase();
 
     if (query === '') {
-      renderBlogPosts(blogPostsData);
+      filterBlogPosts();
       return;
     }
 
-    const filtered = blogPostsData.filter(post =>
+    const filtered = getFilteredBlogPosts().filter(post =>
       post.title.toLowerCase().includes(query) ||
       (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
       (post.category && post.category.toLowerCase().includes(query))
@@ -526,7 +526,93 @@ function initBlogSearch() {
   });
 }
 
-// Current active category filter
+// Current active blog category filter
+let activeBlogCategory = 'all';
+
+// Get unique categories from blog posts
+function getBlogCategories() {
+  const categories = new Set();
+  blogPostsData.forEach(post => {
+    if (post.category) {
+      categories.add(post.category);
+    }
+  });
+  return Array.from(categories).sort();
+}
+
+// Populate blog category filter buttons
+function populateBlogCategoryFilter() {
+  const filterContainers = [
+    document.getElementById('blogCategoryFilter'),
+    document.getElementById('listBlogCategoryFilter')
+  ];
+
+  const categories = getBlogCategories();
+
+  filterContainers.forEach(container => {
+    if (!container) return;
+
+    let html = `<button class="category-btn ${activeBlogCategory === 'all' ? 'active' : ''}" data-category="all" onclick="filterBlogByCategory('all')">All</button>`;
+
+    categories.forEach(cat => {
+      const isActive = activeBlogCategory.toLowerCase() === cat.toLowerCase();
+      // Capitalize first letter for display
+      const displayName = cat.charAt(0).toUpperCase() + cat.slice(1);
+      html += `<button class="category-btn ${isActive ? 'active' : ''}" data-category="${cat}" onclick="filterBlogByCategory('${cat}')">${displayName}</button>`;
+    });
+
+    container.innerHTML = html;
+  });
+}
+
+// Get filtered blog posts based on current category
+function getFilteredBlogPosts() {
+  if (activeBlogCategory === 'all') {
+    return blogPostsData;
+  }
+  return blogPostsData.filter(post =>
+    (post.category || '').toLowerCase() === activeBlogCategory.toLowerCase()
+  );
+}
+
+// Filter blog posts by category
+function filterBlogByCategory(category) {
+  activeBlogCategory = category;
+
+  // Update active state on all filter buttons
+  document.querySelectorAll('.blog-category-filter .category-btn').forEach(btn => {
+    const btnCategory = btn.dataset.category;
+    btn.classList.toggle('active', btnCategory === category);
+  });
+
+  // Re-render filtered posts
+  filterBlogPosts();
+}
+
+// Filter and render blog posts
+function filterBlogPosts() {
+  const filteredPosts = getFilteredBlogPosts();
+  renderBlogPosts(filteredPosts);
+
+  // Also update list view if it exists
+  if (typeof window.populateListView === 'function') {
+    window.populateListView();
+  }
+}
+
+// Expose filter function and category globally
+window.filterBlogByCategory = filterBlogByCategory;
+window.activeBlogCategory = activeBlogCategory;
+
+// Update global activeBlogCategory when filtering
+const originalFilterBlogByCategory = filterBlogByCategory;
+window.filterBlogByCategory = function(category) {
+  activeBlogCategory = category;
+  window.activeBlogCategory = category;
+  originalFilterBlogByCategory(category);
+};
+
+// Current active category filter (for projects)
 let activeCategory = 'all';
 
 // Render projects into the folders grid
@@ -2170,6 +2256,7 @@ async function initSanityContent() {
     // Render Blog posts
     renderBlogPosts(blogPosts);
     initBlogSearch();
+    populateBlogCategoryFilter();
 
     // Expose data globally for list view
     window.projectsData = projects;

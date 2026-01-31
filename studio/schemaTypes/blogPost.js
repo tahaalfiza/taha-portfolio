@@ -157,6 +157,13 @@ export default {
       description: 'Add one or more authors. Create authors in the "Authors" section first.',
     },
     {
+      name: 'isVisible',
+      title: 'Visible',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Toggle to show or hide this post without deleting it',
+    },
+    {
       name: 'featured',
       title: 'Featured Post',
       type: 'boolean',

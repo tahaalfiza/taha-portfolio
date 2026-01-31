@@ -169,6 +169,10 @@
                                 </svg>
                                 <input type="text" placeholder="Search" id="blogSearch">
                             </div>
+                            <div class="blog-category-filter" id="blogCategoryFilter">
+                                <button class="category-btn active" data-category="all">All</button>
+                                <!-- Categories will be populated by JS -->
+                            </div>
                             <div class="notes-items" id="blogNotesList">
                                 <!-- Blog posts will be dynamically loaded -->
                                 <div class="notes-loading">Loading posts...</div>
@@ -517,6 +521,10 @@
                                         <path d="M21 21l-4.35-4.35"/>
                                     </svg>
                                     <input type="text" placeholder="Search" id="listBlogSearch">
+                                </div>
+                                <div class="blog-category-filter" id="listBlogCategoryFilter">
+                                    <button class="category-btn active" data-category="all">All</button>
+                                    <!-- Categories will be populated by JS -->
                                 </div>
                                 <div class="notes-items" id="listBlogNotesList">
                                     <div class="notes-loading">Loading posts...</div>

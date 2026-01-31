@@ -823,8 +823,10 @@ function initNavigation() {
                 return;
             }
 
-            // If in stage view, don't navigate canvas
+            // If in stage view, navigate within stage sections
             if (isStageViewActive) {
+                setActiveStageSection(target);
+                updateStageThumbnails(target);
                 return;
             }
 
@@ -1018,7 +1020,7 @@ function initStageView() {
     initSwipeNavigation();
 }
 
-// Swipe Navigation for Mobile Stage View
+// Swipe Navigation for Mobile Stage View with smooth animations
 function initSwipeNavigation() {
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) return;
@@ -1028,41 +1030,118 @@ function initSwipeNavigation() {
 
     const sections = ['home', 'about', 'projects', 'blog', 'hire', 'contact'];
     let touchStartX = 0;
+    let touchStartY = 0;
     let touchEndX = 0;
+    let touchEndY = 0;
+    let isSwiping = false;
     const minSwipeDistance = 50;
 
     stageContent.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+        isSwiping = true;
+    }, { passive: true });
+
+    stageContent.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+
+        const currentX = e.changedTouches[0].screenX;
+        const currentY = e.changedTouches[0].screenY;
+        const diffX = currentX - touchStartX;
+        const diffY = currentY - touchStartY;
+
+        // If vertical scroll is greater, don't interfere
+        if (Math.abs(diffY) > Math.abs(diffX)) {
+            isSwiping = false;
+            return;
+        }
+
+        // Visual feedback during swipe - subtle transform
+        const maxOffset = 30;
+        const offset = Math.max(-maxOffset, Math.min(maxOffset, diffX * 0.3));
+        const contentInner = stageContent.querySelector('.stage-content-inner');
+        if (contentInner) {
+            contentInner.style.transform = `translateX(${offset}px)`;
+            contentInner.style.transition = 'none';
+        }
     }, { passive: true });
 
     stageContent.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+
         touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+
+        // Reset visual transform
+        const contentInner = stageContent.querySelector('.stage-content-inner');
+        if (contentInner) {
+            contentInner.style.transform = '';
+            contentInner.style.transition = '';
+        }
+
         handleSwipe();
+        isSwiping = false;
     }, { passive: true });
 
     function handleSwipe() {
         const swipeDistance = touchEndX - touchStartX;
+        const verticalDistance = Math.abs(touchEndY - touchStartY);
 
+        // Ignore if vertical scroll was dominant
+        if (verticalDistance > Math.abs(swipeDistance)) return;
         if (Math.abs(swipeDistance) < minSwipeDistance) return;
 
         const currentIndex = sections.indexOf(currentStageSection);
+        let targetSection = null;
+        let direction = '';
 
         if (swipeDistance < 0) {
             // Swipe left - go to next section
             const nextIndex = currentIndex + 1;
             if (nextIndex < sections.length) {
-                setActiveStageSection(sections[nextIndex]);
-                updateStageThumbnails(sections[nextIndex]);
+                targetSection = sections[nextIndex];
+                direction = 'left';
             }
         } else {
             // Swipe right - go to previous section
             const prevIndex = currentIndex - 1;
             if (prevIndex >= 0) {
-                setActiveStageSection(sections[prevIndex]);
-                updateStageThumbnails(sections[prevIndex]);
+                targetSection = sections[prevIndex];
+                direction = 'right';
             }
         }
+
+        if (targetSection) {
+            animateStageTransition(targetSection, direction);
+        }
     }
+}
+
+// Animate stage transition with slide effect
+function animateStageTransition(targetSection, direction) {
+    const stageContent = document.getElementById('stageContent');
+    if (!stageContent) return;
+
+    // Add transition class for animation
+    stageContent.classList.add('transitioning');
+    stageContent.classList.add(`slide-${direction}`);
+
+    // Small delay for animation to start, then change content
+    setTimeout(() => {
+        setActiveStageSection(targetSection);
+        updateStageThumbnails(targetSection);
+        updateActiveNavButton(targetSection);
+
+        // Remove slide-out, add slide-in from opposite side
+        stageContent.classList.remove(`slide-${direction}`);
+        stageContent.classList.add(`slide-in-${direction === 'left' ? 'right' : 'left'}`);
+
+        // Clean up classes after animation
+        setTimeout(() => {
+            stageContent.classList.remove('transitioning');
+            stageContent.classList.remove(`slide-in-${direction === 'left' ? 'right' : 'left'}`);
+        }, 250);
+    }, 100);
 }
 
 // Update thumbnails active state after swipe
@@ -1278,6 +1357,9 @@ function setActiveStageSection(section) {
     if (!stageContent) return;
 
     currentStageSection = section;
+
+    // Update navbar active state
+    updateActiveNavButton(section);
 
     // Remove background for hire section, add it back for others
     if (section === 'hire') {

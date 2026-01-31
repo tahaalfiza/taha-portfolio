@@ -4739,6 +4739,173 @@ a {
     .stage-main {
         width: 100% !important;
         margin-left: 0 !important;
+        padding: 20px 16px 100px 16px;
+    }
+
+    /* Stage content swipe animations */
+    #stageContent {
+        overflow: hidden;
+    }
+
+    #stageContent .stage-content-inner {
+        transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.25s ease;
+    }
+
+    #stageContent.transitioning .stage-content-inner {
+        opacity: 0.7;
+    }
+
+    #stageContent.slide-left .stage-content-inner {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    #stageContent.slide-right .stage-content-inner {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+
+    #stageContent.slide-in-left .stage-content-inner {
+        animation: slideInFromLeft 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    #stageContent.slide-in-right .stage-content-inner {
+        animation: slideInFromRight 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes slideInFromLeft {
+        from {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideInFromRight {
+        from {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Mobile-optimized Stage View sections */
+    .stage-section {
+        padding: 0;
+    }
+
+    .stage-home {
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .stage-home .hero-avatar {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 24px;
+    }
+
+    .stage-home .hero-avatar svg,
+    .stage-home .hero-avatar img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .stage-home .hero-title .title-line {
+        font-size: 36px;
+    }
+
+    .stage-home .hero-greeting {
+        font-size: 14px;
+    }
+
+    .stage-home .hero-subtitle {
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .stage-home .hero-cta {
+        flex-direction: row;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .stage-home .hero-cta .btn {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+
+    /* Mobile Stage About section */
+    .stage-about .about-card-modern {
+        padding: 24px;
+        border-radius: 20px;
+    }
+
+    .stage-about .about-photo-topleft {
+        width: 70px;
+        height: 70px;
+    }
+
+    .stage-about .about-bio-text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Mobile Stage Projects grid */
+    .stage-projects .project-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .stage-projects .project-card {
+        border-radius: 16px;
+    }
+
+    /* Mobile Stage Blog */
+    .stage-blog .blog-posts-list {
+        gap: 12px;
+    }
+
+    .stage-blog .blog-post-card {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    /* Mobile Stage Contact */
+    .stage-contact {
+        padding: 24px 16px;
+    }
+
+    .stage-contact h2 {
+        font-size: 28px;
+    }
+
+    /* Mobile navbar touch-friendly */
+    .navbar .nav-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .navbar .nav-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* Hide tooltips on mobile */
+    .navbar .nav-tooltip {
+        display: none !important;
     }
 
     /* Hide minimap on mobile */

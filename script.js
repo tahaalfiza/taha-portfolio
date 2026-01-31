@@ -847,14 +847,47 @@ function cloneSectionForThumb(section) {
     const thumbPreview = thumbContent?.parentElement;
     if (!thumbContent || !thumbPreview) return;
 
+    // Set consistent container size for all thumbs
+    const maxWidth = 160;
+    const maxHeight = 200;
+    thumbPreview.style.width = maxWidth + 'px';
+    thumbPreview.style.height = maxHeight + 'px';
+
+    // Custom clean thumbnails for Home and About
+    if (section === 'home') {
+        thumbContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 16px; text-align: center;">
+                <div style="width: 60px; height: 60px; margin-bottom: 12px;">
+                    <img src="images/avatar.svg" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; border: 1px solid #ddd;">
+                </div>
+                <p style="font-size: 11px; color: #666; margin: 0 0 4px 0;">hey, this is</p>
+                <h2 style="font-size: 24px; font-weight: 700; margin: 0; line-height: 1.1;">Taha's</h2>
+                <h2 style="font-size: 24px; font-weight: 700; margin: 0; line-height: 1.1;">Work</h2>
+            </div>
+        `;
+        thumbContent.style.transform = 'none';
+        return;
+    }
+
+    if (section === 'about') {
+        thumbContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; padding: 14px; height: 100%; box-sizing: border-box;">
+                <div style="font-size: 16px; margin-bottom: 8px;">🇮🇶🇹🇷</div>
+                <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #333;">
+                    I'm a Brand & Product Designer with 10+ years of experience crafting brand identities and digital products. Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.
+                </p>
+            </div>
+        `;
+        thumbContent.style.transform = 'none';
+        return;
+    }
+
+    // For other sections, clone the original content
     const selector = sectionSelectors[section];
     const originalSection = document.querySelector(selector);
 
     if (originalSection) {
-        // Clone the actual section content
         const clone = originalSection.cloneNode(true);
-
-        // Reset positioning but keep original structure
         clone.style.pointerEvents = 'none';
         clone.style.transform = 'none';
         clone.style.position = 'relative';
@@ -863,31 +896,7 @@ function cloneSectionForThumb(section) {
         clone.style.margin = '0';
         clone.style.boxShadow = 'none';
 
-        // Special handling for About section - remove photo and fit text
-        if (section === 'about') {
-            const photo = clone.querySelector('.about-photo-topleft');
-            if (photo) photo.style.display = 'none';
-            // Scale down the entire about card to fit
-            clone.style.transform = 'scale(0.5)';
-            clone.style.transformOrigin = 'top left';
-            clone.style.width = '200%';
-        }
-
         thumbContent.appendChild(clone);
-
-        // Use consistent scale for all thumbnails - same container size
-        const scale = 0.35;
-        const maxWidth = 160;
-        const maxHeight = 120;
-
-        // For Home, use smaller content scale to fit everything
-        if (section === 'home') {
-            thumbContent.style.transform = 'scale(0.18)';
-        }
-
-        // Set consistent container size for all thumbs
-        thumbPreview.style.width = maxWidth + 'px';
-        thumbPreview.style.height = maxHeight + 'px';
     }
 }
 

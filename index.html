@@ -111,7 +111,7 @@
 
             <!-- ==================== ABOUT SECTION ==================== -->
             <div class="canvas-section about" id="section-about" style="left: 15%; top: 45%;">
-                <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
+                <div class="about-card-modern" onclick="handleAboutClick()" style="cursor: pointer;">
                     <!-- Photo at top left -->
                     <div class="about-photo-topleft" id="aboutPhoto">
                         <img src="taha-photo.jpg" alt="Taha Alfiza">
@@ -136,7 +136,7 @@
                         <!-- Will be populated by JS -->
                     </div>
 
-                    <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
+                    <button class="about-cta-outline" onclick="event.stopPropagation(); handleAboutClick();">
                         <span>See More</span>
                     </button>
                 </div>
@@ -540,7 +540,7 @@
 
                 <!-- About -->
                 <div class="block-item" id="list-about">
-                    <div class="about-card-modern" onclick="openAboutOverlay()" style="cursor: pointer;">
+                    <div class="about-card-modern" onclick="handleAboutClick()" style="cursor: pointer;">
                         <div class="about-photo-topleft">
                             <img src="taha-photo.jpg" alt="Taha Alfiza">
                         </div>
@@ -551,7 +551,7 @@
                         <p class="about-bio-text">I'm a <strong>Brand & Product Designer</strong> with <strong>10+ years</strong> of experience crafting brand identities and digital products.</p>
                         <p class="about-bio-text">Based in Istanbul, I've worked with clients across the MENA & Gulf regions, helping businesses establish strong visual identities and create meaningful digital experiences.</p>
                         <div class="experience-preview" id="listExperiencePreview"></div>
-                        <button class="about-cta-outline" onclick="event.stopPropagation(); openAboutOverlay();">
+                        <button class="about-cta-outline" onclick="event.stopPropagation(); handleAboutClick();">
                             <span>See More</span>
                         </button>
                     </div>

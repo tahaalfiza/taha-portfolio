@@ -5290,7 +5290,7 @@ a {
     }
 
     /* =============================================
-       MOBILE BLOGS - Full page list style
+       MOBILE BLOGS - Thumbnail + Title list
        ============================================= */
 
     /* Hide notes window chrome on mobile */
@@ -5308,6 +5308,12 @@ a {
     }
 
     .notes-titlebar {
+        display: none !important;
+    }
+
+    /* Hide search bar on mobile */
+    .notes-search,
+    .notes-toolbar {
         display: none !important;
     }
 
@@ -5330,30 +5336,34 @@ a {
         overflow: visible !important;
     }
 
-    /* Hide preview on mobile */
+    /* Hide preview panel on mobile */
     .notes-preview {
         display: none !important;
     }
 
-    /* Blog items as clean list */
+    /* Blog items with thumbnail + title */
     .note-item {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
         padding: 16px 20px !important;
         margin-bottom: 0 !important;
         border-radius: 0 !important;
         border-bottom: 1px solid var(--border-light, #e5e5e5);
         background: transparent !important;
+        gap: 16px !important;
+        cursor: pointer;
     }
 
     .note-item:last-child {
         border-bottom: none;
     }
 
-    .note-item:hover {
-        background: transparent !important;
-    }
-
+    /* No hover effects on mobile */
+    .note-item:hover,
     .note-item.active {
         background: transparent !important;
+        transform: none !important;
     }
 
     .note-item.active .note-item-title,
@@ -5361,25 +5371,44 @@ a {
         color: var(--text-primary) !important;
     }
 
+    /* Show blog thumbnail on mobile */
+    .note-item-thumb {
+        display: block !important;
+        width: 70px !important;
+        height: 50px !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: var(--bg-secondary);
+    }
+
+    .note-item-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
     .note-item-info {
-        flex-direction: row !important;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center;
+        gap: 4px !important;
+        flex: 1;
+        min-width: 0;
     }
 
     .note-item-title {
-        font-size: 15px !important;
+        font-size: 16px !important;
         font-weight: 600;
-        white-space: normal !important;
-        overflow: visible !important;
-        flex: 1;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        width: 100%;
     }
 
     .note-item-date {
-        font-size: 12px !important;
+        font-size: 13px !important;
         color: var(--text-secondary) !important;
-        flex-shrink: 0;
     }
 
     /* Hide arrow on mobile */
@@ -5553,27 +5582,71 @@ a {
        MOBILE GENERAL - Bigger touch targets
        ============================================= */
 
-    /* Make project items bigger */
+    /* Make project items bigger - no hover effects */
     .mac-folder {
-        padding: 18px 20px !important;
-        gap: 16px !important;
+        padding: 20px !important;
+        gap: 18px !important;
+    }
+
+    .mac-folder:hover,
+    .mac-folder:active {
+        transform: none !important;
+        background: transparent !important;
+    }
+
+    .folder-wrapper {
+        width: 60px !important;
+        height: 55px !important;
+    }
+
+    .folder-icon {
+        width: 60px !important;
+        height: 50px !important;
     }
 
     .folder-name {
-        font-size: 17px !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
     }
 
-    /* Make blog items bigger */
+    /* Make blog items bigger - no hover effects */
     .note-item {
-        padding: 18px 20px !important;
+        padding: 20px !important;
+        gap: 18px !important;
+    }
+
+    .note-item:hover,
+    .note-item:active {
+        transform: none !important;
+        background: transparent !important;
+    }
+
+    .note-item-thumb {
+        width: 80px !important;
+        height: 60px !important;
+        border-radius: 10px !important;
     }
 
     .note-item-title {
-        font-size: 17px !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
     }
 
     .note-item-date {
-        font-size: 13px !important;
+        font-size: 14px !important;
+    }
+
+    /* Hide overlays on mobile - navigate to page instead */
+    .project-overlay,
+    .about-overlay {
+        display: none !important;
+    }
+
+    /* Make scrollable content areas work better */
+    .stage-content-inner {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+        max-height: calc(100vh - 120px);
     }
 }
 

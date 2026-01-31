@@ -307,13 +307,23 @@ function renderBlogPosts(posts) {
           </svg>
         </div>`;
 
+    // Build URL for single blog page
+    const blogUrl = post.slug?.current ? `/blogs/${post.slug.current}` : '#';
+
     return `
-      <div class="note-item ${index === 0 ? 'active' : ''}" data-post-id="${post._id}" onclick="selectBlogPost('${post._id}')">
+      <div class="note-item ${index === 0 ? 'active' : ''}" data-post-id="${post._id}" data-blog-url="${blogUrl}" onclick="handleBlogClick('${post._id}', '${blogUrl}')">
+        <div class="note-item-thumb">
+          ${thumbUrl ? `<img src="${thumbUrl}" alt="${post.title}">` : `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          `}
+        </div>
         <div class="note-item-info">
           <div class="note-item-title">${post.title}</div>
           <div class="note-item-date">${date}</div>
         </div>
-        ${thumbHtml}
       </div>
     `;
   }).join('');
@@ -321,6 +331,18 @@ function renderBlogPosts(posts) {
   // Auto-select first post
   if (posts.length > 0) {
     selectBlogPost(posts[0]._id);
+  }
+}
+
+// Handle blog click - on mobile go to page, on desktop show preview
+function handleBlogClick(postId, blogUrl) {
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    // On mobile, navigate to the blog page
+    window.location.href = blogUrl;
+  } else {
+    // On desktop, show preview
+    selectBlogPost(postId);
   }
 }
 
@@ -548,14 +570,18 @@ function renderProjects(projects) {
       return url ? `<img class="popup-img img-${i + 1}" src="${url}" alt="Preview ${i + 1}">` : '';
     }).join('');
 
-    // Determine click behavior: overlay or external link
+    // Build project URL for single page
+    const projectSlug = project.slug?.current || generateSlug(project.title);
+    const projectPageUrl = `/projects/${projectSlug}`;
+
+    // Determine click behavior: on mobile go to page, on desktop show overlay
     let clickHandler = '';
     if (project.projectUrl && !project.hasOverlay) {
       // Has external URL and overlay disabled - go to external link
       clickHandler = `onclick="window.open('${project.projectUrl}', '_blank')"`;
     } else {
-      // Show overlay (either has overlay content or default behavior)
-      clickHandler = `onclick="openProjectOverlay(${originalIndex})"`;
+      // On mobile go to page, on desktop show overlay
+      clickHandler = `onclick="handleProjectClick(${originalIndex}, '${projectPageUrl}')"`;
     }
 
     // Custom folder colors - inline styles if provided
@@ -842,6 +868,18 @@ function closePasswordOverlay() {
   if (passwordOverlay) {
     passwordOverlay.classList.remove('active');
     document.body.style.overflow = '';
+  }
+}
+
+// Handle project click - on mobile go to page, on desktop show overlay
+function handleProjectClick(projectIndex, projectUrl) {
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    // On mobile, navigate to the project page
+    window.location.href = projectUrl;
+  } else {
+    // On desktop, show overlay
+    openProjectOverlay(projectIndex);
   }
 }
 
@@ -1319,9 +1357,23 @@ function toggleExpCard(headerEl) {
   }
 }
 
+// Handle about click - on mobile go to page, on desktop show overlay
+function handleAboutClick() {
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    // On mobile, add about to URL and let the about section be scrollable
+    // Or navigate to about section in stage view
+    window.location.href = '/?about=true';
+  } else {
+    // On desktop, show overlay
+    openAboutOverlay();
+  }
+}
+
 // Open About overlay
 function openAboutOverlay() {
   const overlay = document.getElementById('aboutOverlay');
+  if (!overlay) return;
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
 

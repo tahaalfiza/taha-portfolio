@@ -810,7 +810,7 @@ function initStageView() {
 }
 
 function generateStageThumbnails(sidebar) {
-    const sections = ['home', 'about', 'projects', 'blog', 'contact', 'hire'];
+    const sections = ['home', 'about', 'projects', 'blog', 'hire', 'contact'];
 
     sidebar.innerHTML = sections.map((section, index) => `
         <div class="stage-thumb ${index === 0 ? 'active' : ''}" data-section="${section}">
@@ -863,29 +863,33 @@ function cloneSectionForThumb(section) {
         clone.style.margin = '0';
         clone.style.boxShadow = 'none';
 
-        // Special handling for About section - remove photo
+        // Special handling for About section - remove photo and adjust text
         if (section === 'about') {
             const photo = clone.querySelector('.about-photo-topleft');
             if (photo) photo.style.display = 'none';
+            // Make text smaller to fit in thumbnail
+            clone.style.fontSize = '10px';
+            clone.style.padding = '10px';
         }
 
         thumbContent.appendChild(clone);
 
-        // Calculate the scaled dimensions to size the preview container
-        let scale = 0.35;
+        // Use consistent scale for all thumbnails
+        const scale = 0.35;
 
-        // Use smaller scale for Home to fit content without cropping
+        // For Home, scale the content smaller inside but keep container same size
         if (section === 'home') {
-            scale = 0.22;
-            thumbContent.style.transform = `scale(${scale})`;
+            thumbContent.style.transform = 'scale(0.22)';
+            // Use a standard container size similar to other thumbs
+            thumbPreview.style.width = '180px';
+            thumbPreview.style.height = '140px';
+        } else {
+            const originalWidth = originalSection.offsetWidth || 400;
+            const originalHeight = originalSection.offsetHeight || 300;
+            // Set the preview container to match scaled dimensions
+            thumbPreview.style.width = (originalWidth * scale) + 'px';
+            thumbPreview.style.height = (originalHeight * scale) + 'px';
         }
-
-        const originalWidth = originalSection.offsetWidth || 400;
-        const originalHeight = originalSection.offsetHeight || 300;
-
-        // Set the preview container to match scaled dimensions
-        thumbPreview.style.width = (originalWidth * scale) + 'px';
-        thumbPreview.style.height = (originalHeight * scale) + 'px';
     }
 }
 

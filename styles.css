@@ -1409,9 +1409,23 @@ a {
     .stage-view .stage-projects {
         padding: 0 !important;
         position: relative;
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
         height: auto !important;
         overflow: visible !important;
+    }
+
+    /* Ensure mobile filter header comes first */
+    .stage-view .stage-projects .mobile-filter-header {
+        order: 1 !important;
+    }
+
+    .stage-view .stage-projects .mobile-category-filter {
+        order: 2 !important;
+    }
+
+    .stage-view .stage-projects .finder-window {
+        order: 3 !important;
     }
 
     .stage-view .stage-blog {
@@ -4766,6 +4780,16 @@ a {
         left: 50%;
         transform: translateX(-50%);
         max-width: calc(100% - 48px);
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    [data-theme="dark"] .navbar {
+        background: rgba(30, 30, 30, 0.85) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
     /* Hide Home, Blog, and Hire buttons on mobile - only show About, Projects, Contact */
@@ -4840,6 +4864,7 @@ a {
         margin-left: 0 !important;
         padding: 0 !important;
         height: 100%;
+        background: transparent !important;
     }
 
     /* Stage content wrapper - allow scrolling on mobile */
@@ -5712,6 +5737,10 @@ a {
         font-size: 15px !important;
         width: 100%;
         justify-content: center;
+        pointer-events: auto !important;
+        position: relative !important;
+        z-index: 100 !important;
+        cursor: pointer !important;
     }
 
     /* =============================================

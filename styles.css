@@ -582,6 +582,12 @@ a {
     height: 350px;
 }
 
+/* Show thumbnails in List View - it has enough space */
+.list-view .notes-list .note-item-thumb,
+.list-view .notes-list .note-item-thumb-placeholder {
+    display: block;
+}
+
 /* Testimonials Grid in block view - 3x2 grid */
 .testimonials-grid-block {
     display: grid;
@@ -1254,6 +1260,14 @@ a {
     max-height: 100%;
     border-radius: 0;
     box-shadow: none;
+}
+
+/* Hide thumbnails in Stage View and Canvas View notes list to prevent overlap */
+.stage-view .notes-list .note-item-thumb,
+.stage-view .notes-list .note-item-thumb-placeholder,
+.canvas-view .notes-list .note-item-thumb,
+.canvas-view .notes-list .note-item-thumb-placeholder {
+    display: none;
 }
 
 /* Stage Contact Section */
@@ -3460,13 +3474,13 @@ a {
 .note-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 12px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.15s ease;
     margin-bottom: 2px;
     gap: 12px;
+    overflow: hidden;
 }
 
 .note-item:hover {
@@ -3485,7 +3499,6 @@ a {
 .note-item-info {
     flex: 1;
     min-width: 0;
-    max-width: calc(100% - 62px); /* Account for thumbnail width + gap */
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -3499,7 +3512,6 @@ a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
 }
 
 .note-item-date {
@@ -3514,6 +3526,7 @@ a {
     object-fit: cover;
     flex-shrink: 0;
     background: #e0e0e0;
+    order: -1; /* Put thumbnail first */
 }
 
 .note-item-thumb-placeholder {
@@ -3525,6 +3538,7 @@ a {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    order: -1; /* Put thumbnail first */
 }
 
 .note-item-thumb-placeholder svg {
@@ -3749,6 +3763,12 @@ a {
 
     .notes-list {
         width: 180px;
+    }
+
+    /* Hide thumbnails in narrow notes list */
+    .notes-list .note-item-thumb,
+    .notes-list .note-item-thumb-placeholder {
+        display: none;
     }
 }
 

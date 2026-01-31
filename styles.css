@@ -822,9 +822,18 @@ a {
     height: 100px;
 }
 
+.stage-view .stage-home .hero-avatar {
+    margin-bottom: 10px;
+}
+
+.stage-view .stage-home .hero-avatar svg {
+    width: 120px;
+    height: 120px;
+}
+
 .stage-view .stage-home .hero-greeting {
     font-size: 18px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .stage-view .stage-home .hero-title {

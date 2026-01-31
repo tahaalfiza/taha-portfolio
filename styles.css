@@ -582,6 +582,24 @@ a {
     height: 350px;
 }
 
+/* Make Canvas View and Stage View blogs look like List View */
+.canvas-view .notes-app-window,
+.stage-view .notes-app-window {
+    width: 100%;
+    max-width: 900px;
+}
+
+.canvas-view .notes-list,
+.stage-view .notes-list {
+    width: 350px;
+    min-width: 350px;
+}
+
+.canvas-view .notes-body,
+.stage-view .notes-body {
+    height: 400px;
+}
+
 /* Testimonials Grid in block view - 3x2 grid */
 .testimonials-grid-block {
     display: grid;

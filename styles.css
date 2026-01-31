@@ -1415,7 +1415,7 @@ a {
         display: none;
     }
 
-    /* Stage Blog mobile */
+    /* Stage Blog mobile - hide preview, show only titles */
     .stage-view .stage-blog .notes-body {
         flex-direction: column;
         height: auto;
@@ -1423,13 +1423,36 @@ a {
 
     .stage-view .stage-blog .notes-list {
         width: 100%;
-        max-height: 120px;
+        max-height: 280px;
         border-right: none;
-        border-bottom: 1px solid var(--border-light);
+        border-bottom: none;
     }
 
     .stage-view .stage-blog .notes-preview {
-        min-height: 200px;
+        display: none;
+    }
+
+    .stage-view .stage-blog .notes-app-window {
+        max-height: 350px;
+    }
+
+    /* Stage Projects folders compact */
+    .stage-view .stage-projects .folders-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 8px;
+        padding: 10px;
+    }
+
+    .stage-view .stage-projects .mac-folder .folder-name {
+        font-size: 9px;
+    }
+
+    .stage-view .stage-projects .popup-img {
+        display: none;
+    }
+
+    .stage-view .stage-projects .folder-info {
+        display: none;
     }
 
     /* Stage Contact mobile */
@@ -1633,8 +1656,24 @@ a {
         border-bottom: 1px solid var(--border-light);
     }
 
+    /* Hide preview on mobile - show only titles */
     .list-view .notes-preview {
-        min-height: 200px;
+        display: none;
+    }
+
+    .list-view .notes-list {
+        width: 100%;
+        max-height: 300px;
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .list-view .notes-body {
+        min-height: auto;
+    }
+
+    .list-view .notes-app-window {
+        max-height: 380px;
     }
 
     /* About card mobile */
@@ -1716,12 +1755,17 @@ a {
         grid-template-columns: 1fr;
     }
 
+    /* Keep notes list visible without preview */
     .list-view .notes-body {
-        min-height: 250px;
+        min-height: auto;
     }
 
     .list-view .notes-list {
-        max-height: 120px;
+        max-height: 250px;
+    }
+
+    .list-view .notes-preview {
+        display: none;
     }
 }
 
@@ -5156,66 +5200,73 @@ a {
         height: 16px;
     }
 
-    /* Projects Section - Mobile */
+    /* Projects Section - Mobile - Compact grid */
     .folders-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-        padding: 16px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px 12px;
+        padding: 12px;
+        max-height: 320px;
     }
 
     .folder-wrapper {
-        width: 100px;
-        height: 120px;
+        width: 80px;
+        height: 100px;
     }
 
     .folder-icon {
-        width: 100px;
-        height: 80px;
+        width: 80px;
+        height: 65px;
     }
 
     .folder-tab {
-        width: 36px;
-        height: 14px;
-        left: 8px;
+        width: 30px;
+        height: 12px;
+        left: 6px;
     }
 
     .folder-body {
-        top: 10px;
-        border-radius: 3px 8px 8px 8px;
+        top: 8px;
+        border-radius: 2px 6px 6px 6px;
     }
 
+    /* Hide popup images on mobile - cleaner look */
     .popup-img {
-        width: 60px;
-        height: 75px;
-        border-radius: 6px;
+        display: none;
     }
 
-    .mac-folder:hover .popup-img.img-1 {
-        transform: translate(-120%, -100%) rotate(-12deg) scale(1);
-    }
-
-    .mac-folder:hover .popup-img.img-2 {
-        transform: translate(-50%, -120%) rotate(0deg) scale(1);
-    }
-
-    .mac-folder:hover .popup-img.img-3 {
-        transform: translate(20%, -100%) rotate(12deg) scale(1);
-    }
-
+    /* Hide folder info on mobile - just show name */
     .folder-info {
-        margin-bottom: 4px;
-    }
-
-    .folder-duration {
-        font-size: 10px;
-    }
-
-    .folder-date {
-        font-size: 9px;
+        display: none;
     }
 
     .folder-name {
-        font-size: 13px;
+        font-size: 10px;
+        width: 80px;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Smaller lock icon on mobile */
+    .folder-lock {
+        width: 18px;
+        height: 18px;
+        bottom: 4px;
+        right: 4px;
+        border-radius: 4px;
+    }
+
+    .folder-lock svg {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Finder window compact on mobile */
+    .finder-window {
+        min-width: 300px;
+        max-width: 340px;
+        max-height: 400px;
     }
 
     /* Career Section - Mobile */
@@ -5288,27 +5339,29 @@ a {
         padding: 8px 12px;
     }
 
-    /* Notes App Window - Canvas Mobile */
+    /* Notes App Window - Canvas Mobile - Show titles only */
     .notes-app-window {
         width: 320px;
         height: auto;
-        min-height: 300px;
+        min-height: auto;
+        max-height: 350px;
     }
 
     .notes-body {
         flex-direction: column;
-        min-height: 250px;
+        min-height: auto;
     }
 
     .notes-list {
         width: 100%;
-        max-height: 120px;
+        max-height: 280px;
         border-right: none;
-        border-bottom: 1px solid var(--border-light);
+        border-bottom: none;
     }
 
+    /* Hide preview on mobile - show only titles */
     .notes-preview {
-        min-height: 180px;
+        display: none;
     }
 
     .notes-preview-content {
@@ -5317,6 +5370,24 @@ a {
 
     .notes-preview-title {
         font-size: 16px;
+    }
+
+    /* Compact note items for mobile */
+    .note-item {
+        padding: 10px 12px;
+        margin-bottom: 1px;
+    }
+
+    .note-item-title {
+        font-size: 13px;
+    }
+
+    .note-item-date {
+        font-size: 10px;
+    }
+
+    .note-item-preview {
+        display: none;
     }
 
     /* Hire Form - Canvas Mobile */

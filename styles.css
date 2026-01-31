@@ -765,7 +765,7 @@ a {
     background: var(--bg-card);
     border-radius: 20px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
-    overflow: visible;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     animation: stageSlideIn 0.4s ease;
@@ -776,7 +776,7 @@ a {
     background: transparent;
     box-shadow: none;
     border-radius: 0;
-    overflow: visible;
+    overflow: visible !important;
 }
 
 @keyframes stageSlideIn {
@@ -794,7 +794,7 @@ a {
 .stage-content-inner {
     width: 100%;
     height: 100%;
-    overflow: visible;
+    overflow: hidden;
     padding: 0;
 }
 
@@ -874,8 +874,18 @@ a {
 .stage-view .stage-projects .finder-window {
     height: 100%;
     max-height: 100%;
-    border-radius: 0;
-    box-shadow: none;
+    border-radius: 12px;
+    overflow: visible;
+}
+
+.stage-view .stage-projects .finder-window .finder-body {
+    height: calc(100% - 52px);
+    overflow: visible;
+}
+
+.stage-view .stage-projects .finder-window .finder-content {
+    height: 100%;
+    overflow-y: auto;
 }
 
 /* Stage Blog Section */

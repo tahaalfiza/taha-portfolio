@@ -1404,6 +1404,8 @@ a {
         position: relative;
         align-items: stretch !important;
         justify-content: flex-start !important;
+        touch-action: pan-y !important;
+        overflow: visible !important;
     }
 
     .stage-view .stage-blog {
@@ -4796,6 +4798,7 @@ a {
     /* Ensure stage view is always visible on mobile */
     .stage-view {
         display: flex !important;
+        overflow: visible !important;
     }
 
     /* Hide stage sidebar thumbnails on mobile - navigation via navbar only */
@@ -4814,10 +4817,11 @@ a {
     /* Stage content swipe animations */
     #stageContent {
         overflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: scroll !important;
         -webkit-overflow-scrolling: touch;
         height: calc(100vh - 80px);
         padding-bottom: 100px;
+        touch-action: pan-y !important;
     }
 
     #stageContent .stage-content-inner {
@@ -5150,6 +5154,7 @@ a {
         max-height: none !important;
         overflow: visible !important;
         background: transparent !important;
+        touch-action: pan-y !important;
     }
 
     /* Each project as a list item */
@@ -5760,6 +5765,7 @@ a {
         overflow: visible !important;
         max-height: none !important;
         padding-bottom: 40px;
+        touch-action: pan-y !important;
     }
 }
 

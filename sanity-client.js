@@ -687,6 +687,169 @@ function buildCategoriesSidebar(projects) {
 function filterByCategory(category) {
   activeCategory = category;
   renderProjects(projectsData);
+
+  // Update mobile filter UI if visible
+  updateMobileFilterUI();
+}
+
+// Toggle mobile category filter dropdown
+function toggleMobileCategoryFilter() {
+  const filterContainer = document.getElementById('mobileCategoryFilter');
+  if (!filterContainer) return;
+
+  filterContainer.classList.toggle('active');
+
+  // Update button active state
+  const filterBtn = document.querySelector('.mobile-filter-btn');
+  if (filterBtn) {
+    filterBtn.classList.toggle('active', filterContainer.classList.contains('active'));
+  }
+}
+
+// Populate mobile category filter
+function populateMobileCategoryFilter() {
+  const filterContainer = document.getElementById('mobileCategoryFilter');
+  if (!filterContainer || !projectsData) return;
+
+  // Get unique categories
+  const categoryMap = new Map();
+  projectsData.forEach(p => {
+    if (p.category && !categoryMap.has(p.category)) {
+      categoryMap.set(p.category, {
+        name: p.category,
+        icon: p.categoryIcon || 'folder',
+        order: p.categoryOrder || 999
+      });
+    }
+  });
+
+  const categories = Array.from(categoryMap.values()).sort((a, b) => a.order - b.order);
+
+  // Build filter chips
+  let html = `
+    <button class="category-chip ${activeCategory === 'all' ? 'active' : ''}"
+            onclick="filterMobileCategory('all')">
+      All
+    </button>
+  `;
+
+  categories.forEach(cat => {
+    const isActive = activeCategory.toLowerCase() === cat.name.toLowerCase();
+    html += `
+      <button class="category-chip ${isActive ? 'active' : ''}"
+              onclick="filterMobileCategory('${cat.name}')">
+        ${cat.name}
+      </button>
+    `;
+  });
+
+  filterContainer.innerHTML = html;
+}
+
+// Filter from mobile UI
+function filterMobileCategory(category) {
+  activeCategory = category;
+
+  // Re-render projects in stage view
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    // Get the folders grid in stage view
+    const stageProjectsGrid = document.querySelector('.stage-projects .folders-grid');
+    if (stageProjectsGrid) {
+      // Filter and render
+      const filteredProjects = category === 'all'
+        ? projectsData
+        : projectsData.filter(p => (p.category || '').toLowerCase() === category.toLowerCase());
+
+      stageProjectsGrid.innerHTML = filteredProjects.map((project, originalIndex) => {
+        // Find original index for click handler
+        const projIndex = projectsData.findIndex(p => p._id === project._id);
+        return renderProjectFolder(project, projIndex);
+      }).join('');
+    }
+  }
+
+  // Update mobile filter UI
+  updateMobileFilterUI();
+
+  // Close filter dropdown
+  const filterContainer = document.getElementById('mobileCategoryFilter');
+  if (filterContainer) {
+    filterContainer.classList.remove('active');
+  }
+
+  const filterBtn = document.querySelector('.mobile-filter-btn');
+  if (filterBtn) {
+    filterBtn.classList.remove('active');
+  }
+}
+
+// Update mobile filter chip active states
+function updateMobileFilterUI() {
+  const chips = document.querySelectorAll('.category-chip');
+  chips.forEach(chip => {
+    const category = chip.textContent.trim().toLowerCase();
+    const isAll = category === 'all';
+    const isActive = isAll
+      ? activeCategory === 'all'
+      : activeCategory.toLowerCase() === category;
+    chip.classList.toggle('active', isActive);
+  });
+
+  // Update filter label to show active category
+  const filterLabel = document.querySelector('.mobile-filter-btn .filter-label');
+  if (filterLabel) {
+    filterLabel.textContent = activeCategory === 'all' ? 'Filter' : activeCategory;
+  }
+}
+
+// Helper function to render a single project folder (for mobile filtering)
+function renderProjectFolder(project, index) {
+  const slug = project.slug?.current || generateSlug(project.title);
+  const projectUrl = `/projects/${slug}`;
+  const hasPassword = project.password && project.password.length > 0;
+  const isUnlocked = unlockedProjects.has(project._id);
+
+  // Format colors
+  const tabColor = formatColor(project.folderTabColor) || 'var(--folder-tab)';
+  const bodyColor = formatColor(project.folderBodyColor) || 'var(--folder-body)';
+
+  // Generate popup images HTML
+  let popupImagesHtml = '';
+  if (project.images && project.images.length > 0) {
+    const popupImages = project.images.slice(0, 3);
+    popupImages.forEach((img, imgIndex) => {
+      const imgUrl = sanityImageUrl(img, 200, 80);
+      if (imgUrl) {
+        popupImagesHtml += `<img src="${imgUrl}" alt="${project.title}" class="popup-img popup-img-${imgIndex + 1}" loading="lazy">`;
+      }
+    });
+  }
+
+  // Lock icon for password-protected projects
+  const lockIcon = hasPassword && !isUnlocked ? `
+    <div class="folder-lock">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+  ` : '';
+
+  return `
+    <div class="mac-folder" onclick="handleProjectClick(${index}, '${projectUrl}')">
+      <div class="folder-wrapper">
+        <div class="folder-icon">
+          <div class="folder-tab" style="background: ${tabColor}"></div>
+          <div class="folder-body" style="background: ${bodyColor}"></div>
+        </div>
+        ${popupImagesHtml}
+        ${lockIcon}
+      </div>
+      <span class="folder-name">${project.title}</span>
+      <span class="folder-info">${project.date || ''}</span>
+    </div>
+  `;
 }
 
 // Helper function to format color (adds # for hex codes if missing)

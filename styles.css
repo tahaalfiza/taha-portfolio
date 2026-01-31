@@ -4806,7 +4806,10 @@ a {
 
     /* Stage content swipe animations */
     #stageContent {
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        height: calc(100vh - 120px);
     }
 
     #stageContent .stage-content-inner {
@@ -5133,8 +5136,9 @@ a {
         flex-direction: column !important;
         gap: 0 !important;
         padding: 0 !important;
-        max-height: none;
-        overflow: visible;
+        padding-bottom: 100px !important;
+        max-height: none !important;
+        overflow: visible !important;
     }
 
     /* Each project as a list item */
@@ -5217,6 +5221,88 @@ a {
     .folder-lock svg {
         width: 12px !important;
         height: 12px !important;
+    }
+
+    /* Mobile Filter Header for Projects */
+    .mobile-filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border-light, #e5e5e5);
+        position: sticky;
+        top: 0;
+        background: var(--bg-primary, #fff);
+        z-index: 10;
+    }
+
+    .mobile-section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .mobile-filter-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--bg-secondary, #f5f5f5);
+        border: 1px solid var(--border-light, #e5e5e5);
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-filter-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .mobile-filter-btn.active {
+        background: var(--accent-primary, #007AFF);
+        border-color: var(--accent-primary, #007AFF);
+        color: white;
+    }
+
+    .mobile-filter-btn.active svg {
+        stroke: white;
+    }
+
+    /* Mobile Category Filter Dropdown */
+    .mobile-category-filter {
+        display: none;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 20px 16px;
+        background: var(--bg-primary, #fff);
+        border-bottom: 1px solid var(--border-light, #e5e5e5);
+    }
+
+    .mobile-category-filter.active {
+        display: flex;
+    }
+
+    .category-chip {
+        padding: 8px 16px;
+        background: var(--bg-secondary, #f5f5f5);
+        border: 1px solid var(--border-light, #e5e5e5);
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .category-chip.active {
+        background: var(--accent-primary, #007AFF);
+        border-color: var(--accent-primary, #007AFF);
+        color: white;
     }
 
     /* Career Section - Mobile */
@@ -5644,9 +5730,9 @@ a {
 
     /* Make scrollable content areas work better */
     .stage-content-inner {
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch;
-        max-height: calc(100vh - 120px);
+        overflow: visible !important;
+        max-height: none !important;
+        padding-bottom: 40px;
     }
 }
 

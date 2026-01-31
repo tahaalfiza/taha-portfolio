@@ -4286,7 +4286,7 @@ a {
 
 /* View Toggle Buttons */
 .view-toggle {
-    display: flex;
+    display: none; /* Hidden for now - can re-enable later */
     align-items: center;
     gap: 4px;
     margin-left: auto;

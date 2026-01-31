@@ -1035,8 +1035,14 @@ function initStageView() {
     if (!stageViewInitialized) {
         const isMobile = window.innerWidth <= 768;
         // Mobile starts with About, Desktop starts with Home
-        setActiveStageSection(isMobile ? 'about' : 'home');
+        const initialSection = isMobile ? 'about' : 'home';
+        setActiveStageSection(initialSection);
         stageViewInitialized = true;
+
+        // Ensure navbar shows correct active state on load
+        setTimeout(() => {
+            updateActiveNavButton(initialSection);
+        }, 100);
     }
 
     // Initialize scroll to top button for mobile

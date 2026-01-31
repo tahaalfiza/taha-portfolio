@@ -3254,7 +3254,7 @@ a {
 
 /* Notes List - Left Column */
 .notes-list {
-    width: 300px;
+    width: 350px;
     background: #f5f5f7;
     border-right: 1px solid #e0e0e0;
     display: flex;
@@ -3737,16 +3737,16 @@ a {
 /* Notes App Mobile Responsive */
 @media (max-width: 900px) {
     .notes-app-window {
-        width: 600px;
+        width: 700px;
         height: 450px;
     }
 
     .notes-sidebar {
-        width: 140px;
+        display: none;
     }
 
     .notes-list {
-        width: 180px;
+        width: 280px;
     }
 }
 

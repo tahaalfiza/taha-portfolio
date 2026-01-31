@@ -3543,6 +3543,36 @@ a {
     font-size: 14px;
 }
 
+.finder-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.finder-empty-state svg {
+    width: 48px;
+    height: 48px;
+    color: #86868b;
+    margin-bottom: 16px;
+    opacity: 0.6;
+}
+
+.finder-empty-state p {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+}
+
+.finder-empty-state span {
+    font-size: 13px;
+    color: #86868b;
+}
+
 /* ==========================================
    macOS STYLE FOLDERS WITH POPUP IMAGES
    ========================================== */

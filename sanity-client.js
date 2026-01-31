@@ -564,8 +564,18 @@ function renderProjects(projects) {
     const tabStyle = tabColor ? `style="background: ${tabColor}"` : '';
     const bodyStyle = bodyColor ? `style="background: ${bodyColor}"` : '';
 
+    // Lock icon for password-protected projects
+    const lockIcon = project.password ? `
+      <div class="folder-lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+    ` : '';
+
     return `
-      <div class="mac-folder" ${clickHandler}>
+      <div class="mac-folder ${project.password ? 'protected' : ''}" ${clickHandler}>
         <div class="folder-wrapper">
           <div class="popup-images">
             ${imageHtml}
@@ -573,6 +583,7 @@ function renderProjects(projects) {
           <div class="folder-icon">
             <div class="folder-tab" ${tabStyle}></div>
             <div class="folder-body" ${bodyStyle}></div>
+            ${lockIcon}
           </div>
         </div>
         <h3 class="folder-name">${project.title}</h3>

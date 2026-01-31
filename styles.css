@@ -4242,6 +4242,36 @@ a {
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+/* Folder Lock Icon for protected projects */
+.folder-lock {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.folder-lock svg {
+    width: 14px;
+    height: 14px;
+    stroke: #6366f1;
+}
+
+.mac-folder.protected:hover .folder-lock {
+    background: rgba(99, 102, 241, 1);
+}
+
+.mac-folder.protected:hover .folder-lock svg {
+    stroke: white;
+}
+
 /* Folder color variations */
 .folder-icon.blue .folder-tab {
     background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 100%);
